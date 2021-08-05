@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2021-08-05" />
+
+<title>Introduction to R and RStudio</title>
+
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Environmental Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Week 1</li>
+    <li>
+      <a href="Rintro.html">The R and RStudio environments</a>
+    </li>
+    <li>
+      <a href="AQintro.html">Air Quality Lab Introduction</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Introduction to R and RStudio</h1>
+<h4 class="author"></h4>
+<h4 class="date">2021-08-05</h4>
+
+</div>
+
+
+<div id="getting-started-with-data-in-r" class="section level2">
+<h2>Getting started with data in <code>R</code></h2>
+<p>Key concepts that you will learn:</p>
+<ul>
+<li>What is <code>R</code>?</li>
+<li>What is RStudio?</li>
+<li>How do I code in <code>R</code>?</li>
+</ul>
+</div>
+<div id="what-are-r-and-rstudio" class="section level2">
+<h2>What are <code>R</code> and RStudio?</h2>
+<p>In this class, we will take a cookbook approach to environmental data science.What does a “cookbook approach” mean in this context? In this course, I do not assume that you have prior programming experience and instead I will provide worksheets and worked-through example code that you then execute and learn by doing (or code running). Where appropriate, I will also use <em>faded examples</em> to advance learning in a structured and scaffolded way (<a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006915#sec008">see Section 7 in Wilson 2019</a> for more details if you are curious).</p>
+<p>Specifically, you will interact with <code>R</code>, a statistical programming language, using RStudio. RStudio is an “IDE” or an integrated development environment. Basically, if <code>R</code> is the engine of our (statistical programming) car, then RStudio is our dashboard, with all of the controls that we’d be more familiar with (plotting window, file visualization pane, help pane, etc.).</p>
+<div class="figure">
+<img src="figures/R_vs_RStudio_1.png" alt="" />
+<p class="caption">Image from Ismay <em>et al.</em> (2020)</p>
+</div>
+</div>
+<div id="how-do-i-access-rstudio" class="section level2">
+<h2>How do I access RStudio?</h2>
+<p><strong>Note: ITS is currently migrating RStudio Server to a new environment. I will update these instructions once the migration is complete.</strong></p>
+<p>You will navigate to <a href="https://rstudio.pomona.edu">https://rstudio.pomona.edu</a> and use your Pomona credentials to log in. Pomona students: please use your existing user ID. Non-Pomona students: if you do not already have a Pomona account, please email <a href="mailto:helpdesk@pomona.edu?subject=EA30%20PO%20Student%20RStudio%20Access">helpdesk@pomona.edu</a> and cc me (<code>chchang@pomona.edu</code>) or use the chat feature at <a href="http://its.pomona.edu">http://its.pomona.edu</a> to request an account. ITS will “require that a student provides proof of their identity by sending us a photo of themselves holding their 7C ID card (since they can’t come in person to the Service Desk right now).”</p>
+</div>
+<div id="what-does-rstudio-have-anyway" class="section level2">
+<h2>What does RStudio have anyway?</h2>
+<p>RStudio has 3 different panes:</p>
+<div class="figure">
+<img src="figures/rstudio_ide_image.png" alt="" />
+<p class="caption">Image from Bailey (2018)</p>
+</div>
+</div>
+<div id="what-do-each-of-these-panes-do" class="section level2">
+<h2>What do each of these panes do?</h2>
+<ul>
+<li>Console: where you enter commands that <code>R</code> interprets
+<ul>
+<li>Running code: the act of telling <code>R</code> to perform an act by giving it commands in the console.</li>
+</ul></li>
+<li>Environment: lists all objects/data/functions available to you in the current session
+<ul>
+<li>Session: the current instance that you have logged into RStudio (NB: unlike other software, the session doesn’t necessarily end when you close the browser window! Instead, it can preserve its state over time).</li>
+</ul></li>
+<li>Output: later on, we will interact with this pane most often to display plots that you generate!
+<ul>
+<li>The other tabs in this pane can be used to navigate through files, see available packages that extend the functionality of <code>R</code>, view help, and view spreadsheets (<code>Viewer</code>).</li>
+</ul></li>
+</ul>
+</div>
+<div id="running-your-first-r-code" class="section level2">
+<h2>Running your first <code>R</code> code!</h2>
+<p>Copy the code below into the console and hit enter. What do you see?</p>
+<pre class="r"><code>x &lt;- c(1,2,3)
+x</code></pre>
+<p>You should see the following:</p>
+<pre><code>## [1] 1 2 3</code></pre>
+<p>Congratulations! You have created your first object in <code>R</code>: a vector storing the numbers 1, 2, and 3.</p>
+<p>You achieved that by using the assignment operator <code>&lt;-</code> to tell <code>R</code> to create a new object, <code>x</code>, that stores the values 1, 2, and 3 in a vector, denoted by <code>c(...)</code> where the <code>...</code> is just a placeholder for whatever you’d like to enter (where each element is separated by commas).</p>
+<p>In the first lab session, we will spend some time familiarizing ourselves with <code>R</code> using the package <code>swirl</code>. More details to come.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="" />
+
+<meta name="date" content="2021-08-05" />
+
+<title>Syllabus</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Environmental Science</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Syllabus
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Introduction
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Week 1</li>
+    <li>
+      <a href="Rintro.html">The R and RStudio environments</a>
+    </li>
+    <li>
+      <a href="AQintro.html">Air Quality Lab Introduction</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Syllabus</h1>
+<h4 class="date">2021-08-05</h4>
+
+</div>
+
+
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p><em>Environmental Science</em> introduces the scientific, socio-political, and technological dimensions of environmental problems that pose unprecedented challenges to humanity and the environment: climate change, biodiversity loss, and providing food and water for 7.8 billion people. In this class, we will examine fundamental changes in the biosphere, and their implications for climate, land, water, and species, while emphasizing a systems-view of problems and potential solutions.</p>
+<p>Over the coming semester, we will look at environmental issues at a local and global scale, examining how individual and collective decisions lead to environmental changes. We will use case studies to illustrate the different dimensions of environmental problems. In the laboratory, you will learn some core techniques for environmental science, including the use and analysis of spatial and environmental data, as well as the uncertainty and limitations of real-world data.</p>
+<div id="learning-outcomes" class="section level2">
+<h2>Learning outcomes</h2>
+<p>By the end of the course, a successful learner will be able to:</p>
+<ul>
+<li>Describe how anthropogenic factors affect climate, air, biota, water, and soils;</li>
+<li>Apply systems science thinking and techniques to environmental science issues;</li>
+<li>Interpret and critically analyze environmental data using quantitative and qualitative approaches;</li>
+<li>Communicate scientific information to broad audiences;</li>
+<li>Understand issues such as risk, uncertainty, and trade-offs that that underlie all environmental challenges and the search for effective solutions to environmental problems.</li>
+</ul>
+</div>
+<div id="general-information" class="section level2">
+<h2>General information</h2>
+<p><strong>Lecture location</strong>: Seaver Biology Room 38</p>
+<p><strong>Lab location</strong>: Seaver South Room 113. On days when we are working at the Bernard Field Station or the Pomona Farm, we will depart from either Seaver South or another predetermined location.</p>
+<p><strong>Lecture Schedule</strong>: Wednesdays &amp; Fridays, 11:10am-12:25pm PT (September 1 - December 8, 2021)</p>
+<p><strong>Lab Schedule</strong>: Wednesdays 1:20-5:05pm PT</p>
+<p><strong>Office Hours</strong>: I am always happy to talk to you. My open-doors office hours will typically be Thursdays (11am-12pm), Fridays (9:45am-10:45am), or by appointment via Calendly. To facilitate safe, socially-distanced office hours during the pandemic, please sign-up for a slot at my <a href="https://calendly.com/chchang47/officechat">Calendly</a>.</p>
+<p><strong>Prerequisites</strong>: None</p>
+<p><strong>Readings</strong>: This course will use a combination of the primary literature, popular science books, and the textbook <em>Living in the Environment</em>. Please note that you do <strong>not</strong> need to purchase <em>Living in the Environment</em> – all readings will be available online.</p>
+<p><strong>Student Well-Being</strong>: In addition to the course policies below, I seek to prioritize your health and well-being. Physical or mental illness, personal crises, family care, and other responsibilities can strongly impact your ability to participate in this course. Please let me and/or staff in the Student Affairs or related offices know if any of these issues pose severe obstacles to you and we will work together to come up with solutions. I am also more than happy to work with you and a representative from Student Affairs in situations where sensitive information is involved.</p>
+</div>
+<div id="course-assessment" class="section level2">
+<h2>Course assessment</h2>
+<ul>
+<li>Exam #1 (15%)</li>
+<li>Exam #2 (15%, not comprehensive)</li>
+<li>Final exam (20%, comprehensive)</li>
+<li>Laboratory assignments (10%)</li>
+<li>Laboratory projects (35%)</li>
+<li>Class participation (5%)</li>
+</ul>
+</div>
+<div id="mutual-expectations" class="section level2">
+<h2>Mutual expectations</h2>
+<div id="what-i-expect-from-you" class="section level3">
+<h3>What I expect from you</h3>
+<p>I welcome individuals of all ages, backgrounds, beliefs, ethnicities, genders, gender identities, gender expressions, national origins, religious affiliations, sexual orientations, ability – and any other visible and non-visible differences. As an instructor, I strongly emphasize student agency; this class is <strong>your</strong> learning journey, and as such, I expect students to take leadership in their own learning and to keep track of assignments and examination dates. I expect we will respectfully consider differing opinions and engage in constructive discourse. As such, I expect that everyone will help create a collegial environment where all students feel welcome and their rights to learn are respected. Please refer to the <a href="http://catalog.pomona.edu/content.php?catoid=38&amp;navoid=7668">Pomona College Student Code</a> for official policy.</p>
+</div>
+<div id="what-you-can-expect-from-me" class="section level3">
+<h3>What you can expect from me</h3>
+<p>I will strive to provide an equitable and inclusive learning environment. My overarching goal is to help you succeed in your exploration of environmental science. To that end, you can expect me to be responsive to your ideas and suggestions about course content and design.</p>
+<p>A key component of my role as an instructor is office hours. During office hours, I am available to help you work through any problems, questions, or thoughts you have about the course. I am also more than happy to chat about broader questions such as career paths in environmental science, ecology, and conservation, next steps after Pomona College/the Claremont Colleges, or other academic or professional topics of interest to you.</p>
+</div>
+</div>
+<div id="general-course-policies" class="section level2">
+<h2>General course policies</h2>
+<p><em>Office hours, email, and class Slack channel</em>: During office hours, I am available to help you work through any problems, questions, or thoughts you have about the course. If you would like to discuss a particular problem or topic that would benefit from preparation on my part, please give me advance notice via <a href="https://calendly.com/chchang47/officechat">Calendly</a>.</p>
+<p>I have email boundaries and I encourage you to find your own. Mine include not answering emails after 6pm, or on weekends or holidays. Finally, I request that emails only be used for interactions that are truly one-on-one (e.g. requesting extensions to assignments or accomodations); in general, to help create an atmosphere of transparency and group learning, I request that questions about content and assignments be directed to the #ea30 Slack channel in the Pomona College Division-II workspace.</p>
+<p><em>Learning diversity &amp; accommodations</em>: Pomona College welcomes and accommodates students with disabilities. As your instructor, I aim to see you succeed in your growth as an environmental scholar. If you encounter obstacles to your success, please let me know immediately so that we can work together to identify ways to overcome any limitations of current course design. If you feel you need a reasonable accommodation to participate in this class, complete course requirements, or benefit from the College’s programs or services, you are also welcome to contact the student accessibility resource office at your College to begin this conversation or to establish accommodations for this or other courses.</p>
+<p>Below is a list of the relevant accessibility resource offices at each of the Colleges:</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://www.cmc.edu/dean-of-students/accessibility-services">Claremont McKenna College (CMC) Accessibility Services</a></li>
+<li><a href="https://www.hmc.edu/student-life/disability-resources/">Harvey Mudd College (HMC) Disability Resources Office</a></li>
+<li><a href="https://www.pitzer.edu/student-life/academic-support-services/">Pitzer College (PZ) Academic Support Services</a></li>
+<li><a href="https://www.pomona.edu/accessibility/student-accessibility">Pomona College (POM) Student Accessibility Resources and Services Office</a></li>
+<li><a href="https://www.scrippscollege.edu/academics/students-with-disabilities">Scripps College (SC) Accommodations for Students with Disabilities</a></li>
+<li><a href="https://services.claremont.edu/sdrc/">The 7 College (7C) Student Disability Resource Center</a> and <a href="mailto:SDRC@claremont.edu">7C Student Disability Resource Center email</a></li>
+</ol>
+<p><em>Writing center and student support services</em>: I urge all students to make use of your home campus’ Writing Center and other student support services. A list of relevant resources in included below. For example, the Writing Center is a great resource to workshop and improve your writing whether that is for classwork, for public consumption (e.g. op-eds), graduate school or funding applications, or any other domain.</p>
+<ol style="list-style-type: decimal">
+<li><a href="https://www.cmc.edu/writing">CMC Center for Writing and Public Discourse</a></li>
+<li><a href="https://www.hmc.edu/learning-programs/writing-center/">HMC Writing Center</a></li>
+<li><a href="https://www.pomona.edu/administration/writing-center">POM Writing Center</a></li>
+<li><a href="https://www.pitzer.edu/writing-center/">PZ Writing Center</a></li>
+<li><a href="https://www.scrippscollege.edu/departments/writing-program/writing-center">SC Writing Center</a></li>
+</ol>
+<p><em>Late assignments</em>: When assignments are handed in late without prior notice, I reserve the right to apply a grade deduction penalty (1 grade reduction for each day late).</p>
+<p><em>Academic integrity</em>: Academic honesty is a core value of Pomona College and the Claremont Colleges. Plagiarism undermines academic integrity and is a threat to communal ethics. I will assign plagiarized assignments a failing grade and will report any instance of plagiarism to the College.</p>
+</div>
+<div id="course-schedule" class="section level2">
+<h2>Course Schedule</h2>
+<p>Please note that this schedule is subject to change; this syllabus is very much a <em>living document</em> that will change to reflect the unique conditions of this semester. I reserve the right to exercise some flexibility in scheduling, usually in favor of giving more time to students.</p>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
+<thead>
+<tr>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Date
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Topic
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Readings
+</th>
+<th style="font-weight: 900; border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Lab
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">
+9/1
+</td>
+<td style="text-align: center;">
+Introduction to environmental science
+</td>
+<td style="text-align: center;">
+LITE 1, 3.4 (pages 57-59), Rockstrom et al. 2009
+</td>
+<td style="text-align: center;">
+None
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+9/8
+</td>
+<td style="text-align: center;">
+Climate change &amp; air pollution
+</td>
+<td style="text-align: center;">
+LITE 18, 19.1-19.2, Washington 2019
+</td>
+<td style="text-align: center;">
+Air quality &amp; RStudio Setup
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+9/15
+</td>
+<td style="text-align: center;">
+Energy sources and climate change
+</td>
+<td style="text-align: center;">
+LITE 15 &amp; 16
+</td>
+<td style="text-align: center;">
+Air quality continued; geospatial data
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+9/22
+</td>
+<td style="text-align: center;">
+Mitigation options for climate change
+</td>
+<td style="text-align: center;">
+Waggoner et al. 2002, Washington 2019, Boyd 2015
+</td>
+<td style="text-align: center;">
+Processing air quality data and interpreting scientific articles
+</td>
+</tr>
+<tr style="background-color: #adc2d8;">
+<td style="background-color: #adc2d8; text-align: center;">
+9/24
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+Air quality group lab report due
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+9/29
+</td>
+<td style="text-align: center;">
+Environmental issues as collective action problems
+</td>
+<td style="text-align: center;">
+Chakravarty et al. 2009, Levin 2010, Heglar 2019, Hardin 1968, Mildenberger 2019
+</td>
+<td style="text-align: center;">
+Introduction to biodiversity lab
+</td>
+</tr>
+<tr style="background-color: #adc2d8;">
+<td style="background-color: #adc2d8; text-align: center;">
+10/1
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+Exam #1
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+10/6
+</td>
+<td style="text-align: center;">
+Biodiversity overview
+</td>
+<td style="text-align: center;">
+LITE 4, Newbold et al. 2015
+</td>
+<td style="text-align: center;">
+Biodiversity observation lab
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+10/13
+</td>
+<td style="text-align: center;">
+Global crop production
+</td>
+<td style="text-align: center;">
+LITE 3.3, 3.4, 5, 12
+</td>
+<td style="text-align: center;">
+Biodiversity metrics lab
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+10/20
+</td>
+<td style="text-align: center;">
+Human demography and global crop demand
+</td>
+<td style="text-align: center;">
+LITE 6, 12.1, 12.2
+</td>
+<td style="text-align: center;">
+Biodiversity and land use proposal review panel
+</td>
+</tr>
+<tr style="background-color: #adc2d8;">
+<td style="background-color: #adc2d8; text-align: center;">
+10/22
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+Biodiversity and land use proposal due
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+10/27
+</td>
+<td style="text-align: center;">
+Land use and land management impacts on the environment
+</td>
+<td style="text-align: center;">
+LITE 12.3, 12.4, Jeezer et al. 2019; Warren-Thomas et al. 2019; Runting et al. 2019
+</td>
+<td style="text-align: center;">
+Soil science lab
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+11/3
+</td>
+<td style="text-align: center;">
+Designing a better food system
+</td>
+<td style="text-align: center;">
+LITE 12.5
+</td>
+<td style="text-align: center;">
+Soil science lab
+</td>
+</tr>
+<tr style="background-color: #adc2d8;">
+<td style="background-color: #adc2d8; text-align: center;">
+11/5
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+Exam #2
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+11/10
+</td>
+<td style="text-align: center;">
+The hydrological cycle and freshwater resources
+</td>
+<td style="text-align: center;">
+LITE 3.4, 13
+</td>
+<td style="text-align: center;">
+Local environmental survey
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+11/17
+</td>
+<td style="text-align: center;">
+Stressors to water quality and quantity
+</td>
+<td style="text-align: center;">
+LITE 8.4, 8.5, 20.1-20.4, Pew Trend Magazine 2019
+</td>
+<td style="text-align: center;">
+Environmental communications lab
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+11/24
+</td>
+<td style="text-align: center;">
+Thanksgiving Break
+</td>
+<td style="text-align: center;">
+</td>
+<td style="text-align: center;">
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+12/1
+</td>
+<td style="text-align: center;">
+Water regulation and conservation
+</td>
+<td style="text-align: center;">
+LITE 13.5, 20.5
+</td>
+<td style="text-align: center;">
+Text analysis lab
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+12/8
+</td>
+<td style="text-align: center;">
+Environmental communication and class retrospective
+</td>
+<td style="text-align: center;">
+</td>
+<td style="text-align: center;">
+Environmental communications pitches
+</td>
+</tr>
+<tr style="background-color: #adc2d8;">
+<td style="background-color: #adc2d8; text-align: center;">
+12/8
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+Environmental communication pitch deck due
+</td>
+<td style="background-color: #adc2d8; text-align: center;">
+</td>
+</tr>
+<tr style="background-color: #adc2d8;">
+<td style="background-color: #adc2d8; border-bottom: 2px solid grey; text-align: center;">
+12/17
+</td>
+<td style="background-color: #adc2d8; border-bottom: 2px solid grey; text-align: center;">
+</td>
+<td style="background-color: #adc2d8; border-bottom: 2px solid grey; text-align: center;">
+Final exam
+</td>
+<td style="background-color: #adc2d8; border-bottom: 2px solid grey; text-align: center;">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

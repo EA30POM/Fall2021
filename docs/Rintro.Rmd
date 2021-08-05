@@ -1,0 +1,68 @@
+---
+title: "Introduction to R and RStudio"
+author: ""
+date: "`r Sys.Date()`"
+output: html_document
+bibliography: /Users/chc02006/Documents/Teaching/BIOL104PO/bio104.bib
+link-citations: true
+---
+
+## Getting started with data in `R`
+
+Key concepts that you will learn:
+
+* What is `R`?
+* What is RStudio?
+* How do I code in `R`?
+
+## What are `R` and RStudio?
+
+In this class, we will take a cookbook approach to environmental data science.What does a "cookbook approach" mean in this context? In this course, I do not assume that you have prior programming experience and instead I will provide worksheets and worked-through example code that you then execute and learn by doing (or code running). Where appropriate, I will also use *faded examples* to advance learning in a structured and scaffolded way ([see Section 7 in Wilson 2019](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006915#sec008) for more details if you are curious).
+
+Specifically, you will interact with `R`, a statistical programming language, using RStudio. RStudio is an "IDE" or an integrated development environment. Basically, if `R` is the engine of our (statistical programming) car, then RStudio is our dashboard, with all of the controls that we'd be more familiar with (plotting window, file visualization pane, help pane, etc.).
+
+![Image from Ismay *et al.* (2020)](figures/R_vs_RStudio_1.png)
+
+## How do I access RStudio?
+
+**Note: ITS is currently migrating RStudio Server to a new environment. I will update these instructions once the migration is complete.**
+
+You will navigate to [https://rstudio.pomona.edu](https://rstudio.pomona.edu) and use your Pomona credentials to log in. Pomona students: please use your existing user ID. Non-Pomona students: if you do not already have a Pomona account, please email [helpdesk@pomona.edu](mailto:helpdesk@pomona.edu?subject=EA30%20PO%20Student%20RStudio%20Access) and cc me (`chchang@pomona.edu`) or use the chat feature at [http://its.pomona.edu](http://its.pomona.edu) to request an account. ITS will "require that a student provides proof of their identity by sending us a photo of themselves holding their 7C ID card (since they can't come in person to the Service Desk right now)."
+
+## What does RStudio have anyway?
+
+RStudio has 3 different panes:
+
+![Image from Bailey (2018)](figures/rstudio_ide_image.png)
+
+## What do each of these panes do?
+
+* Console: where you enter commands that `R` interprets
+    + Running code: the act of telling `R` to perform an act by giving it commands in the console.
+* Environment: lists all objects/data/functions available to you in the current session
+    + Session: the current instance that you have logged into RStudio (NB: unlike other software, the session doesn't necessarily end when you close the browser window! Instead, it can preserve its state over time).
+* Output: later on, we will interact with this pane most often to display plots that you generate!
+    + The other tabs in this pane can be used to navigate through files, see available packages that extend the functionality of `R`, view help, and view spreadsheets (`Viewer`).
+
+## Running your first `R` code!
+
+Copy the code below into the console and hit enter. What do you see?
+
+```{r, eval=FALSE}
+x <- c(1,2,3)
+x
+```
+
+You should see the following:
+
+```{r, echo=FALSE}
+x <- c(1,2,3)
+x
+```
+
+Congratulations! You have created your first object in `R`: a vector storing the numbers 1, 2, and 3.
+
+You achieved that by using the assignment operator `<-` to tell `R` to create a new object, `x`, that stores the values 1, 2, and 3 in a vector, denoted by `c(...)` where the `...` is just a placeholder for whatever you'd like to enter (where each element is separated by commas).
+
+In the first lab session, we will spend some time familiarizing ourselves with `R` using the package `swirl`. More details to come.
+

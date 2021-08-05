@@ -1,0 +1,19 @@
+name: "EA30 FA21"
+output_dir: "."
+navbar:
+  title: "Environmental Science"
+  left:
+    - text: "Syllabus"
+      icon: fa-home
+      href: index.html
+    - text: "Introduction"
+      menu:
+        - text: "Week 1"
+        - text: "The R and RStudio environments"
+          href: Rintro.html
+        - text: "Air Quality Lab Introduction"
+          href: AQintro.html
+output:
+  html_document:
+    theme: flatly
+    css: style.css
