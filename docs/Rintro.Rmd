@@ -11,9 +11,19 @@ link-citations: true
 
 Key concepts that you will learn:
 
+* How do I access `R` and `RStudio`?
 * What is `R`?
 * What is RStudio?
-* How do I code in `R`?
+* How do I execute commands in `R`?
+
+## How do I access RStudio?
+
+*Pomona Students*:
+You will navigate to [https://rstudio.pomona.edu](https://rstudio.pomona.edu) and use your Pomona credentials to log in. Pomona students: please use your existing user ID. 
+
+*Non-Pomona students:* 
+If you do not already have a Pomona account, please email [servicedesk@pomona.edu](mailto:servicedesk@pomona.edu?subject=EA30%20PO%20Student%20RStudio%20Access) and cc me (`chchang@pomona.edu`) or use the `Report an issue` feature at [https://servicedesk.pomona.edu/](https://servicedesk.pomona.edu/) to request an account. ITS may require "that a student provides proof of their identity by sending us a photo of themselves holding their 7C ID card (since they can't come in person to the Service Desk right now)." The ITS team will follow up with any necessary items. **Please complete this step ASAP.**
+
 
 ## What are `R` and RStudio?
 
@@ -22,12 +32,6 @@ In this class, we will take a cookbook approach to environmental data science.Wh
 Specifically, you will interact with `R`, a statistical programming language, using RStudio. RStudio is an "IDE" or an integrated development environment. Basically, if `R` is the engine of our (statistical programming) car, then RStudio is our dashboard, with all of the controls that we'd be more familiar with (plotting window, file visualization pane, help pane, etc.).
 
 ![Image from Ismay *et al.* (2020)](figures/R_vs_RStudio_1.png)
-
-## How do I access RStudio?
-
-**Note: ITS is currently migrating RStudio Server to a new environment. I will update these instructions once the migration is complete.**
-
-You will navigate to [https://rstudio.pomona.edu](https://rstudio.pomona.edu) and use your Pomona credentials to log in. Pomona students: please use your existing user ID. Non-Pomona students: if you do not already have a Pomona account, please email [helpdesk@pomona.edu](mailto:helpdesk@pomona.edu?subject=EA30%20PO%20Student%20RStudio%20Access) and cc me (`chchang@pomona.edu`) or use the chat feature at [http://its.pomona.edu](http://its.pomona.edu) to request an account. ITS will "require that a student provides proof of their identity by sending us a photo of themselves holding their 7C ID card (since they can't come in person to the Service Desk right now)."
 
 ## What does RStudio have anyway?
 

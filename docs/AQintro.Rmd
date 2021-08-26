@@ -5,6 +5,34 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-# Air quality lab introduction
+# Air Quality Lab Overview
 
-More information to come.
+In this lab, you will work in groups to examine how air quality varies across Claremont. To that end, you will use these PocketLab Air (a.k.a. PL Air) sensor units. Each PL Air unit measures:
+
+* [CO2](https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-co2-sensor-work)
+* [Ozone](https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-ozone-sensor-work)
+* [Particulate Matter](https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-particulate-matter-sensor-work)
+* [Air Quality Index](https://support.thepocketlab.com/knowledge/measuring-air-quality-index)
+* [Temperature](https://support.thepocketlab.com/knowledge/tips-for-measuring-temperature)
+
+Ultimately, by working with your groups and incorporating the class' data, you will develop a lesson plan focused on some aspect of air quality or climate change. This lesson plan will be the lab report for this first class project. Your recommendations will directly inform ongoing community science initiatives at PocketLab such as [Blue Sky Zero](https://archive.thepocketlab.com/educators/article/blue-sky-zero) or [Urban Heat Islands](https://blog.thepocketlab.com/georgia-tech-is-mapping-heat-islands-in-atlanta-with-pocketlabs).
+
+## Week 1 of lab
+
+Our objective in the first week of lab is to:
+
+* Set up a [PocketLab Notebook account](https://app.thepocketlab.com/home)
+  + Note that the class code is `NFAOMZ`
+  + You will log in as a `Student` using this class code and your FIRST NAME, LAST NAME as it is displayed in the Pomona Portal (if you would like that updated, please let me know and I can do that)
+* Connect to your group's PL Air sensor on a computer and record data
+* Connect to your group's PL Air sensor on a phone and record data
+* Upload your group's mobile phone data as a `.csv` (comma-separated values spreadsheet file) to the [Week 1 data folder](https://drive.google.com/drive/folders/1yuZs0T3uS1ziE0fMSjWEKAntHfvnQHx7?usp=sharing).
+
+If you encounter any issues, please let Prof. Chang or the lab TA know ASAP.
+
+**Congrats on completing lab for the first week of EA 30!**
+
+```{r, eval=F, include=F}
+AQdf <- readr::read_csv("https://drive.google.com/file/d/1NF5VzO3YWKS6MJDll19exdWYRKbtdD_F/view?usp=sharing") # doesn't work - formats data badly or weirdly.
+AQdf <- readr::read_csv("~/Downloads/carbon dioxide_particulate matter_air quality index_pressure barometric_internal temperature_humidity_dew point_heat index_pressure altitude_ozone_8_6_2021__4_49_29_PM..csv")
+```

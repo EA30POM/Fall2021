@@ -9,12 +9,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="" />
 
-<meta name="date" content="2021-08-25" />
+<meta name="date" content="2021-08-26" />
 
 <title>Introduction to R and RStudio</title>
 
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -254,7 +254,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Introduction
+    Data science
      
     <span class="caret"></span>
   </a>
@@ -263,8 +263,22 @@ $(document).ready(function () {
     <li>
       <a href="Rintro.html">The R and RStudio environments</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Climate science
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Week 1</li>
     <li>
       <a href="AQintro.html">Air Quality Lab Introduction</a>
+    </li>
+    <li class="dropdown-header">Week 2</li>
+    <li>
+      <a href="AQexp1.html">Running transects</a>
     </li>
   </ul>
 </li>
@@ -281,7 +295,8 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Introduction to R and RStudio</h1>
-<h4 class="date">2021-08-25</h4>
+<h4 class="author"></h4>
+<h4 class="date">2021-08-26</h4>
 
 </div>
 
@@ -290,10 +305,16 @@ $(document).ready(function () {
 <h2>Getting started with data in <code>R</code></h2>
 <p>Key concepts that you will learn:</p>
 <ul>
+<li>How do I access <code>R</code> and <code>RStudio</code>?</li>
 <li>What is <code>R</code>?</li>
 <li>What is RStudio?</li>
-<li>How do I code in <code>R</code>?</li>
+<li>How do I execute commands in <code>R</code>?</li>
 </ul>
+</div>
+<div id="how-do-i-access-rstudio" class="section level2">
+<h2>How do I access RStudio?</h2>
+<p><em>Pomona Students</em>: You will navigate to <a href="https://rstudio.pomona.edu">https://rstudio.pomona.edu</a> and use your Pomona credentials to log in. Pomona students: please use your existing user ID.</p>
+<p><em>Non-Pomona students:</em> If you do not already have a Pomona account, please email <a href="mailto:servicedesk@pomona.edu?subject=EA30%20PO%20Student%20RStudio%20Access">servicedesk@pomona.edu</a> and cc me (<code>chchang@pomona.edu</code>) or use the <code>Report an issue</code> feature at <a href="https://servicedesk.pomona.edu/">https://servicedesk.pomona.edu/</a> to request an account. ITS may require “that a student provides proof of their identity by sending us a photo of themselves holding their 7C ID card (since they can’t come in person to the Service Desk right now).” The ITS team will follow up with any necessary items. <strong>Please complete this step ASAP.</strong></p>
 </div>
 <div id="what-are-r-and-rstudio" class="section level2">
 <h2>What are <code>R</code> and RStudio?</h2>
@@ -303,11 +324,6 @@ $(document).ready(function () {
 <img src="figures/R_vs_RStudio_1.png" alt="" />
 <p class="caption">Image from Ismay <em>et al.</em> (2020)</p>
 </div>
-</div>
-<div id="how-do-i-access-rstudio" class="section level2">
-<h2>How do I access RStudio?</h2>
-<p><strong>Note: ITS is currently migrating RStudio Server to a new environment. I will update these instructions once the migration is complete.</strong></p>
-<p>You will navigate to <a href="https://rstudio.pomona.edu">https://rstudio.pomona.edu</a> and use your Pomona credentials to log in. Pomona students: please use your existing user ID. Non-Pomona students: if you do not already have a Pomona account, please email <a href="mailto:helpdesk@pomona.edu?subject=EA30%20PO%20Student%20RStudio%20Access">helpdesk@pomona.edu</a> and cc me (<code>chchang@pomona.edu</code>) or use the chat feature at <a href="http://its.pomona.edu">http://its.pomona.edu</a> to request an account. ITS will “require that a student provides proof of their identity by sending us a photo of themselves holding their 7C ID card (since they can’t come in person to the Service Desk right now).”</p>
 </div>
 <div id="what-does-rstudio-have-anyway" class="section level2">
 <h2>What does RStudio have anyway?</h2>

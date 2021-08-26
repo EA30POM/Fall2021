@@ -6,13 +6,19 @@ navbar:
     - text: "Syllabus"
       icon: fa-home
       href: index.html
-    - text: "Introduction"
+    - text: "Data science"
       menu:
         - text: "Week 1"
         - text: "The R and RStudio environments"
           href: Rintro.html
+    - text: "Climate science"
+      menu:
+        - text: "Week 1"
         - text: "Air Quality Lab Introduction"
           href: AQintro.html
+        - text: "Week 2"
+        - text: "Running transects"
+          href: AQexp1.html
 output:
   html_document:
     theme: flatly
