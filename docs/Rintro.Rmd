@@ -19,7 +19,7 @@ Key concepts that you will learn:
 ## How do I access RStudio?
 
 *Pomona Students*:
-You will navigate to [https://rstudio.pomona.edu](https://rstudio.pomona.edu) and use your Pomona credentials to log in. Pomona students: please use your existing user ID. 
+You will navigate to [https://rstudio.pomona.edu](https://rstudio.pomona.edu) and use your Pomona credentials to log in.
 
 *Non-Pomona students:* 
 If you do not already have a Pomona account, please email [servicedesk@pomona.edu](mailto:servicedesk@pomona.edu?subject=EA30%20PO%20Student%20RStudio%20Access) and cc me (`chchang@pomona.edu`) or use the `Report an issue` feature at [https://servicedesk.pomona.edu/](https://servicedesk.pomona.edu/) to request an account. ITS may require "that a student provides proof of their identity by sending us a photo of themselves holding their 7C ID card (since they can't come in person to the Service Desk right now)." The ITS team will follow up with any necessary items. **Please complete this step ASAP.**
@@ -153,6 +153,6 @@ I recommend typing in `2` (representing "No") at the `Selection:` field.
 ```
 In response to the blue `Selection:` query, please type 0.
 
-15. When you have completed the first `swirl` course, please navigate to the [Gradescope POM](https://www.gradescope.com/courses/298727/assignments/1438680) subpage in our Sakai site and select the correct option for the `Completion of swirl class (Basic Building Blocks)` assignment.
+15. When you have completed the first `swirl` course, please navigate to the [Gradescope assignment](https://www.gradescope.com/courses/298727/assignments/1438680) or the [Gradescope POM subpage](https://sakai.claremont.edu/portal/directtool/7ee1ca78-3c57-41f8-b14d-09a3f7a58503/) in our Sakai site and select the correct option for the `Completion of swirl class (Basic Building Blocks)` assignment.
 
 **If you have been working on this swirl class for an amount of time that feels really excessive (e.g. > 2 hours), please don't keep on hitting your head against the wall.** Reach out to me on the class Slack channel.

@@ -7,7 +7,7 @@ output: html_document
 
 # Air Quality Lab Overview
 
-In this lab, you will work in groups to examine how air quality varies across Claremont. To that end, you will use these PocketLab Air (a.k.a. PL Air) sensor units. Each PL Air unit measures:
+In this lab, you will work in groups to examine how air quality varies across Claremont. To that end, you will use these [PocketLab Air (a.k.a. PL Air) sensor units](https://support.thepocketlab.com/knowledge/pocketlab-air-specifications?hsLang=en). Each PL Air unit measures:
 
 * [CO2](https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-co2-sensor-work)
 * [Ozone](https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-ozone-sensor-work)
