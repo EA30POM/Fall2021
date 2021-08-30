@@ -38,11 +38,11 @@ By the end of the course, a successful learner will be able to:
 
 **Lab Schedule**: Wednesdays 1:20-5:05pm PT
 
-**Office Hours**: I am always happy to talk to you. My open-doors office hours will typically be Thursdays (11am-12pm), Fridays (9:45am-10:45am), or by appointment via Calendly. To facilitate safe, socially-distanced office hours during the pandemic, please sign-up for a slot at my [Calendly](https://calendly.com/chchang47/officechat).
+**Office Hours**: I am always happy to talk to you. My open-doors office hours will typically be Thursdays (11am-12pm), Fridays (9:45am-10:45am), or by appointment via Calendly. To facilitate safe, socially-distanced office hours during the pandemic, please sign-up for a slot at my [Calendly](https://calendly.com/chchang47/small-group-meetings).
 
 **Prerequisites**: None
 
-**Readings**: This course will use a combination of the primary literature, popular science books, and the textbook *Living in the Environment* (LITE for short). Please note that you **do not need to purchase** *Living in the Environment* -- all readings will be available online.
+**Readings**: This course will use a combination of the primary literature, popular science books, and textbooks, chief among them *Living in the Environment* (LITE for short). Please note that you **do not need to purchase** *Living in the Environment* -- all readings will be available online.
 
 ## Course assessment
 
@@ -78,9 +78,9 @@ In addition to the course policies, I seek to prioritize your health and well-be
 
 ## General course policies
 
-*Office hours, email, and class Slack channel*: During office hours, I am available to help you work through any problems, questions, or thoughts you have about the course. If you would like to discuss a particular problem or topic that would benefit from preparation on my part, please give me advance notice via [Calendly](https://calendly.com/chchang47/officechat). 
+*Office hours, email, and class Slack channel*: During office hours, I am available to help you work through any problems, questions, or thoughts you have about the course. If you would like to discuss a particular problem or topic that would benefit from preparation on my part, please give me advance notice via [Calendly](https://calendly.com/chchang47/small-group-meetings). 
 
-I have email boundaries and I encourage you to find your own. Mine include not answering emails after 6pm, or on weekends or holidays. Finally, I request that emails only be used for interactions that are truly one-on-one (e.g. requesting extensions to assignments or accomodations); in general, to help create an atmosphere of transparency and group learning, I request that questions about content and assignments be directed to the #ea30 Slack channel in the Pomona College Division-II workspace.
+I have email boundaries and I encourage you to find your own. Mine include not answering emails after 6pm, or on weekends or holidays. Finally, I request that emails only be used for interactions that are truly one-on-one (e.g. requesting extensions to assignments or accomodations); in general, to help create an atmosphere of transparency and group learning, I request that questions about content and assignments be directed to the #ea30fall21 Slack channel.
 
 *Learning diversity & accommodations*: Pomona College welcomes and accommodates students with disabilities. As your instructor, I aim to see you succeed in your growth as an environmental scholar. If you encounter obstacles to your success, please let me know immediately so that we can work together to identify ways to overcome any limitations of current course design. If you feel you need a reasonable accommodation to participate in this class, complete course requirements, or benefit from the College’s programs or services, you are also welcome to contact the student accessibility resource office at your College to begin this conversation or to establish accommodations for this or other courses.
 
