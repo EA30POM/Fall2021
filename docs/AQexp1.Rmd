@@ -183,8 +183,12 @@ The code below is how I have wrangled these data to clean them up. I am building
 library(googlesheets4)
 library(dplyr)
 
+### Provide a URL
+  # This URL is for Team Scorpion
+gs_url <- "https://docs.google.com/spreadsheets/d/1gn6A3uht6e9iQ3qCmqGUTFRhP6YZLdejt5yYjhzeQks/edit?usp=sharing"
+
 ### Here, we are pulling in Google Sheets data from team Scorpion
-airDF <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1gn6A3uht6e9iQ3qCmqGUTFRhP6YZLdejt5yYjhzeQks/edit?usp=sharing")
+airDF <- googlesheets4::read_sheet(gs_url)
 
 ### What happens when we type airDF in the console?
 airDF # cool! We see a subset of our data displayed
@@ -201,6 +205,16 @@ airCleanDF <- cleanup_air_function(airDF)
 airCleanDF %>%
   head()  %>% # view first 6 rows
   View() # pop up an Excel-like data viewer.
+
+### Saving the clean data:
+### Option 1: Add a new sheet to your Google Sheet with the clean data
+googlesheets4::write_sheet(airCleanDF, ss=gs_url, sheet="Clean") # this will create a new sheet called "Clean" for the clean data.
+    # Then you can go into the Google Sheet to download the CSV file and upload that to the PL Notebook site.
+
+### Option 2: Saving it as a CSV file
+### You will then need to download the file to your own
+### computer use it.
+readr::write_csv(airCleanDF,path="~/PLAirDataClean.csv")
 ```
 
 In the last segment of the code above, you might notice something interesting looking: this `%>%` pipe operator. The pipe operator `%>%` lets you daisy chain commands together into a sequence. It is a handy way to make a complex operation with intermediate steps more transparent. The visualization below describes what pipes do in `R` in linking up functions:
