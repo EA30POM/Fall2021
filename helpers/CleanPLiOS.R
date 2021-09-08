@@ -36,6 +36,9 @@ cleanup_air_function <- function(airDF) {
     if (i==1) {
       index_end <- indices[(i+1)]-2
       var_name <- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6]), after=length(var_name))
+      if (length(c(index_start:index_end)) > dim(airCleanDF)[1]) {
+        index_end <- index_start + dim(airCleanDF)[1]-2
+      }
       airCleanDF[,9] <- airDF[index_start:index_end,5]
       airCleanDF[,10] <- airDF[index_start:index_end,6]
     } else if (i==2) {
