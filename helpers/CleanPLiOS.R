@@ -44,6 +44,9 @@ cleanup_air_function <- function(airDF) {
     } else if (i==2) {
       index_end <- indices[(i+1)]-2
       var_name <- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6]), after=length(var_name))
+      if (length(c(index_start:index_end)) > dim(airCleanDF)[1]) {
+        index_end <- index_start + dim(airCleanDF)[1]-1
+      }
       airCleanDF[,11] <- airDF[index_start:index_end,5]
       airCleanDF[,12] <- airDF[index_start:index_end,6]
     } else if (i==3) {
@@ -51,6 +54,9 @@ cleanup_air_function <- function(airDF) {
       var_name <- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6],airDF[indices[i],7],
                                      airDF[indices[i],8],airDF[indices[i],9],airDF[indices[i],10],
                                      airDF[indices[i],11]), after=length(var_name))
+      if (length(c(index_start:index_end)) > dim(airCleanDF)[1]) {
+        index_end <- index_start + dim(airCleanDF)[1]-1
+      }
       airCleanDF[,13] <- airDF[index_start:index_end,5]
       airCleanDF[,14] <- airDF[index_start:index_end,6]
       airCleanDF[,15] <- airDF[index_start:index_end,7]
@@ -61,6 +67,9 @@ cleanup_air_function <- function(airDF) {
     } else if (i==4) {
       index_end <- indices[(i+1)]-2
       var_name <- append(var_name, c(airDF[indices[i],9],airDF[indices[i],10]), after=length(var_name))
+      if (length(c(index_start:index_end)) > dim(airCleanDF)[1]) {
+        index_end <- index_start + dim(airCleanDF)[1]-1
+      }
       airCleanDF[,20] <- airDF[index_start:index_end,9]
       airCleanDF[,21] <- airDF[index_start:index_end,10]
     }
