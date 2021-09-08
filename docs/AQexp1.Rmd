@@ -17,7 +17,9 @@ In lab this week, we will perform the following:
 
 Time permitting, we may also take on the following tasks:
 
-* viewing and interacting the PL Air data from week 1 in `R` using RStudio Server.
+* viewing and interacting with the PL Air data from week 1 in `R` using RStudio Server.
+
+We are working toward the [climate/air quality group report described here](https://docs.google.com/document/d/1cDigyPgzX_VSvtFfDfsixEAhBH2nnJbTyl-WXdDUm2k/edit?usp=sharing).
 
 ## Designing environmental data collection
 
@@ -54,7 +56,7 @@ Here are some guiding questions to consider. There are additional questions that
     + Another could be a confrontation with another person, which could be driven by larger systemic biases.
     + Finally, conditions such as uneven terrain or very open locations with no tree cover could pose issues in this time of year (or in general).
 * What are best practices for communicating our comfort or discomfort in the field?
-* What might be different physical, emotional, or other barriers to participating in different forms of field work or field work in different types of locations?
+* What are the potential physical, emotional, or other barriers to participating in different forms of field work or field work in different types of locations?
 
 ## Developing your group project
 
@@ -78,25 +80,9 @@ Note that the PL Air units report AQI, PM 2.5, PM 10, and O3 data. You can toggl
 
 # Analyzing PocketLab Air data
 
-This component of the laboratory may be pushed to a later date if time does not permit in lab.
+This component of the laboratory may be pushed to a later date if time does not permit in lab. In general, one straightforward way to interact with the PL Air `.CSV` data is to use Google Sheets. The first thing we need to do though is authorize access to our Google accounts in RStudio Server.
 
 ## Authorizing access to Google sheets with the `googlesheets4` package in `R`
-
-Note that the code here **only needs to be run ONCE**. Once you have installed a package, you do not need to re-install it.
-
-I recommend running these lines of code in the `Console` which always has the `>` symbol to take in a command).
-
-```{r, eval=FALSE}
-install.packages("googlesheets4")
-```
-
-You will see something like this - don't be alarmed by the red text!
-
-```{r, echo=FALSE, out.height="780px"}
-knitr::include_graphics("figures/installationgunk.png")
-```
-
-# Setting up the `Googlesheets4` package
 
 This workflow also only needs to be done **ONCE**. The first time you interact with a Google sheet using the `googlesheets4` Application Programming Interface (API) wrapper, it will ask you about permissions to store your credentials (account information). You can run these commands in the console.
 
@@ -105,40 +91,50 @@ The workflow is below:
 1. Read in an example Google sheet, which will launch an initial query about what Google account you'd like to associate with the package:
 
 ```{r, eval=FALSE}
-enviro_soc_media_DF <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1hQy8kR81GHmMDPivpyd8XzAGU7A6oUCUArq1bltm5EQ/edit?usp=sharing")
+library(googlesheets4) # load the Googlesheets4 package
 ```
 
-2. At the same time, another tab will open in your internet browser on your computer, displaying a window that asks you to select which of your Google account(s) to grant access to in `RStudio Server` using the `googlesheets4` package.
+2. Now we are going to use `Googlesheets4` to try and pull in a sheet. This will prompt you to grant access to your Google account the first time you run this code.
 
-```{r, echo=FALSE}
-knitr::include_graphics("figures/grantTidyverse.png")
+```{r, eval=FALSE}
+options(gargle_oob_default = TRUE) # this sets up an option for you to authenticate in your local browser rather than through the RStudio Server, which does not permit certain communication protocols
+enviro_soc_media_DF <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1hQy8kR81GHmMDPivpyd8XzAGU7A6oUCUArq1bltm5EQ/edit?usp=sharing") # initiate the Google credential query by calling for a shared sheet
 ```
 
-3. Select `Allow`. Next, you will see:
+You will then see the console print out:
 
-```{r, echo=FALSE, out.height="700px"}
-knitr::include_graphics("figures/permissions.png")
 ```
+Is it OK to cache OAuth access credentials in the folder
+/home/CAMPUS/your_user_ID/.cache/gargle between R sessions?
+
+1: Yes
+2: No
+
+Selection:
+```
+
+Type `1` into the `Selection:` prompt.
+
+3. At the same time, another tab will open in your internet browser on your computer, displaying a window that asks you to select which of your Google account(s) to grant access to in `RStudio Server` using the `googlesheets4` package.
+
+![](figures/grantTidyverse.png)
+
+Select `Allow`. Next, you will see:
+
+![](figures/permissions.png)
 
 4. Select `Allow` again. This will produce an authorization code that you will then copy and paste into your `RStudio` session. You can copy the code by pressing the `r fontawesome::fa("copy")` button to the right of the authentication code.
 
-```{r, echo=FALSE}
-knitr::include_graphics("figures/RStudioOAuthCopyCode.png")
-```
+![](figures/RStudioOAuthCopyCode.png)
 
 5. Next, navigate back to the internet browser tab running `RStudio Server`. You will paste the code in response to the `Enter authorization code` prompt waiting in the console.
 
-```{r, echo=FALSE}
-knitr::include_graphics("figures/RStudioServerInitAuth.png")
-```
+![](figures/RStudioServerInitAuth.png)
+6. Paste the authorization code into the blank space next to `Enter authorization code`.
 
-6. Copy the authorization code into the blank space next to `Enter authorization code`.
+7. Once you paste the authorization code in, you will see this type of successful response, showing you that the authentication has worked and the `read_sheet` function `googlesheets4` will return:
 
-7. Once you paste the code in, you will see this type of successful response, showing you that the authentication has worked and the `read_sheet` function `googlesheets4` will return:
-
-```{r, echo=FALSE}
-knitr::include_graphics("figures/RStudioServerCopiedAuthKey.png")
-```
+![](figures/RStudioServerCopiedAuthKey.png)
 
 8. Great work! You have successfully authenticated access to your Google account in your `RStudio Server` user workspace.
 
@@ -181,6 +177,8 @@ Below are the URLs for all of the `iOS` groups.
 * Shishito: "https://docs.google.com/spreadsheets/d/17KYbZqLEirxh2cAr6dOlIBJhKo5LWPuvq3dgDPZ-NHA/edit?usp=sharing"
 * Bird's Eye: "https://docs.google.com/spreadsheets/d/1QX5ESRLnq3hjeWAPinquTvK9RELK0cMvIEAjBxhG_6Q/edit?usp=sharing"
 
+The code below is how I have wrangled these data to clean them up. I am building an app though that will take the URL of your sheet and automagically push a clean sheet to a new tab called `"clean"`. The [app will be here](https://chchang47.shinyapps.io/EA30PLair/).
+
 ```{r PLair, eval=F}
 library(googlesheets4)
 library(dplyr)
@@ -191,71 +189,23 @@ airDF <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1gn6A
 ### What happens when we type airDF in the console?
 airDF # cool! We see a subset of our data displayed
 
-### Now we are going to start the clean up process
-### Note that when R pulled in the data, it came
-### as this rather unpleasant "list" structure.
-my_unlisting_function <- function(j) { # function to get R's unlisting to work
-  sapply(j, function(x) ifelse(is.null(x),NA,x)) # if there is "no data" in a row, replace it with NA
-}
-  # Now we are going to use several cool "Tidyverse" features
-  # to automagically convert all of the columns from list to vectors
-airDF <- airDF %>% 
-  mutate( across( where(is.list), my_unlisting_function)) # we're applying this function (my_unlisting function) to each column that is a list (which is each column)
+### We are going to pull in several helper functions
+### using the command "source"
+### FMI: ?source
+source("https://raw.githubusercontent.com/EA30POM/Fall2021/main/helpers/CleanPLiOS.R")
 
-### Storing the row locations that have added-on data
-indices <- which(airDF$Lat=="Lat") # we're using the fact that every time PocketLab
-   # adds on another variable from the sensor, it tacks on "Lat" at the start of the row.
-
-### We are going to instantiate a clean data table and build from there
-airCleanDF <- airDF[1:(indices[1]-2),c(1:8)]
-
-### Now we are going to create a set of individual data tables
-### to store our data more cleanly.
-### The for loop below is going to "walk" through each value of the indices object
-### and it is going to use the row values in indices to extract the sensor data we
-### want and tack it on as added columns to our clean airCleanDF data table.
-var_name <- c()
-for (i in c(1:length(indices))) {
-  #print(i)
-  index_start <- indices[i]+1
-  if (i==1) {
-    index_end <- indices[(i+1)]-2
-    var_name <- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6]), after=length(var_name))
-    airCleanDF[,9] <- airDF[index_start:index_end,5]
-    airCleanDF[,10] <- airDF[index_start:index_end,6]
-  } else if (i==2) {
-    index_end <- indices[(i+1)]-2
-    var_name <- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6]), after=length(var_name))
-    airCleanDF[,11] <- airDF[index_start:index_end,5]
-    airCleanDF[,12] <- airDF[index_start:index_end,6]
-  } else if (i==3) {
-    index_end <- indices[(i+1)]-2
-    var_name <- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6],airDF[indices[i],7],
-                                   airDF[indices[i],8],airDF[indices[i],9],airDF[indices[i],10],
-                                   airDF[indices[i],11]), after=length(var_name))
-    airCleanDF[,13] <- airDF[index_start:index_end,5]
-    airCleanDF[,14] <- airDF[index_start:index_end,6]
-    airCleanDF[,15] <- airDF[index_start:index_end,7]
-    airCleanDF[,16] <- airDF[index_start:index_end,8]
-    airCleanDF[,17] <- airDF[index_start:index_end,9]
-    airCleanDF[,18] <- airDF[index_start:index_end,10]
-    airCleanDF[,19] <- airDF[index_start:index_end,11]
-  } else if (i==4) {
-    index_end <- indices[(i+1)]-2
-    var_name <- append(var_name, c(airDF[indices[i],9],airDF[indices[i],10]), after=length(var_name))
-    airCleanDF[,20] <- airDF[index_start:index_end,9]
-    airCleanDF[,21] <- airDF[index_start:index_end,10]
-  }
-}
-
-### Cleaning up our airCleanDF data table
-names(airCleanDF)[9:21] <- unlist(var_name) # we are going to give our tacked-on columns more informative names
+### Using a helper function to clean up our iOS Air Data
+airCleanDF <- cleanup_air_function(airDF)
 
 ### Viewing our clean data
 airCleanDF %>%
   head()  %>% # view first 6 rows
-    View() # pop up an Excel-like data viewer.
+  View() # pop up an Excel-like data viewer.
 ```
+
+In the last segment of the code above, you might notice something interesting looking: this `%>%` pipe operator. The pipe operator `%>%` lets you daisy chain commands together into a sequence. It is a handy way to make a complex operation with intermediate steps more transparent. The visualization below describes what pipes do in `R` in linking up functions:
+
+![Schematic of the pipe `%>%` operator in `R` (Altaf Ali)](figures/Rpipeoperator.png)
 
 Now that we finally have clean data (yay!) we can calculate the same types of summary statistics.
 

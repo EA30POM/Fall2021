@@ -11,7 +11,7 @@
 
 <meta name="author" content="" />
 
-<meta name="date" content="2021-09-07" />
+<meta name="date" content="2021-09-08" />
 
 <title>Air quality lab: Week 2</title>
 
@@ -295,7 +295,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Air quality lab: Week 2</h1>
-<h4 class="date">2021-09-07</h4>
+<h4 class="date">2021-09-08</h4>
 
 </div>
 
@@ -312,8 +312,9 @@ $(document).ready(function () {
 </ul>
 <p>Time permitting, we may also take on the following tasks:</p>
 <ul>
-<li>viewing and interacting the PL Air data from week 1 in <code>R</code> using RStudio Server.</li>
+<li>viewing and interacting with the PL Air data from week 1 in <code>R</code> using RStudio Server.</li>
 </ul>
+<p>We are working toward the <a href="https://docs.google.com/document/d/1cDigyPgzX_VSvtFfDfsixEAhBH2nnJbTyl-WXdDUm2k/edit?usp=sharing">climate/air quality group report described here</a>.</p>
 </div>
 <div id="designing-environmental-data-collection" class="section level2">
 <h2>Designing environmental data collection</h2>
@@ -360,7 +361,7 @@ $(document).ready(function () {
 <li>Finally, conditions such as uneven terrain or very open locations with no tree cover could pose issues in this time of year (or in general).</li>
 </ul></li>
 <li>What are best practices for communicating our comfort or discomfort in the field?</li>
-<li>What might be different physical, emotional, or other barriers to participating in different forms of field work or field work in different types of locations?</li>
+<li>What are the potential physical, emotional, or other barriers to participating in different forms of field work or field work in different types of locations?</li>
 </ul>
 </div>
 <div id="developing-your-group-project" class="section level2">
@@ -386,49 +387,52 @@ $(document).ready(function () {
 </div>
 <div id="analyzing-pocketlab-air-data" class="section level1">
 <h1>Analyzing PocketLab Air data</h1>
-<p>This component of the laboratory may be pushed to a later date if time does not permit in lab.</p>
+<p>This component of the laboratory may be pushed to a later date if time does not permit in lab. In general, one straightforward way to interact with the PL Air <code>.CSV</code> data is to use Google Sheets. The first thing we need to do though is authorize access to our Google accounts in RStudio Server.</p>
 <div id="authorizing-access-to-google-sheets-with-the-googlesheets4-package-in-r" class="section level2">
 <h2>Authorizing access to Google sheets with the <code>googlesheets4</code> package in <code>R</code></h2>
-<p>Note that the code here <strong>only needs to be run ONCE</strong>. Once you have installed a package, you do not need to re-install it.</p>
-<p>I recommend running these lines of code in the <code>Console</code> which always has the <code>&gt;</code> symbol to take in a command).</p>
-<pre class="r"><code>install.packages(&quot;googlesheets4&quot;)</code></pre>
-<p>You will see something like this - don’t be alarmed by the red text!</p>
-<p><img src="figures/installationgunk.png" width="835" height="780px" /></p>
-</div>
-</div>
-<div id="setting-up-the-googlesheets4-package" class="section level1">
-<h1>Setting up the <code>Googlesheets4</code> package</h1>
 <p>This workflow also only needs to be done <strong>ONCE</strong>. The first time you interact with a Google sheet using the <code>googlesheets4</code> Application Programming Interface (API) wrapper, it will ask you about permissions to store your credentials (account information). You can run these commands in the console.</p>
 <p>The workflow is below:</p>
 <ol style="list-style-type: decimal">
 <li>Read in an example Google sheet, which will launch an initial query about what Google account you’d like to associate with the package:</li>
 </ol>
-<pre class="r"><code>enviro_soc_media_DF &lt;- googlesheets4::read_sheet(&quot;https://docs.google.com/spreadsheets/d/1hQy8kR81GHmMDPivpyd8XzAGU7A6oUCUArq1bltm5EQ/edit?usp=sharing&quot;)</code></pre>
+<pre class="r"><code>library(googlesheets4) # load the Googlesheets4 package</code></pre>
 <ol start="2" style="list-style-type: decimal">
+<li>Now we are going to use <code>Googlesheets4</code> to try and pull in a sheet. This will prompt you to grant access to your Google account the first time you run this code.</li>
+</ol>
+<pre class="r"><code>options(gargle_oob_default = TRUE) # this sets up an option for you to authenticate in your local browser rather than through the RStudio Server, which does not permit certain communication protocols
+enviro_soc_media_DF &lt;- googlesheets4::read_sheet(&quot;https://docs.google.com/spreadsheets/d/1hQy8kR81GHmMDPivpyd8XzAGU7A6oUCUArq1bltm5EQ/edit?usp=sharing&quot;) # initiate the Google credential query by calling for a shared sheet</code></pre>
+<p>You will then see the console print out:</p>
+<pre><code>Is it OK to cache OAuth access credentials in the folder
+/home/CAMPUS/your_user_ID/.cache/gargle between R sessions?
+
+1: Yes
+2: No
+
+Selection:</code></pre>
+<p>Type <code>1</code> into the <code>Selection:</code> prompt.</p>
+<ol start="3" style="list-style-type: decimal">
 <li>At the same time, another tab will open in your internet browser on your computer, displaying a window that asks you to select which of your Google account(s) to grant access to in <code>RStudio Server</code> using the <code>googlesheets4</code> package.</li>
 </ol>
-<p><img src="figures/grantTidyverse.png" width="551" /></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Select <code>Allow</code>. Next, you will see:</li>
-</ol>
-<p><img src="figures/permissions.png" width="496" height="700px" /></p>
+<p><img src="figures/grantTidyverse.png" /></p>
+<p>Select <code>Allow</code>. Next, you will see:</p>
+<p><img src="figures/permissions.png" /></p>
 <ol start="4" style="list-style-type: decimal">
 <li>Select <code>Allow</code> again. This will produce an authorization code that you will then copy and paste into your <code>RStudio</code> session. You can copy the code by pressing the <svg style="height:0.8em;top:.04em;position:relative;" viewBox="0 0 448 512"><path d="M320 448v40c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V120c0-13.255 10.745-24 24-24h72v296c0 30.879 25.121 56 56 56h168zm0-344V0H152c-13.255 0-24 10.745-24 24v368c0 13.255 10.745 24 24 24h272c13.255 0 24-10.745 24-24V128H344c-13.2 0-24-10.8-24-24zm120.971-31.029L375.029 7.029A24 24 0 0 0 358.059 0H352v96h96v-6.059a24 24 0 0 0-7.029-16.97z"/></svg> button to the right of the authentication code.</li>
 </ol>
-<p><img src="figures/RStudioOAuthCopyCode.png" width="501" /></p>
+<p><img src="figures/RStudioOAuthCopyCode.png" /></p>
 <ol start="5" style="list-style-type: decimal">
 <li>Next, navigate back to the internet browser tab running <code>RStudio Server</code>. You will paste the code in response to the <code>Enter authorization code</code> prompt waiting in the console.</li>
 </ol>
-<p><img src="figures/RStudioServerInitAuth.png" width="850" /></p>
-<ol start="6" style="list-style-type: decimal">
-<li><p>Copy the authorization code into the blank space next to <code>Enter authorization code</code>.</p></li>
-<li><p>Once you paste the code in, you will see this type of successful response, showing you that the authentication has worked and the <code>read_sheet</code> function <code>googlesheets4</code> will return:</p></li>
+<p><img src="figures/RStudioServerInitAuth.png" /> 6. Paste the authorization code into the blank space next to <code>Enter authorization code</code>.</p>
+<ol start="7" style="list-style-type: decimal">
+<li>Once you paste the authorization code in, you will see this type of successful response, showing you that the authentication has worked and the <code>read_sheet</code> function <code>googlesheets4</code> will return:</li>
 </ol>
-<p><img src="figures/RStudioServerCopiedAuthKey.png" width="651" /></p>
+<p><img src="figures/RStudioServerCopiedAuthKey.png" /></p>
 <ol start="8" style="list-style-type: decimal">
 <li><p>Great work! You have successfully authenticated access to your Google account in your <code>RStudio Server</code> user workspace.</p></li>
 <li><p>Going forward, even if you switch sessions, restart your session, or open a new session in <code>RStudio Server</code>, you shouldn’t need to re-authenticate access to Google. Instead, your credentials will be stored in a cached file. It may ask you though if you want to use a particular “credential” (basically an account) - usually you would type <code>1</code> for the first account listed.</p></li>
 </ol>
+</div>
 <div id="interacting-with-pocketlab-air-data-as-a-google-sheet" class="section level2">
 <h2>Interacting with PocketLab Air data as a Google sheet</h2>
 <div id="android-data" class="section level3">
@@ -462,6 +466,7 @@ summary(airDF$`Particulate Matter-10 Min. Avg. PM2.5 (ug/m&amp;#179;)`)</code></
 <li>Shishito: “<a href="https://docs.google.com/spreadsheets/d/17KYbZqLEirxh2cAr6dOlIBJhKo5LWPuvq3dgDPZ-NHA/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/17KYbZqLEirxh2cAr6dOlIBJhKo5LWPuvq3dgDPZ-NHA/edit?usp=sharing</a>”</li>
 <li>Bird’s Eye: “<a href="https://docs.google.com/spreadsheets/d/1QX5ESRLnq3hjeWAPinquTvK9RELK0cMvIEAjBxhG_6Q/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/1QX5ESRLnq3hjeWAPinquTvK9RELK0cMvIEAjBxhG_6Q/edit?usp=sharing</a>”</li>
 </ul>
+<p>The code below is how I have wrangled these data to clean them up. I am building an app though that will take the URL of your sheet and automagically push a clean sheet to a new tab called <code>"clean"</code>. The <a href="https://chchang47.shinyapps.io/EA30PLair/">app will be here</a>.</p>
 <pre class="r"><code>library(googlesheets4)
 library(dplyr)
 
@@ -471,70 +476,23 @@ airDF &lt;- googlesheets4::read_sheet(&quot;https://docs.google.com/spreadsheets
 ### What happens when we type airDF in the console?
 airDF # cool! We see a subset of our data displayed
 
-### Now we are going to start the clean up process
-### Note that when R pulled in the data, it came
-### as this rather unpleasant &quot;list&quot; structure.
-my_unlisting_function &lt;- function(j) { # function to get R&#39;s unlisting to work
-  sapply(j, function(x) ifelse(is.null(x),NA,x)) # if there is &quot;no data&quot; in a row, replace it with NA
-}
-  # Now we are going to use several cool &quot;Tidyverse&quot; features
-  # to automagically convert all of the columns from list to vectors
-airDF &lt;- airDF %&gt;% 
-  mutate( across( where(is.list), my_unlisting_function)) # we&#39;re applying this function (my_unlisting function) to each column that is a list (which is each column)
+### We are going to pull in several helper functions
+### using the command &quot;source&quot;
+### FMI: ?source
+source(&quot;https://raw.githubusercontent.com/EA30POM/Fall2021/main/helpers/CleanPLiOS.R&quot;)
 
-### Storing the row locations that have added-on data
-indices &lt;- which(airDF$Lat==&quot;Lat&quot;) # we&#39;re using the fact that every time PocketLab
-   # adds on another variable from the sensor, it tacks on &quot;Lat&quot; at the start of the row.
-
-### We are going to instantiate a clean data table and build from there
-airCleanDF &lt;- airDF[1:(indices[1]-2),c(1:8)]
-
-### Now we are going to create a set of individual data tables
-### to store our data more cleanly.
-### The for loop below is going to &quot;walk&quot; through each value of the indices object
-### and it is going to use the row values in indices to extract the sensor data we
-### want and tack it on as added columns to our clean airCleanDF data table.
-var_name &lt;- c()
-for (i in c(1:length(indices))) {
-  #print(i)
-  index_start &lt;- indices[i]+1
-  if (i==1) {
-    index_end &lt;- indices[(i+1)]-2
-    var_name &lt;- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6]), after=length(var_name))
-    airCleanDF[,9] &lt;- airDF[index_start:index_end,5]
-    airCleanDF[,10] &lt;- airDF[index_start:index_end,6]
-  } else if (i==2) {
-    index_end &lt;- indices[(i+1)]-2
-    var_name &lt;- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6]), after=length(var_name))
-    airCleanDF[,11] &lt;- airDF[index_start:index_end,5]
-    airCleanDF[,12] &lt;- airDF[index_start:index_end,6]
-  } else if (i==3) {
-    index_end &lt;- indices[(i+1)]-2
-    var_name &lt;- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6],airDF[indices[i],7],
-                                   airDF[indices[i],8],airDF[indices[i],9],airDF[indices[i],10],
-                                   airDF[indices[i],11]), after=length(var_name))
-    airCleanDF[,13] &lt;- airDF[index_start:index_end,5]
-    airCleanDF[,14] &lt;- airDF[index_start:index_end,6]
-    airCleanDF[,15] &lt;- airDF[index_start:index_end,7]
-    airCleanDF[,16] &lt;- airDF[index_start:index_end,8]
-    airCleanDF[,17] &lt;- airDF[index_start:index_end,9]
-    airCleanDF[,18] &lt;- airDF[index_start:index_end,10]
-    airCleanDF[,19] &lt;- airDF[index_start:index_end,11]
-  } else if (i==4) {
-    index_end &lt;- indices[(i+1)]-2
-    var_name &lt;- append(var_name, c(airDF[indices[i],9],airDF[indices[i],10]), after=length(var_name))
-    airCleanDF[,20] &lt;- airDF[index_start:index_end,9]
-    airCleanDF[,21] &lt;- airDF[index_start:index_end,10]
-  }
-}
-
-### Cleaning up our airCleanDF data table
-names(airCleanDF)[9:21] &lt;- unlist(var_name) # we are going to give our tacked-on columns more informative names
+### Using a helper function to clean up our iOS Air Data
+airCleanDF &lt;- cleanup_air_function(airDF)
 
 ### Viewing our clean data
 airCleanDF %&gt;%
   head()  %&gt;% # view first 6 rows
-    View() # pop up an Excel-like data viewer.</code></pre>
+  View() # pop up an Excel-like data viewer.</code></pre>
+<p>In the last segment of the code above, you might notice something interesting looking: this <code>%&gt;%</code> pipe operator. The pipe operator <code>%&gt;%</code> lets you daisy chain commands together into a sequence. It is a handy way to make a complex operation with intermediate steps more transparent. The visualization below describes what pipes do in <code>R</code> in linking up functions:</p>
+<div class="figure">
+<img src="figures/Rpipeoperator.png" alt="" />
+<p class="caption">Schematic of the pipe <code>%&gt;%</code> operator in <code>R</code> (Altaf Ali)</p>
+</div>
 <p>Now that we finally have clean data (yay!) we can calculate the same types of summary statistics.</p>
 <pre class="r"><code>### Calculating the mean and summary statistics for PM data
 mean(airCleanDF$`PM2.5 (µg/m³)`)
