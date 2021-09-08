@@ -9,12 +9,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="" />
 
-<meta name="date" content="2021-08-26" />
+<meta name="date" content="2021-09-07" />
 
 <title>Air quality lab: Week 2</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -295,15 +295,256 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Air quality lab: Week 2</h1>
-<h4 class="author"></h4>
-<h4 class="date">2021-08-26</h4>
+<h4 class="date">2021-09-07</h4>
 
 </div>
 
 
-<div id="objective" class="section level1">
-<h1>Objective</h1>
-<p>More to come!</p>
+<div id="week-2-lab-overview" class="section level1">
+<h1>Week 2 Lab Overview</h1>
+<div id="objectives" class="section level2">
+<h2>Objectives</h2>
+<p>In lab this week, we will perform the following:</p>
+<ul>
+<li>collect data from PL Air sensors along transects;</li>
+<li>revisit and enhance community guidelines to also incorporate field safety;</li>
+<li>develop questions as PL Air groups to explore.</li>
+</ul>
+<p>Time permitting, we may also take on the following tasks:</p>
+<ul>
+<li>viewing and interacting the PL Air data from week 1 in <code>R</code> using RStudio Server.</li>
+</ul>
+</div>
+<div id="designing-environmental-data-collection" class="section level2">
+<h2>Designing environmental data collection</h2>
+<p>One ubiquitous method of field sampling is the transect sampling method. For transect sampling, one typically takes data at specific, equally-spaced locations along a gradient or across (micro)habitats. For one example of transect sampling air pollution, please see this <a href="https://publiclab.org/notes/sarasage/08-09-2021/choosing-locations-and-methodology-for-air-quality-gas-testing">Public Lab write up</a> and/or this <a href="https://insideecology.com/2018/09/11/the-ecology-of-air-pollution/">Inside Ecology write up</a>. This is also a form of systematic sampling, as you would be taking measurements at locations based on a fixed pattern. For more background on sampling procedures and guidance on one way to think through sampling design, please visit this <a href="https://web.njit.edu/~kebbekus/analysis/SAMPLING.htm">Environmental Chemical Analysis site</a>. Note that not all of the examples there are relevant (e.g. biodiversity sampling, soil sampling), but the general principles in Sections 2.1, 2.2 (our sample is more akin to a “grab sample”), and 2.4 are pertinent.</p>
+</div>
+</div>
+<div id="lab-steps" class="section level1">
+<h1>Lab steps</h1>
+<div id="taking-data-with-your-pl-air-teams" class="section level2">
+<h2>Taking data with your PL Air teams</h2>
+<ul>
+<li>Note that you can always see who is in your group by navigating to the <a href="https://sakai.claremont.edu/portal/directtool/53e2629b-e3ca-49ab-bf71-4b5a9f4e535a/">Roster sub-page</a> on Sakai then going to <strong>Group</strong> and selecting your group’s name.</li>
+<li>With your groups, you will select an initial location to test out running a transect with your PL Air units.
+<ul>
+<li>I strongly recommend bringing a notebook and having one member of the team act as a timer. The timer (or another member) can also keep track of your distance between points. Questions to consider include: How far apart should your points be? How long should you collect data at each location?</li>
+</ul></li>
+<li>Here is a list of suggested locations. Quyên and I will circulate among the groups.
+<ul>
+<li>Pomona College Organic Farm / 1st street</li>
+<li>Marston Quad and College Avenue</li>
+<li>Foothill Avenue and College Avenue</li>
+<li>Former gymnasium and active construction site near 6th and Amherst.</li>
+</ul></li>
+<li>As an initial exercise, we will allocate up to 1 hour collecting data.
+<ul>
+<li>In that time, I would recommend performing <strong>replicates</strong> of your transects.</li>
+<li>I would recommend taking data at stationary <em>points</em> at different <em>distances</em> for instance to your site of interest. (Consider how the different sites could vary in terms of air quality.)</li>
+</ul></li>
+<li>The mobile application <code>Google Earth</code> can be used to determine your distance to a point of interest.</li>
+</ul>
+</div>
+<div id="enhancing-the-community-guidelines-document" class="section level2">
+<h2>Enhancing the community guidelines document</h2>
+<p>Before we revisit the community guidelines document, please read this article in <a href="https://smallpondscience.com/2017/07/10/safety-in-the-field/">Small Pond Science</a> (content warning: references sexual assault) and this <a href="https://esajournals.onlinelibrary.wiley.com/doi/full/10.1890/0012-9623-95.3.264">Bulletin of the Ecological Society of America</a> article (please pay special attention to Table 1).</p>
+<p>Here are some guiding questions to consider. There are additional questions that we can and should consider as a group! Please share them, and if you are uncomfortable sharing them directly, you are welcome to anonymously pose the question in the Google doc.</p>
+<ul>
+<li>When and where does working in teams or small groups enhance field safety? When might working in teams or small groups be less than ideal for safety?</li>
+<li>What are the signs of physical or emotional distress? How can we support and look out for one another?</li>
+<li>When and where can technology facilitate safety? When and where might technology undermine field safety?</li>
+<li>What are examples of conditions that are unsafe in the field? How can we avoid them? How can we look out for one another with respect to avoiding these conditions or dealing with these conditions constructively?
+<ul>
+<li>One example could be contact with a <a href="https://www.cdc.gov/niosh/topics/plants/symptoms.html">poisonous plant such as poison oak</a>.</li>
+<li>Another could be a confrontation with another person, which could be driven by larger systemic biases.</li>
+<li>Finally, conditions such as uneven terrain or very open locations with no tree cover could pose issues in this time of year (or in general).</li>
+</ul></li>
+<li>What are best practices for communicating our comfort or discomfort in the field?</li>
+<li>What might be different physical, emotional, or other barriers to participating in different forms of field work or field work in different types of locations?</li>
+</ul>
+</div>
+<div id="developing-your-group-project" class="section level2">
+<h2>Developing your group project</h2>
+<p>For this laboratory project, you will have several decisions to make:</p>
+<ul>
+<li>What question do we seek to explore with PL Air data? What variable(s) are we particularly interested in?</li>
+<li>What is an appropriate distance between sampling points?</li>
+<li>What, if any, sources or locations do we seek to sample?</li>
+<li>How long should we remain at each point to collect the data?</li>
+<li>How many replicates should we take of our data? In this context, replicates could mean the combination of <em>distance to a location/source</em>, <em>time duration</em>, and <em>variable measured</em> if these are variables of interest to your group.</li>
+</ul>
+<p>This resource from the <a href="https://www.rgs.org/schools/teaching-resources/sampling-techniques/">Royal Geographical Society</a> may provide additional insight into designing your transects.</p>
+<div id="a-note-on-replicating-data" class="section level3">
+<h3>A note on replicating data</h3>
+<p>How might you replicate data collection to try and account for uncertainty in individual estimates? Generally there are two broad ways to achieve this: spatial replication and temporal replication. In working with your groups, please discuss the salient variables that could affect your question (e.g. distance to a road or a construction site for pollutants, tree cover for a heat island effect, and time of day). You can then develop a plan to collect data.</p>
+</div>
+<div id="additional-air-pollution-information" class="section level3">
+<h3>Additional air pollution information</h3>
+<p>Note that the PL Air units report AQI, PM 2.5, PM 10, and O3 data. You can toggle back to the previous week’s Air Quality page to see Myriad Sensors’ (PL Air company) description of how these values are estimated. However, if, for instance, you are interested in the raw values of PM 2.5 that are reported, you may wonder how these values are converted to and from AQI scores. You can navigate to <a href="https://www.airnow.gov/aqi/aqi-calculator-concentration/">this AirNow calculator</a> to see how your data maps to AQI. If you would like to see the interpretation of AQI values, please check out <a href="https://www.airnow.gov/aqi/aqi-basics/">this AirNow explainer site</a>. Note - researchers are still developing ways to take the much more instantaneous data we observe on the PL Air and other sensors to “instant exposure” AQI scales. For now though we can use the 24-hour averages for PM and submit the observed data to see that mapping play out (between <span class="math inline">\(\mu g/m^3\)</span> to AQI scores).</p>
+</div>
+</div>
+</div>
+<div id="analyzing-pocketlab-air-data" class="section level1">
+<h1>Analyzing PocketLab Air data</h1>
+<p>This component of the laboratory may be pushed to a later date if time does not permit in lab.</p>
+<div id="authorizing-access-to-google-sheets-with-the-googlesheets4-package-in-r" class="section level2">
+<h2>Authorizing access to Google sheets with the <code>googlesheets4</code> package in <code>R</code></h2>
+<p>Note that the code here <strong>only needs to be run ONCE</strong>. Once you have installed a package, you do not need to re-install it.</p>
+<p>I recommend running these lines of code in the <code>Console</code> which always has the <code>&gt;</code> symbol to take in a command).</p>
+<pre class="r"><code>install.packages(&quot;googlesheets4&quot;)</code></pre>
+<p>You will see something like this - don’t be alarmed by the red text!</p>
+<p><img src="figures/installationgunk.png" width="835" height="780px" /></p>
+</div>
+</div>
+<div id="setting-up-the-googlesheets4-package" class="section level1">
+<h1>Setting up the <code>Googlesheets4</code> package</h1>
+<p>This workflow also only needs to be done <strong>ONCE</strong>. The first time you interact with a Google sheet using the <code>googlesheets4</code> Application Programming Interface (API) wrapper, it will ask you about permissions to store your credentials (account information). You can run these commands in the console.</p>
+<p>The workflow is below:</p>
+<ol style="list-style-type: decimal">
+<li>Read in an example Google sheet, which will launch an initial query about what Google account you’d like to associate with the package:</li>
+</ol>
+<pre class="r"><code>enviro_soc_media_DF &lt;- googlesheets4::read_sheet(&quot;https://docs.google.com/spreadsheets/d/1hQy8kR81GHmMDPivpyd8XzAGU7A6oUCUArq1bltm5EQ/edit?usp=sharing&quot;)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>At the same time, another tab will open in your internet browser on your computer, displaying a window that asks you to select which of your Google account(s) to grant access to in <code>RStudio Server</code> using the <code>googlesheets4</code> package.</li>
+</ol>
+<p><img src="figures/grantTidyverse.png" width="551" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Select <code>Allow</code>. Next, you will see:</li>
+</ol>
+<p><img src="figures/permissions.png" width="496" height="700px" /></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Select <code>Allow</code> again. This will produce an authorization code that you will then copy and paste into your <code>RStudio</code> session. You can copy the code by pressing the <svg style="height:0.8em;top:.04em;position:relative;" viewBox="0 0 448 512"><path d="M320 448v40c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V120c0-13.255 10.745-24 24-24h72v296c0 30.879 25.121 56 56 56h168zm0-344V0H152c-13.255 0-24 10.745-24 24v368c0 13.255 10.745 24 24 24h272c13.255 0 24-10.745 24-24V128H344c-13.2 0-24-10.8-24-24zm120.971-31.029L375.029 7.029A24 24 0 0 0 358.059 0H352v96h96v-6.059a24 24 0 0 0-7.029-16.97z"/></svg> button to the right of the authentication code.</li>
+</ol>
+<p><img src="figures/RStudioOAuthCopyCode.png" width="501" /></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Next, navigate back to the internet browser tab running <code>RStudio Server</code>. You will paste the code in response to the <code>Enter authorization code</code> prompt waiting in the console.</li>
+</ol>
+<p><img src="figures/RStudioServerInitAuth.png" width="850" /></p>
+<ol start="6" style="list-style-type: decimal">
+<li><p>Copy the authorization code into the blank space next to <code>Enter authorization code</code>.</p></li>
+<li><p>Once you paste the code in, you will see this type of successful response, showing you that the authentication has worked and the <code>read_sheet</code> function <code>googlesheets4</code> will return:</p></li>
+</ol>
+<p><img src="figures/RStudioServerCopiedAuthKey.png" width="651" /></p>
+<ol start="8" style="list-style-type: decimal">
+<li><p>Great work! You have successfully authenticated access to your Google account in your <code>RStudio Server</code> user workspace.</p></li>
+<li><p>Going forward, even if you switch sessions, restart your session, or open a new session in <code>RStudio Server</code>, you shouldn’t need to re-authenticate access to Google. Instead, your credentials will be stored in a cached file. It may ask you though if you want to use a particular “credential” (basically an account) - usually you would type <code>1</code> for the first account listed.</p></li>
+</ol>
+<div id="interacting-with-pocketlab-air-data-as-a-google-sheet" class="section level2">
+<h2>Interacting with PocketLab Air data as a Google sheet</h2>
+<div id="android-data" class="section level3">
+<h3>Android data</h3>
+<pre class="r"><code>library(googlesheets4)
+library(dplyr)
+
+### Here we are pulling in the Google Sheets data from team Paprika
+airDF &lt;- googlesheets4::read_sheet(&quot;https://docs.google.com/spreadsheets/d/14l_xiqddGl2IFpOPsjfCSSLaHLVeunBhsToimXFuPrA/edit?usp=sharing&quot;) # here, we&#39;re saying - go to this URL, pull in the Googlesheet, then store it in an object called airDF
+
+### We can see what our data looks like by calling airDF in the console
+airDF # yay!
+
+### If we wanted to see what the average PM value was across the trial, we could, for instance, run
+mean(airDF$`Particulate Matter-PM2.5 (ug/m&amp;#179;)`)
+
+### We can also see more information about the variable - min, max, and some quartiles.
+summary(airDF$`Particulate Matter-PM2.5 (ug/m&amp;#179;)`)
+
+### We can repeat this for the more smoothed-out values of the 10-minute averaged PM 2.5 data
+mean(airDF$`Particulate Matter-10 Min. Avg. PM2.5 (ug/m&amp;#179;)`)
+summary(airDF$`Particulate Matter-10 Min. Avg. PM2.5 (ug/m&amp;#179;)`)</code></pre>
+</div>
+<div id="ios-data" class="section level3">
+<h3>iOS data</h3>
+<p>One issue with the <code>iOS</code> data is that the mobile application splinches the spreadsheet data. Typically, we would expect to see all of the data in a tidy set of columns, where each row is a particular time point. However, the <code>iOS</code> PocketLab application basically creates a new mini-spreadsheet for each sensor.</p>
+<p>Below are the URLs for all of the <code>iOS</code> groups.</p>
+<ul>
+<li>Fresno: “<a href="https://docs.google.com/spreadsheets/d/15l8zplAYiLu6kmqPqo0kExe5Ww3RPeSTMlkfv2XoMDc/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/15l8zplAYiLu6kmqPqo0kExe5Ww3RPeSTMlkfv2XoMDc/edit?usp=sharing</a>”</li>
+<li>Aji: “<a href="https://docs.google.com/spreadsheets/d/1Q9sm9IokCP0lba-ZcBGXG2YkkSOyhRSw-4ijbs1HU-s/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/1Q9sm9IokCP0lba-ZcBGXG2YkkSOyhRSw-4ijbs1HU-s/edit?usp=sharing</a>”</li>
+<li>Shishito: “<a href="https://docs.google.com/spreadsheets/d/17KYbZqLEirxh2cAr6dOlIBJhKo5LWPuvq3dgDPZ-NHA/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/17KYbZqLEirxh2cAr6dOlIBJhKo5LWPuvq3dgDPZ-NHA/edit?usp=sharing</a>”</li>
+<li>Bird’s Eye: “<a href="https://docs.google.com/spreadsheets/d/1QX5ESRLnq3hjeWAPinquTvK9RELK0cMvIEAjBxhG_6Q/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/1QX5ESRLnq3hjeWAPinquTvK9RELK0cMvIEAjBxhG_6Q/edit?usp=sharing</a>”</li>
+</ul>
+<pre class="r"><code>library(googlesheets4)
+library(dplyr)
+
+### Here, we are pulling in Google Sheets data from team Scorpion
+airDF &lt;- googlesheets4::read_sheet(&quot;https://docs.google.com/spreadsheets/d/1gn6A3uht6e9iQ3qCmqGUTFRhP6YZLdejt5yYjhzeQks/edit?usp=sharing&quot;)
+
+### What happens when we type airDF in the console?
+airDF # cool! We see a subset of our data displayed
+
+### Now we are going to start the clean up process
+### Note that when R pulled in the data, it came
+### as this rather unpleasant &quot;list&quot; structure.
+my_unlisting_function &lt;- function(j) { # function to get R&#39;s unlisting to work
+  sapply(j, function(x) ifelse(is.null(x),NA,x)) # if there is &quot;no data&quot; in a row, replace it with NA
+}
+  # Now we are going to use several cool &quot;Tidyverse&quot; features
+  # to automagically convert all of the columns from list to vectors
+airDF &lt;- airDF %&gt;% 
+  mutate( across( where(is.list), my_unlisting_function)) # we&#39;re applying this function (my_unlisting function) to each column that is a list (which is each column)
+
+### Storing the row locations that have added-on data
+indices &lt;- which(airDF$Lat==&quot;Lat&quot;) # we&#39;re using the fact that every time PocketLab
+   # adds on another variable from the sensor, it tacks on &quot;Lat&quot; at the start of the row.
+
+### We are going to instantiate a clean data table and build from there
+airCleanDF &lt;- airDF[1:(indices[1]-2),c(1:8)]
+
+### Now we are going to create a set of individual data tables
+### to store our data more cleanly.
+### The for loop below is going to &quot;walk&quot; through each value of the indices object
+### and it is going to use the row values in indices to extract the sensor data we
+### want and tack it on as added columns to our clean airCleanDF data table.
+var_name &lt;- c()
+for (i in c(1:length(indices))) {
+  #print(i)
+  index_start &lt;- indices[i]+1
+  if (i==1) {
+    index_end &lt;- indices[(i+1)]-2
+    var_name &lt;- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6]), after=length(var_name))
+    airCleanDF[,9] &lt;- airDF[index_start:index_end,5]
+    airCleanDF[,10] &lt;- airDF[index_start:index_end,6]
+  } else if (i==2) {
+    index_end &lt;- indices[(i+1)]-2
+    var_name &lt;- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6]), after=length(var_name))
+    airCleanDF[,11] &lt;- airDF[index_start:index_end,5]
+    airCleanDF[,12] &lt;- airDF[index_start:index_end,6]
+  } else if (i==3) {
+    index_end &lt;- indices[(i+1)]-2
+    var_name &lt;- append(var_name, c(airDF[indices[i],5],airDF[indices[i],6],airDF[indices[i],7],
+                                   airDF[indices[i],8],airDF[indices[i],9],airDF[indices[i],10],
+                                   airDF[indices[i],11]), after=length(var_name))
+    airCleanDF[,13] &lt;- airDF[index_start:index_end,5]
+    airCleanDF[,14] &lt;- airDF[index_start:index_end,6]
+    airCleanDF[,15] &lt;- airDF[index_start:index_end,7]
+    airCleanDF[,16] &lt;- airDF[index_start:index_end,8]
+    airCleanDF[,17] &lt;- airDF[index_start:index_end,9]
+    airCleanDF[,18] &lt;- airDF[index_start:index_end,10]
+    airCleanDF[,19] &lt;- airDF[index_start:index_end,11]
+  } else if (i==4) {
+    index_end &lt;- indices[(i+1)]-2
+    var_name &lt;- append(var_name, c(airDF[indices[i],9],airDF[indices[i],10]), after=length(var_name))
+    airCleanDF[,20] &lt;- airDF[index_start:index_end,9]
+    airCleanDF[,21] &lt;- airDF[index_start:index_end,10]
+  }
+}
+
+### Cleaning up our airCleanDF data table
+names(airCleanDF)[9:21] &lt;- unlist(var_name) # we are going to give our tacked-on columns more informative names
+
+### Viewing our clean data
+airCleanDF %&gt;%
+  head()  %&gt;% # view first 6 rows
+    View() # pop up an Excel-like data viewer.</code></pre>
+<p>Now that we finally have clean data (yay!) we can calculate the same types of summary statistics.</p>
+<pre class="r"><code>### Calculating the mean and summary statistics for PM data
+mean(airCleanDF$`PM2.5 (µg/m³)`)
+summary(airCleanDF$`PM2.5 (µg/m³)`) # note that the variable names are a bit different from the Android ones
+
+### We can also repeat this for the smoother averaged values
+mean(airCleanDF$`Mean PM2.5 (µg/m³)`)
+summary(airCleanDF$`Mean PM2.5 (µg/m³)`)</code></pre>
+</div>
+</div>
 </div>
 
 
