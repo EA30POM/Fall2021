@@ -11,7 +11,7 @@
 
 <meta name="author" content="" />
 
-<meta name="date" content="2021-09-08" />
+<meta name="date" content="2021-09-09" />
 
 <title>Air quality lab: Week 2</title>
 
@@ -295,7 +295,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Air quality lab: Week 2</h1>
-<h4 class="date">2021-09-08</h4>
+<h4 class="date">2021-09-09</h4>
 
 </div>
 
@@ -466,7 +466,7 @@ summary(airDF$`Particulate Matter-10 Min. Avg. PM2.5 (ug/m&amp;#179;)`)</code></
 <li>Shishito: “<a href="https://docs.google.com/spreadsheets/d/17KYbZqLEirxh2cAr6dOlIBJhKo5LWPuvq3dgDPZ-NHA/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/17KYbZqLEirxh2cAr6dOlIBJhKo5LWPuvq3dgDPZ-NHA/edit?usp=sharing</a>”</li>
 <li>Bird’s Eye: “<a href="https://docs.google.com/spreadsheets/d/1QX5ESRLnq3hjeWAPinquTvK9RELK0cMvIEAjBxhG_6Q/edit?usp=sharing" class="uri">https://docs.google.com/spreadsheets/d/1QX5ESRLnq3hjeWAPinquTvK9RELK0cMvIEAjBxhG_6Q/edit?usp=sharing</a>”</li>
 </ul>
-<p>The code below is how I have wrangled these data to clean them up. I am building an app though that will take the URL of your sheet and automagically push a clean sheet to a new tab called <code>"clean"</code>. The <a href="https://chchang47.shinyapps.io/EA30PLair/">app will be here</a>.</p>
+<p>You can copy and paste this code to run it in the console in <code>RStudio Server</code> to clean up your own data. <strong>Note: these steps are only necessary if you have data that was collected using an iPhone</strong>.</p>
 <pre class="r"><code>library(googlesheets4)
 library(dplyr)
 
@@ -475,7 +475,16 @@ library(dplyr)
 gs_url &lt;- &quot;https://docs.google.com/spreadsheets/d/1gn6A3uht6e9iQ3qCmqGUTFRhP6YZLdejt5yYjhzeQks/edit?usp=sharing&quot;
 
 ### Here, we are pulling in Google Sheets data from team Scorpion
-airDF &lt;- googlesheets4::read_sheet(gs_url)
+airDF &lt;- googlesheets4::read_sheet(gs_url,sheet=1) # we are storing the default file read in as airDF</code></pre>
+<p>When you run the lines above (<code>airDF &lt;- ...</code>) you may see this message from <code>googlesheets4</code>:</p>
+<pre><code>The googlesheets4 package is requesting access to your Google account. Select a pre-authorised account or enter &#39;0&#39; to obtain a new token. Press Esc/Ctrl + C to abort.
+
+1: yourEmail@gmail.com
+
+Selection: </code></pre>
+<p>Type <code>1</code> next to <code>Selection:</code> and hit enter, then you can proceed.</p>
+<pre class="r"><code>### Reading in the same data, but in a more structured way
+airDF_struct &lt;- googlesheets4::read_sheet(gs_url,sheet=1,col_types=&quot;nntnnnnnnnn&quot;) # here I am reading in the same file but specifying the data types in the column (number or time-stamp) and storing it in a different object called airDF_struct
 
 ### What happens when we type airDF in the console?
 airDF # cool! We see a subset of our data displayed
@@ -483,10 +492,10 @@ airDF # cool! We see a subset of our data displayed
 ### We are going to pull in several helper functions
 ### using the command &quot;source&quot;
 ### FMI: ?source
-source(&quot;https://raw.githubusercontent.com/EA30POM/Fall2021/main/helpers/CleanPLiOS.R&quot;)
+source(&quot;https://raw.githubusercontent.com/EA30POM/Fall2021/main/helpers/CleanPLiOS.R&quot;) # you only need to run this code once per session
 
 ### Using a helper function to clean up our iOS Air Data
-airCleanDF &lt;- cleanup_air_function(airDF)
+airCleanDF &lt;- cleanup_air_function(airDF,airDF_struct)
 
 ### Viewing our clean data
 airCleanDF %&gt;%
@@ -501,7 +510,7 @@ googlesheets4::write_sheet(airCleanDF, ss=gs_url, sheet=&quot;Clean&quot;) # thi
 ### Option 2: Saving it as a CSV file
 ### You will then need to download the file to your own
 ### computer use it.
-readr::write_csv(airCleanDF,path=&quot;~/PLAirDataClean.csv&quot;)</code></pre>
+readr::write_csv(airCleanDF,file=&quot;~/PLAirDataClean.csv&quot;)</code></pre>
 <p>In the last segment of the code above, you might notice something interesting looking: this <code>%&gt;%</code> pipe operator. The pipe operator <code>%&gt;%</code> lets you daisy chain commands together into a sequence. It is a handy way to make a complex operation with intermediate steps more transparent. The visualization below describes what pipes do in <code>R</code> in linking up functions:</p>
 <div class="figure">
 <img src="figures/Rpipeoperator.png" alt="" />
