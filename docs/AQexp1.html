@@ -527,6 +527,92 @@ summary(airCleanDF$`Mean PM2.5 (µg/m³)`)</code></pre>
 </div>
 </div>
 </div>
+<div id="class-activity---evaluating-the-signs-of-climate-change" class="section level1">
+<h1>Class activity - evaluating the signs of climate change</h1>
+<p>We are going to encounter some methods for interacting with, visualizing, and analyzing earth sciences data in this activity. At each table, one student will pick one of the datasets and run the code associated with that dataset. What do you see? Based on the course materials, how does this constitute evidence for global climate change?</p>
+<p>First, we will all load these packages - make sure you run this code irrespective of whichever variable you select.</p>
+<pre class="r"><code>library(dplyr)
+library(openxlsx)
+library(ggplot2)
+
+sheet_url &lt;- &quot;https://github.com/EA30POM/Fall2021/raw/main/data/ClimateChangeSigns.xlsx&quot; # location of the Excel spreadsheet
+
+keelingCO2 &lt;- openxlsx::read.xlsx(sheet_url,sheet=&quot;Keeling&quot;) # everyone needs to download the Keeling CO2 data because we will be combining that with the other variables too.</code></pre>
+<div id="variable-1-global-co_2-concentration-in-the-atmosphere" class="section level2">
+<h2>Variable 1: Global <span class="math inline">\(CO_2\)</span> concentration in the atmosphere</h2>
+<p>The data source for this variable is <a href="https://climate.nasa.gov/vital-signs/carbon-dioxide/">NASA’s Global Climate Change Vital Signs of the Planet Program</a>.</p>
+<pre class="r"><code>p &lt;- ggplot(keelingCO2, aes(x=year,y=meanCO2ppm))
+p &lt;- p + geom_point()
+p &lt;- p + geom_line()
+p &lt;- p + labs(x=&quot;Year&quot;,y=&quot;CO2 (ppm)&quot;)
+p &lt;- p + theme_classic()
+p
+
+CO2mod &lt;- lm(meanCO2ppm~year, data=keelingCO2) # we are running a &quot;linear regression&quot; statistical model. You can think of this like finding the line that fits our data the best.
+summary(CO2mod) # what do you see in the Coefficients: table for year?</code></pre>
+</div>
+<div id="variable-2-arctic-sea-ice-minimum-spatial-extent" class="section level2">
+<h2>Variable 2: Arctic sea ice minimum spatial extent</h2>
+<p>The <a href="https://climate.nasa.gov/vital-signs/arctic-sea-ice/">data source is here</a>.</p>
+<pre class="r"><code>seaIce &lt;- openxlsx::read.xlsx(sheet_url,&quot;SeaIce&quot;)
+seaIceCO2 &lt;- left_join(seaIce, keelingCO2, by=c(&quot;year&quot;=&quot;year&quot;)) # we are joining up the sea ice extent data with global CO2 level data, matching on each year
+
+p &lt;- ggplot(seaIceCO2, aes(x=meanCO2ppm, y=extent))
+p &lt;- p + geom_point()
+p &lt;- p + geom_line()
+p &lt;- p + labs(x=&quot;CO2 (ppm)&quot;,y=&quot;Minimum sea ice extent (million km2)&quot;)
+p &lt;- p + theme_classic()
+p # what do we see?
+
+seaIceMod &lt;- lm(extent ~ meanCO2ppm, data=seaIceCO2) # we are running a &quot;linear regression&quot; statistical model. You can think of this like finding the line that fits our data the best.
+summary(seaIceMod) # what do you see in the Coefficients: table for mean CO2 (ppm)? </code></pre>
+</div>
+<div id="variable-3-global-surface-temperature-land-and-ocean" class="section level2">
+<h2>Variable 3: Global surface temperature (land and ocean)</h2>
+<p>The <a href="https://climate.nasa.gov/vital-signs/global-temperature/">data source is here</a>.</p>
+<pre class="r"><code>globTemp &lt;- openxlsx::read.xlsx(sheet_url,&quot;GlobTemp&quot;)
+globTempCO2 &lt;- left_join(globTemp, keelingCO2, by=c(&quot;Year&quot;=&quot;year&quot;)) # we are joining up global temperature data with global CO2 level data, matching on each year
+
+p &lt;- ggplot(globTempCO2, aes(x=meanCO2ppm, y=TempObs))
+p &lt;- p + geom_point()
+p &lt;- p + geom_line()
+p &lt;- p + labs(x=&quot;CO2 (ppm)&quot;,y=&quot;Global temperature anomaly (*C)&quot;)
+p &lt;- p + theme_classic()
+p # what do we see?
+
+tempMod &lt;- lm(TempObs ~ meanCO2ppm, data=globTempCO2) # we are running a &quot;linear regression&quot; statistical model. You can think of this like finding the line that fits our data the best.
+summary(tempMod) # what do you see in the Coefficients: table for mean CO2 (ppm)? </code></pre>
+</div>
+<div id="variable-4-heat-content-of-the-oceans" class="section level2">
+<h2>Variable 4: Heat content of the oceans</h2>
+<p>The <a href="https://climate.nasa.gov/vital-signs/ocean-heat/">original data source is here</a> but the data I used came from the <a href="https://www.epa.gov/climate-indicators/climate-change-indicators-ocean-heat">EPA</a>. The ocean’s heat content is expressed in <em>zettajoules</em> or <span class="math inline">\(10^{22}\)</span> joules. In contrast, total global energy consumption is around 580 million terajoules, or 5.8 zettajoules.</p>
+<pre class="r"><code>oceanHeat &lt;- openxlsx::read.xlsx(sheet_url,&quot;OceanHeat&quot;)
+oceanHeatCO2 &lt;- left_join(oceanHeat, keelingCO2, by=c(&quot;Year&quot;=&quot;year&quot;)) # we are joining up global ocean heat content data with global CO2 level data, matching on each year
+
+p &lt;- ggplot(oceanHeatCO2, aes(x=meanCO2ppm, y=NOAASea))
+p &lt;- p + geom_point()
+p &lt;- p + geom_line()
+p &lt;- p + labs(x=&quot;CO2 (ppm)&quot;,y=&quot;Ocean heat content (ZJ)&quot;)
+p &lt;- p + theme_classic()
+p # what do we see?
+
+oceanMod &lt;- lm(NOAASea ~ meanCO2ppm, data=oceanHeatCO2) # we are running a &quot;linear regression&quot; statistical model. You can think of this like finding the line that fits our data the best.
+summary(oceanMod) # what do you see in the Coefficients: table for mean CO2 (ppm)? </code></pre>
+</div>
+<div id="taking-the-activity-further" class="section level2">
+<h2>Taking the activity further</h2>
+<p>Time permitting, consider the following:</p>
+<ul>
+<li>for the <code>lm</code> coefficient outputs, what do those numbers represent? What do they tell us about the impact on some response variable for changes in <span class="math inline">\(CO_2\)</span>?
+<ul>
+<li>what is the unit of change in <span class="math inline">\(CO_2\)</span> for the coefficients?</li>
+<li>how much would your variable change if <span class="math inline">\(CO_2\)</span> went up by 10 ppm?</li>
+<li>can we reasonably extrapolate those estimated valus into the future?</li>
+</ul></li>
+<li>how would you modify the code above to re-run the analyses with <code>Year</code> as the explanatory/predictive/x-axis variable?</li>
+</ul>
+</div>
+</div>
 
 
 

@@ -252,4 +252,101 @@ mean(airCleanDF$`Mean PM2.5 (µg/m³)`)
 summary(airCleanDF$`Mean PM2.5 (µg/m³)`)
 ```
 
-    
+# Class activity - evaluating the signs of climate change
+
+We are going to encounter some methods for interacting with, visualizing, and analyzing earth sciences data in this activity. At each table, one student will pick one of the datasets and run the code associated with that dataset. What do you see? Based on the course materials, how does this constitute evidence for global climate change?
+
+First, we will all load these packages - make sure you run this code irrespective of whichever variable you select.
+
+```{r gcc_pkgs, eval=F}
+library(dplyr)
+library(openxlsx)
+library(ggplot2)
+
+sheet_url <- "https://github.com/EA30POM/Fall2021/raw/main/data/ClimateChangeSigns.xlsx" # location of the Excel spreadsheet
+
+keelingCO2 <- openxlsx::read.xlsx(sheet_url,sheet="Keeling") # everyone needs to download the Keeling CO2 data because we will be combining that with the other variables too.
+```
+
+## Variable 1: Global $CO_2$ concentration in the atmosphere
+
+The data source for this variable is [NASA's Global Climate Change Vital Signs of the Planet Program](https://climate.nasa.gov/vital-signs/carbon-dioxide/).
+
+```{r keeling, eval=F}
+p <- ggplot(keelingCO2, aes(x=year,y=meanCO2ppm))
+p <- p + geom_point()
+p <- p + geom_line()
+p <- p + labs(x="Year",y="CO2 (ppm)")
+p <- p + theme_classic()
+p
+
+CO2mod <- lm(meanCO2ppm~year, data=keelingCO2) # we are running a "linear regression" statistical model. You can think of this like finding the line that fits our data the best.
+summary(CO2mod) # what do you see in the Coefficients: table for year?
+```
+
+## Variable 2: Arctic sea ice minimum spatial extent
+
+The [data source is here](https://climate.nasa.gov/vital-signs/arctic-sea-ice/).
+
+```{r, eval=F}
+seaIce <- openxlsx::read.xlsx(sheet_url,"SeaIce")
+seaIceCO2 <- left_join(seaIce, keelingCO2, by=c("year"="year")) # we are joining up the sea ice extent data with global CO2 level data, matching on each year
+
+p <- ggplot(seaIceCO2, aes(x=meanCO2ppm, y=extent))
+p <- p + geom_point()
+p <- p + geom_line()
+p <- p + labs(x="CO2 (ppm)",y="Minimum sea ice extent (million km2)")
+p <- p + theme_classic()
+p # what do we see?
+
+seaIceMod <- lm(extent ~ meanCO2ppm, data=seaIceCO2) # we are running a "linear regression" statistical model. You can think of this like finding the line that fits our data the best.
+summary(seaIceMod) # what do you see in the Coefficients: table for mean CO2 (ppm)? 
+```
+
+## Variable 3: Global surface temperature (land and ocean)
+
+The [data source is here](https://climate.nasa.gov/vital-signs/global-temperature/).
+
+```{r, eval=F}
+globTemp <- openxlsx::read.xlsx(sheet_url,"GlobTemp")
+globTempCO2 <- left_join(globTemp, keelingCO2, by=c("Year"="year")) # we are joining up global temperature data with global CO2 level data, matching on each year
+
+p <- ggplot(globTempCO2, aes(x=meanCO2ppm, y=TempObs))
+p <- p + geom_point()
+p <- p + geom_line()
+p <- p + labs(x="CO2 (ppm)",y="Global temperature anomaly (*C)")
+p <- p + theme_classic()
+p # what do we see?
+
+tempMod <- lm(TempObs ~ meanCO2ppm, data=globTempCO2) # we are running a "linear regression" statistical model. You can think of this like finding the line that fits our data the best.
+summary(tempMod) # what do you see in the Coefficients: table for mean CO2 (ppm)? 
+```
+
+## Variable 4: Heat content of the oceans
+
+The [original data source is here](https://climate.nasa.gov/vital-signs/ocean-heat/) but the data I used came from the [EPA](https://www.epa.gov/climate-indicators/climate-change-indicators-ocean-heat). The ocean's heat content is expressed in *zettajoules* or $10^{22}$ joules. In contrast, total global energy consumption is around 580 million terajoules, or 5.8 zettajoules.
+
+```{r, eval=F}
+oceanHeat <- openxlsx::read.xlsx(sheet_url,"OceanHeat")
+oceanHeatCO2 <- left_join(oceanHeat, keelingCO2, by=c("Year"="year")) # we are joining up global ocean heat content data with global CO2 level data, matching on each year
+
+p <- ggplot(oceanHeatCO2, aes(x=meanCO2ppm, y=NOAASea))
+p <- p + geom_point()
+p <- p + geom_line()
+p <- p + labs(x="CO2 (ppm)",y="Ocean heat content (ZJ)")
+p <- p + theme_classic()
+p # what do we see?
+
+oceanMod <- lm(NOAASea ~ meanCO2ppm, data=oceanHeatCO2) # we are running a "linear regression" statistical model. You can think of this like finding the line that fits our data the best.
+summary(oceanMod) # what do you see in the Coefficients: table for mean CO2 (ppm)? 
+```
+
+## Taking the activity further
+
+Time permitting, consider the following:
+
+* for the `lm` coefficient outputs, what do those numbers represent? What do they tell us about the impact on some response variable for changes in $CO_2$?
+    + what is the unit of change in $CO_2$ for the coefficients?
+    + how much would your variable change if $CO_2$ went up by 10 ppm?
+    + can we reasonably extrapolate those estimated valus into the future?
+* how would you modify the code above to re-run the analyses with `Year` as the explanatory/predictive/x-axis variable?
