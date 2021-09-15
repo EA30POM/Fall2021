@@ -49,8 +49,8 @@ By the end of the course, a successful learner will be able to:
 * Exam #1 (15%)
 * Exam #2 (15%, not comprehensive)
 * Final exam (20%, comprehensive)
-* Laboratory assignments (10%)
-* Laboratory projects (35%)
+* Laboratory & lecture assignments (15%)
+* Laboratory projects (30%)
 * Class participation (5%)
 
 ## Mutual expectations

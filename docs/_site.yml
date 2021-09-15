@@ -17,8 +17,11 @@ navbar:
         - text: "Air Quality Lab Introduction"
           href: AQintro.html
         - text: "Week 2"
-        - text: "Running transects"
+        - text: "Air Quality: Test transects"
           href: AQexp1.html
+        - text: "Week 3"
+        - text: "Air Quality: Analysis"
+          href: AQexp2.html
 output:
   html_document:
     theme: flatly
