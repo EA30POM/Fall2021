@@ -1,4 +1,4 @@
-SampleID	Species	Group	CSS	ClodWeight1dip	ClodWeight3dips	NumAddedDips	Clod3Minus1	DriedWt	ClodVolumeInmL	RockWeightG
+SampleID	Species	Group	CSS	ClodWeight1dip	ClodWeightNdips	NumAddedDips	ClodNMinus1	DriedWt	ClodVolumeInmL	RockWeightG
 Artcal1	Artcal	1	1	13.34	13.362	2	0.022	13.186	9	1.17
 Mallau1	Mallau	1	0	55.081	57.367	2	2.286	57.084	43	7.272
 Salapi1	Salapi	1	1	15.115	15.503	2	0.388	15.333	10	0.813
