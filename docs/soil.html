@@ -9,12 +9,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="" />
 
-<meta name="date" content="2021-10-26" />
+<meta name="date" content="2021-10-27" />
 
 <title>Soil science analyses</title>
 
-<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -311,15 +311,14 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Soil science analyses</h1>
-<h4 class="author"></h4>
-<h4 class="date">2021-10-26</h4>
+<h4 class="date">2021-10-27</h4>
 
 </div>
 
 
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p>This page provides a demonstration on using <code>R</code> and shuffling our data to analyze your soil science hypotheses to generate figures and results for your poster presentation. You are welcome to either follow along with the text and copy-paste the code into the console <strong>or</strong> read through and then copy the whole script into a new <code>R</code> script in <a href="https://rstudio.cloud/spaces/170230">Rstudio.cloud</a>. <strong>Please make sure that you start a new project.</strong> Do <strong>not</strong> continue using the projects from the Air Quality Lab.</p>
+<p>This page provides a demonstration on using <code>R</code> and shuffling our data to analyze your soil science hypotheses to generate figures and results for your poster presentation. You are welcome to either follow along with the text and copy-paste the code into the console <strong>or</strong> read through and then copy the whole script into a new <code>R</code> script in <a href="https://rstudio.cloud/spaces/170230/project/3124212">Rstudio.cloud</a>. <strong>Please make sure that you start a new project using that link.</strong> Do <strong>not</strong> continue using the projects from the Air Quality Lab.</p>
 <p>This table below shows the hypotheses for each group:</p>
 <table>
 <colgroup>
@@ -410,7 +409,7 @@ soilDF &lt;- soilDF %&gt;% # take soilDF object and feed it into --&gt;
   mutate(SoilDensity = ( (ClodWeight1dip - (ClodNMinus1/NumAddedDips)) * (1 - (ClodWeightNdips-DriedWt)/ClodWeightNdips) - RockWeightG)/ClodVolumeInmL ) # create SoilDensity variable from columns in the data following Caspi et al. 2019
 
 soilDF &lt;- soilDF %&gt;%
-  mutate(soilC = SoilDensity * 10^6 * Cperc / 10^3) # create SoilDensity variable, which has these units: kg C/m3
+  mutate(soilC = SoilDensity * 10^5 * Cperc/100 * 1/10^3) # create SoilDensity variable, which has these units: kg C/m2 at a depth of 10cm
 
 ### Display data
 # View(soilDF) # open a spreadsheet viewer
@@ -425,11 +424,11 @@ soilDF &lt;- soilDF %&gt;%
 tapply(soilDF$SoilDensity, soilDF$PlantComm, summary) </code></pre>
 <pre><code>## $CHAP
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.4531  0.8578  1.0519  0.9525  1.1404  1.2285 
+##  0.4531  0.8578  0.9913  0.9292  1.1147  1.1691 
 ## 
 ## $CSS
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
-##  0.6542  0.9081  1.0767  1.0948  1.3602  1.4286       1</code></pre>
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.5908  0.8984  1.0682  1.0580  1.3530  1.4286</code></pre>
 <pre class="r"><code>  # use PlantComm as the grouping variable
   # for SoilDensity and then summarize SoilDensity
   # for each PlantComm(unity)</code></pre>
@@ -470,12 +469,12 @@ gf_point(SoilDensity~Species,        # plot SoilDensity against plant Species
 <p>Let’s say I am interested in determining <code>if Coastal Sage Scrub (CSS) plants tend to have higher soil density than Chaparral (CHAP) plants</code>. This sounds like I want to see if there is a clear difference in the mean values of <code>SoilDensity</code> for the CSS plants versus the CHAP plants. We can start by calculating the mean difference we observe.</p>
 <pre class="r"><code>mean( SoilDensity ~ PlantComm, data = soilDF , na.rm=T) # show mean SoilDensity values for the plant communities and remove missing data</code></pre>
 <pre><code>##      CHAP       CSS 
-## 0.9525158 1.0947768</code></pre>
+## 0.9291509 1.0580391</code></pre>
 <pre class="r"><code>obs_diff &lt;- diff( mean( SoilDensity ~ PlantComm, data = soilDF , na.rm=T)) # calculate the difference between the means and store in a variable called &quot;obs_diff&quot;
 obs_diff # display the value of obs_diff</code></pre>
 <pre><code>##       CSS 
-## 0.1422611</code></pre>
-<p>OK, so the mean difference in mean soil density between CSS and CHAP is 0.14. Are the plant communities meaningfully different in terms of soil density though? Our null hypothesis would be that there is no difference in soil density between the plant communities.</p>
+## 0.1288881</code></pre>
+<p>OK, so the mean difference in mean soil density between CSS and CHAP is 0.13. Are the plant communities meaningfully different in terms of soil density though? Our null hypothesis would be that there is no difference in soil density between the plant communities.</p>
 <p>Logically, if there is a meaningful difference, then if we shuffle our data around, that should lead to different results than what we see. That is one way to <em>simulate</em> statistics to test the null hypothesis. And specifically, in this case, we would expect to see our observed difference is much larger than most of the simulated values.</p>
 <p>What does simulating our data look like?</p>
 <p>Well, here is what the data look like initially:</p>
@@ -483,48 +482,48 @@ obs_diff # display the value of obs_diff</code></pre>
 <pre><code>## # A tibble: 28 x 7
 ##    SampleID Species Group CSS   PlantComm SoilDensity soilC
 ##    &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;
-##  1 Artcal1  Artcal      1 1     CSS             1.33  2197.
-##  2 Mallau1  Mallau      1 0     CHAP            1.08  2644.
-##  3 Salapi1  Salapi      1 1     CSS             1.39  2371.
-##  4 Samnig1  Samnig      1 0     CHAP            0.852  801.
-##  5 Artcal2  Artcal      2 1     CSS             0.946 7258.
-##  6 Mallau2  Mallau      2 0     CHAP            0.473 2054.
-##  7 Salapi2  Salapi      2 1     CSS             1.06  1876.
-##  8 Samnig2  Samnig      2 0     CHAP            1.16  2190.
-##  9 Artcal3  Artcal      3 1     CSS             0.694 1575.
-## 10 Mallau3  Mallau      3 0     CHAP            0.453 9470.
+##  1 Artcal1  Artcal      1 1     CSS             1.33  2.20 
+##  2 Mallau1  Mallau      1 0     CHAP            1.08  2.64 
+##  3 Salapi1  Salapi      1 1     CSS             1.39  2.37 
+##  4 Samnig1  Samnig      1 0     CHAP            0.852 0.801
+##  5 Artcal2  Artcal      2 1     CSS             0.946 7.26 
+##  6 Mallau2  Mallau      2 0     CHAP            0.473 2.05 
+##  7 Salapi2  Salapi      2 1     CSS             1.06  1.88 
+##  8 Samnig2  Samnig      2 0     CHAP            1.16  2.19 
+##  9 Artcal3  Artcal      3 1     CSS             0.691 1.57 
+## 10 Mallau3  Mallau      3 0     CHAP            0.453 9.47 
 ## # … with 18 more rows</code></pre>
 <p>Here is what it looks like after we’ve “shuffled” it once by randomizing the <code>PlantComm</code> assignments. This is like taking a deck of cards with different <code>SoilDensity</code> or <code>SoilC</code>(arbon) values, and being able to change their color and suite (in this case, plant community associated with that card).</p>
 <pre class="r"><code>resample(soilDF[,c(1:4,19:21)],groups=PlantComm,shuffled=c(&quot;SoilDensity&quot;,&quot;soilC&quot;))</code></pre>
 <pre><code>## # A tibble: 28 x 8
 ##    SampleID Species Group CSS   PlantComm SoilDensity soilC orig.id 
 ##    &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   
-##  1 Mallau3  Mallau      3 0     CHAP            0.453  801. 10.10.4 
-##  2 Samnig2  Samnig      2 0     CHAP            0.875 2644. 8.14.2  
-##  3 Mallau7  Mallau      7 0     CHAP            1.16  1992. 26.8.20 
-##  4 Mallau3  Mallau      3 0     CHAP            0.453 2512. 10.10.14
-##  5 Samnig5  Samnig      5 0     CHAP            1.13  2723. 20.26.24
-##  6 Mallau1  Mallau      1 0     CHAP            0.453 2512. 2.10.26 
-##  7 Mallau7  Mallau      7 0     CHAP            1.13  6636. 26.26.12
-##  8 Samnig1  Samnig      1 0     CHAP            0.852  554. 4.4.22  
-##  9 Samnig3  Samnig      3 0     CHAP            1.14  2644. 12.20.2 
-## 10 Mallau4  Mallau      4 0     CHAP            1.08  2512. 14.2.26 
+##  1 Mallau5  Mallau      5 0     CHAP            1.13  2.19  18.26.8 
+##  2 Mallau2  Mallau      2 0     CHAP            1.17  2.48  6.18.18 
+##  3 Samnig4  Samnig      4 0     CHAP            0.716 2.48  16.12.18
+##  4 Mallau1  Mallau      1 0     CHAP            1.08  6.64  2.2.12  
+##  5 Samnig2  Samnig      2 0     CHAP            1.16  9.47  8.8.10  
+##  6 Mallau7  Mallau      7 0     CHAP            0.453 2.47  26.10.16
+##  7 Mallau1  Mallau      1 0     CHAP            0.852 2.64  2.4.2   
+##  8 Samnig3  Samnig      3 0     CHAP            1.08  0.801 12.24.4 
+##  9 Samnig1  Samnig      1 0     CHAP            0.852 2.51  4.4.26  
+## 10 Samnig2  Samnig      2 0     CHAP            1.16  2.05  8.8.6   
 ## # … with 18 more rows</code></pre>
 <p>We can repeat that procedure again and see how the data shifts when we do another shuffle.</p>
 <pre class="r"><code>resample(soilDF[,c(1:4,19:21)],groups=PlantComm,shuffled=c(&quot;SoilDensity&quot;,&quot;soilC&quot;))</code></pre>
 <pre><code>## # A tibble: 28 x 8
 ##    SampleID Species Group CSS   PlantComm SoilDensity soilC orig.id 
 ##    &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   
-##  1 Mallau4  Mallau      4 0     CHAP            1.03  6636. 14.16.12
-##  2 Samnig1  Samnig      1 0     CHAP            1.14  2644. 4.20.2  
-##  3 Samnig6  Samnig      6 0     CHAP            1.17  2466. 24.18.16
-##  4 Mallau1  Mallau      1 0     CHAP            1.08  4582. 2.2.28  
-##  5 Mallau2  Mallau      2 0     CHAP            1.08  2644. 6.24.2  
-##  6 Mallau1  Mallau      1 0     CHAP            0.852 2054. 2.4.6   
-##  7 Samnig5  Samnig      5 0     CHAP            0.716 2512. 20.12.14
-##  8 Mallau1  Mallau      1 0     CHAP            0.473 2054. 2.6.6   
-##  9 Mallau5  Mallau      5 0     CHAP            1.08  2723. 18.2.24 
-## 10 Mallau2  Mallau      2 0     CHAP            1.08  2644. 6.2.2   
+##  1 Mallau1  Mallau      1 0     CHAP            1.03  2.05  2.16.6  
+##  2 Samnig6  Samnig      6 0     CHAP            0.716 2.05  24.12.6 
+##  3 Mallau5  Mallau      5 0     CHAP            0.852 0.801 18.4.4  
+##  4 Samnig5  Samnig      5 0     CHAP            0.716 2.64  20.12.2 
+##  5 Mallau2  Mallau      2 0     CHAP            1.14  1.99  6.20.20 
+##  6 Samnig3  Samnig      3 0     CHAP            1.08  2.51  12.2.14 
+##  7 Mallau2  Mallau      2 0     CHAP            1.08  2.72  6.24.24 
+##  8 Samnig7  Samnig      7 0     CHAP            0.901 2.48  28.28.18
+##  9 Mallau1  Mallau      1 0     CHAP            1.08  2.47  2.2.16  
+## 10 Mallau4  Mallau      4 0     CHAP            0.473 3.36  14.6.28 
 ## # … with 18 more rows</code></pre>
 <p>Let’s shuffle the data and see what that means for the distribution of mean <code>SoilDensity</code> differences between <code>CSS</code> and <code>CHAP</code>.</p>
 <pre class="r"><code>### Create random differences by shuffling the data
@@ -534,13 +533,13 @@ names(randomizing_diffs)[1] &lt;- &quot;DiffMeans&quot; # change the name of the
 
 # View first few rows of data
 head(randomizing_diffs)</code></pre>
-<pre><code>##     DiffMeans
-## 1 -0.01153524
-## 2  0.03609562
-## 3  0.09786906
-## 4  0.02516840
-## 5 -0.04835636
-## 6  0.01246625</code></pre>
+<pre><code>##      DiffMeans
+## 1  0.036459588
+## 2 -0.078961624
+## 3  0.008728901
+## 4 -0.031539682
+## 5 -0.081536007
+## 6 -0.086841344</code></pre>
 <p>Now we can visualize the distribution of simulated differences in mean soil density and our observed difference between CSS and CHAP.</p>
 <pre class="r"><code>gf_histogram(~ DiffMeans, fill = ~ (DiffMeans &gt;= obs_diff),
              data = randomizing_diffs,
@@ -551,7 +550,7 @@ head(randomizing_diffs)</code></pre>
 <pre class="r"><code># What proportion of simulated values were larger than our observed difference
 prop( ~ DiffMeans &gt;= 0.142, data = randomizing_diffs) # 0.142 was the observed difference value - see obs_diff</code></pre>
 <pre><code>## prop_TRUE 
-##      0.09</code></pre>
+##     0.078</code></pre>
 </div>
 <div id="calculating-correlation-coefficients" class="section level2">
 <h2>2: Calculating correlation coefficients</h2>
@@ -559,7 +558,7 @@ prop( ~ DiffMeans &gt;= 0.142, data = randomizing_diffs) # 0.142 was the observe
 <pre class="r"><code>### Calculate observed correlation
 obs_cor &lt;- cor(BacterialPerc ~ SoilDensity, data=soilDF, use=&quot;complete.obs&quot;) # store observed correlation in obs_cor of BacterialPerc vs. SoilDensity
 obs_cor # print out value</code></pre>
-<pre><code>## [1] -0.110122</code></pre>
+<pre><code>## [1] -0.01111519</code></pre>
 <p>Let’s say that I’m interested in determining if the percentage of bacteria is negatively correlated with soil density. Our null hypothesis could be that the correlation coefficient is actually 0. As before though, how do I know that my correlation coefficient of 0 is significantly different from 0? We can tackle this question by simulating a ton of correlation coefficient values from our data by shuffling it!</p>
 <p>In this case, the shuffling here lets us estimate the variation in the correlation coefficient given our data. So we are curious now if the distribution of simulated values does or does not include 0 (that is, is it clearly <span class="math inline">\(&lt; 0\)</span> or <span class="math inline">\(&gt; 0\)</span>?).</p>
 <pre class="r"><code>### Calculate correlation coefs for shuffled data
@@ -574,7 +573,7 @@ randomizing_cor &lt;- do(1000) * cor(BacterialPerc ~ SoilDensity,
 <pre class="r"><code>quantiles_cor &lt;- qdata( ~ cor, p = c(0.025, 0.975), data=randomizing_cor) # calculate the 2.5% and 97.5% quantiles in our simulated correlation coefficient data (note that 97.5-2.5 = 95!)
 quantiles_cor # display the quantiles</code></pre>
 <pre><code>##       2.5%      97.5% 
-## -0.4743900  0.3224147</code></pre>
+## -0.3709577  0.4270110</code></pre>
 <p>The values above give us a 95% confidence interval estimate for our correlation coefficient!</p>
 <p>Do we clearly see that our correlation coefficient distribution does or doesn’t include 0?</p>
 <pre class="r"><code>gf_histogram(~ cor, fill = ~ (cor &gt; 0),
@@ -603,18 +602,17 @@ lm_mod # print object</code></pre>
 ## 
 ## Coefficients:
 ##   (Intercept)  BacterialPerc    ClodNMinus1  
-##     1.2053175     -0.0006693     -0.0675615</code></pre>
+##      1.024700       0.001395      -0.072026</code></pre>
 <p>We can also shuffle our data to estimate the variation in the coefficient values. Our null is that the coefficient estimates are equal to 0. That is, there is no relationship between soil density and bacterial percentage or resin dip weight. If the simulated coefficient estimates have an interval that doesn’t cross 0 (go from negative to positive), then that is evidence against the null hypothesis.</p>
 <pre class="r"><code>lm_boot &lt;- do(1000) * lm(SoilDensity ~ BacterialPerc + ClodNMinus1, data=resample(soilDF)) # shuffle our data 1000 times and re-run the linear model each time and store the outputs in lm_boot
 confint(lm_boot) # generate a 95% confidence interval from the simulated values for the linear regression coefficients</code></pre>
-<pre><code>##            name        lower        upper level     method      estimate
-## 1     Intercept  0.633837850  1.689834190  0.95 percentile  1.2053174729
-## 2 BacterialPerc -0.006766271  0.006567772  0.95 percentile -0.0006693034
-## 3   ClodNMinus1 -0.107204176 -0.015801288  0.95 percentile -0.0675614885
-## 4         sigma  0.148158481  0.253955642  0.95 percentile  0.2141484275
-## 5     r.squared  0.078894243  0.694114205  0.95 percentile  0.3986785408
-## 6             F  1.006867643 26.575928889  0.95 percentile  7.9560481623
-## 7         dendf 22.000000000 25.000000000  0.95 percentile 24.0000000000</code></pre>
+<pre><code>##            name        lower        upper level     method     estimate
+## 1     Intercept  0.504835299  1.467213918  0.95 percentile  1.024699637
+## 2 BacterialPerc -0.004383335  0.008219272  0.95 percentile  0.001395041
+## 3   ClodNMinus1 -0.112649542 -0.041981578  0.95 percentile -0.072025910
+## 4         sigma  0.150670210  0.255404364  0.95 percentile  0.215825625
+## 5     r.squared  0.121123016  0.681636132  0.95 percentile  0.408701398
+## 6             F  1.722695895 26.763263833  0.95 percentile  8.639911321</code></pre>
 <p>Based on the values above, as clod resin weight increases by one gram, soil density decreases by as much as 0.11 grams and as little as 0.015 grams. On the other hand, it looks like bacterial percentage does not have a clear directional effect on soil density.</p>
 </div>
 </div>
@@ -648,7 +646,7 @@ soilDF &lt;- soilDF %&gt;% # take soilDF object and feed it into --&gt;
   mutate(SoilDensity = ( (ClodWeight1dip - (ClodNMinus1/NumAddedDips)) * (1 - (ClodWeightNdips-DriedWt)/ClodWeightNdips) - RockWeightG)/ClodVolumeInmL ) # create SoilDensity variable from columns in the data following Caspi et al. 2019
 
 soilDF &lt;- soilDF %&gt;%
-  mutate(soilC = SoilDensity * 10^6 * Cperc / 10^3) # create SoilDensity variable, which has these units: kg C/m3
+  mutate(soilC = SoilDensity * 10^5 * Cperc/100 * 1/10^3) # create SoilDensity variable, which has these units: kg C/m2 at a depth of 10cm
 
 ### Display data
 View(soilDF) # open a spreadsheet viewer

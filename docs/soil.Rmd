@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE, warning=F, message=F) # by default, print out
 
 # Overview 
 
-This page provides a demonstration on using `R` and shuffling our data to analyze your soil science hypotheses to generate figures and results for your poster presentation. You are welcome to either follow along with the text and copy-paste the code into the console **or** read through and then copy the whole script into a new `R` script in [Rstudio.cloud](https://rstudio.cloud/spaces/170230). **Please make sure that you start a new project.** Do **not** continue using the projects from the Air Quality Lab.
+This page provides a demonstration on using `R` and shuffling our data to analyze your soil science hypotheses to generate figures and results for your poster presentation. You are welcome to either follow along with the text and copy-paste the code into the console **or** read through and then copy the whole script into a new `R` script in [Rstudio.cloud](https://rstudio.cloud/spaces/170230/project/3124212). **Please make sure that you start a new project using that link.** Do **not** continue using the projects from the Air Quality Lab.
 
 This table below shows the hypotheses for each group:
 
@@ -58,7 +58,7 @@ soilDF <- soilDF %>% # take soilDF object and feed it into -->
   mutate(SoilDensity = ( (ClodWeight1dip - (ClodNMinus1/NumAddedDips)) * (1 - (ClodWeightNdips-DriedWt)/ClodWeightNdips) - RockWeightG)/ClodVolumeInmL ) # create SoilDensity variable from columns in the data following Caspi et al. 2019
 
 soilDF <- soilDF %>%
-  mutate(soilC = SoilDensity * 10^6 * Cperc / 10^3) # create SoilDensity variable, which has these units: kg C/m3
+  mutate(soilC = SoilDensity * 10^5 * Cperc/100 * 1/10^3) # create SoilDensity variable, which has these units: kg C/m2 at a depth of 10cm
 
 ### Display data
 # View(soilDF) # open a spreadsheet viewer
@@ -289,7 +289,7 @@ soilDF <- soilDF %>% # take soilDF object and feed it into -->
   mutate(SoilDensity = ( (ClodWeight1dip - (ClodNMinus1/NumAddedDips)) * (1 - (ClodWeightNdips-DriedWt)/ClodWeightNdips) - RockWeightG)/ClodVolumeInmL ) # create SoilDensity variable from columns in the data following Caspi et al. 2019
 
 soilDF <- soilDF %>%
-  mutate(soilC = SoilDensity * 10^6 * Cperc / 10^3) # create SoilDensity variable, which has these units: kg C/m3
+  mutate(soilC = SoilDensity * 10^5 * Cperc/100 * 1/10^3) # create SoilDensity variable, which has these units: kg C/m2 at a depth of 10cm
 
 ### Display data
 View(soilDF) # open a spreadsheet viewer
