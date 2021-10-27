@@ -22,6 +22,10 @@ navbar:
         - text: "Week 3"
         - text: "Air Quality: Analysis"
           href: AQexp2.html
+    - text: "Soil science"
+      menu:
+        - text: "Analyzing data"
+          href: soil.html
 output:
   html_document:
     theme: flatly

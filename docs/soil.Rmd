@@ -1,0 +1,393 @@
+---
+title: "Soil science analyses"
+author: ""
+date: '`r Sys.Date()`'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=F, message=F) # by default, print out all of the chunks with commands
+```
+
+# Overview 
+
+This page provides a demonstration on using `R` and shuffling our data to analyze your soil science hypotheses to generate figures and results for your poster presentation. You are welcome to either follow along with the text and copy-paste the code into the console **or** read through and then copy the whole script into a new `R` script in [Rstudio.cloud](https://rstudio.cloud/spaces/170230). **Please make sure that you start a new project.** Do **not** continue using the projects from the Air Quality Lab.
+
+This table below shows the hypotheses for each group:
+
+| Group      | Hypothesis            | Variables             | Statistic |
+|------------|-----------------------|-----------------------|-----------|
+|      1     | Do drought-deciduous plants store more `C` and `N`? | `Cperc`, `Nperc`, `PlantComm` or `CSS` | Difference in means |
+| 2 | Is F:B positively correlated with SOM? | `FBratio`, `SOM` | Correlation coefficient |
+| 3 | Do woody plants have higher microbial biomass? | `Microbes`, `PlantComm` or `CSS` | Difference in means |
+| 4 | Is soil density positively correlated with total carbon levels? | `SoilDensity`, `soilC` | Correlation coefficient |
+| 5 | Is F:B correlated with C and N quantity? | `FBratio`, `soilC`, variable you will have to create (see `soilC` for an example) | Regression model (`lm`) or correlation coefficients | 
+| 6 | Is soil organic matter higher in Coastal Sage Scrub plants? | `SOM` and `PlantComm` or `CSS` | Difference in means | 
+| 7 | Is there a negative correlation between rock mass and N quantity? | Modify `soilC` to calculate `soilN` and use `RockWeightG` | Correlation coefficient | 
+
+# Preparing data
+
+## 1: Load packages
+
+Below, we will start by loading packages that we'll need.
+
+```{r pkgs}
+### Load packages
+library("ggplot2") # plotting functions
+library("dplyr") # data wrangling functions
+library("readr") # reading in tables, including ones online
+library("mosaic") # shuffle (permute) our data
+```
+
+## 2: Read data
+
+Next, we will pull in our data and start creating some useful variables, such as `SoilDensity`, the density of the soil (units: g/mL), or `soilC`, the quantity of carbon in the soil given its density.
+
+```{r data}
+### Load in dataset
+soilDF <- readr::read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/soilFullData.tsv") # read in spreadsheet from its URL and store in soilDF
+
+### Preparing data
+soilDF$CSS <- as.factor(soilDF$CSS) # convert 0 and 1 for CSS (coastal sage scrub) from numeric to categorical ("factor")
+
+soilDF <- soilDF %>% # take soilDF object and feed it into -->
+  mutate(PlantComm = ifelse(CSS=="1","CSS","CHAP")) # use mutate to create a new column that has two types of plant communities: CSS and CHAP(arral)
+
+### Calculate useful variables
+soilDF <- soilDF %>% # take soilDF object and feed it into --> 
+  mutate(SoilDensity = ( (ClodWeight1dip - (ClodNMinus1/NumAddedDips)) * (1 - (ClodWeightNdips-DriedWt)/ClodWeightNdips) - RockWeightG)/ClodVolumeInmL ) # create SoilDensity variable from columns in the data following Caspi et al. 2019
+
+soilDF <- soilDF %>%
+  mutate(soilC = SoilDensity * 10^6 * Cperc / 10^3) # create SoilDensity variable, which has these units: kg C/m3
+
+### Display data
+# View(soilDF) # open a spreadsheet viewer
+  # delete the leading comment/hashtag sign to run the code above
+```
+
+## 3: Exploratory data analysis
+
+Below, I provide fully-worked examples of different ways of inspecting your data and performing analyses **assuming that `SoilDensity` is the variable of interest**. In applying this code to your own data, you will want to think about what variable name should *replace* `SoilDensity` in the commands below. For example, you would change `tapply(soilDF$SoilDensity, soilDF$PlantComm, summary)` to `tapply(soilDF$ResponseVariable,soilDF$PlantComm, summary)` where `ResponseVariable` is the variable you're analyzing.
+
+Let's start with exploratory data analysis where you calculate summary statistics and visualize your variable.
+
+```{r EDAsummary}
+### Calculate summary statistics for SoilDensity
+### for each PlantComm(unity)
+tapply(soilDF$SoilDensity, soilDF$PlantComm, summary) 
+  # use PlantComm as the grouping variable
+  # for SoilDensity and then summarize SoilDensity
+  # for each PlantComm(unity)
+```
+
+How would I visualize the distribution of values of `SoilDensity`? I could use a histogram and color the values differently for Coastal Sage Scrub vs. chaparral.
+
+```{r EDAhist}
+### Visualize your variable of interest
+  # Histogram
+gf_histogram(~SoilDensity,              # plot distribution of SoilDensity
+             fill=~CSS,                 # change colors based on CSS (or not)
+             data=soilDF,               # the data come from the soilDF object
+             xlab="Soil density (g/mL)",# change the x-axis label
+             ylab="Count")              # change the y-axis label
+```
+
+Alternatively, I could create a boxplot to visualize the distribution of values in `SoilDensity` with two boxplots for each plant community.
+
+```{r EDAbox}
+### Visualize your variable of interest
+  # Boxplot
+gf_boxplot(SoilDensity~CSS,       # plot distribution of SoilDensity for CSS
+       fill= ~CSS,                # change colors based on CSS (or not)
+       data=soilDF,               # the data come from the soilDF object
+       xlab="Woody vegetation",   # change x-axis label
+       ylab="Soil density (g/mL)")# change y-axis label
+```
+
+Finally, if I am interested in the relationship between two or more variables, I can use a scatterplot to visualize each pair of data.
+
+```{r scatter}
+### Visualization
+  # Scatterplot
+gf_point(SoilDensity~Species,        # plot SoilDensity against plant Species
+         color= ~CSS,                # change colors based on CSS (or not)
+         data= soilDF,               # the data come from the soilDF object
+         xlab="Species",             # change x-axis label
+         ylab="Soil density (g/mL)") # change y-axis label
+```
+
+# Analysis
+
+The code below shows you how to do different types of analyses.
+
+## 1: Calculating differences in means
+
+Let's say I am interested in determining `if Coastal Sage Scrub (CSS) plants tend to have higher soil density than Chaparral (CHAP) plants`. This sounds like I want to see if there is a clear difference in the mean values of `SoilDensity` for the CSS plants versus the CHAP plants. We can start by calculating the mean difference we observe.
+
+```{r mean_diff}
+mean( SoilDensity ~ PlantComm, data = soilDF , na.rm=T) # show mean SoilDensity values for the plant communities and remove missing data
+obs_diff <- diff( mean( SoilDensity ~ PlantComm, data = soilDF , na.rm=T)) # calculate the difference between the means and store in a variable called "obs_diff"
+obs_diff # display the value of obs_diff
+```
+
+OK, so the mean difference in mean soil density between CSS and CHAP is `r round(obs_diff,2)`. Are the plant communities meaningfully different in terms of soil density though? Our null hypothesis would be that there is no difference in soil density between the plant communities.
+
+Logically, if there is a meaningful difference, then if we shuffle our data around, that should lead to different results than what we see. That is one way to *simulate* statistics to test the null hypothesis. And specifically, in this case, we would expect to see our observed difference is much larger than most of the simulated values.
+
+What does simulating our data look like?
+
+Well, here is what the data look like initially:
+
+```{r}
+soilDF[,c(1:4,19:21)]
+```
+
+Here is what it looks like after we've "shuffled" it once by randomizing the `PlantComm` assignments. This is like taking a deck of cards with different `SoilDensity` or `SoilC`(arbon) values, and being able to change their color and suite (in this case, plant community associated with that card).
+
+```{r}
+resample(soilDF[,c(1:4,19:21)],groups=PlantComm,shuffled=c("SoilDensity","soilC"))
+```
+
+We can repeat that procedure again and see how the data shifts when we do another shuffle.
+
+```{r}
+resample(soilDF[,c(1:4,19:21)],groups=PlantComm,shuffled=c("SoilDensity","soilC"))
+```
+
+Let's shuffle the data and see what that means for the distribution of mean `SoilDensity` differences between `CSS` and `CHAP`.
+
+```{r permuteDiffs}
+### Create random differences by shuffling the data
+randomizing_diffs <- do(1000) * diff( mean( SoilDensity ~ shuffle(PlantComm),na.rm=T, data = soilDF) ) # calculate the mean in SoilDensity when we're shuffling the plant community around 1000 times
+  # Clean up our shuffled data
+names(randomizing_diffs)[1] <- "DiffMeans" # change the name of the variable
+
+# View first few rows of data
+head(randomizing_diffs)
+```
+
+Now we can visualize the distribution of simulated differences in mean soil density and our observed difference between CSS and CHAP.
+
+```{r diffHist}
+gf_histogram(~ DiffMeans, fill = ~ (DiffMeans >= obs_diff),
+             data = randomizing_diffs,
+             xlab="Difference in mean soil density under null",
+             ylab="Count")
+```
+
+In the end, how many of the simulated mean differences were larger than the value we observed? Based on this value, if we were using the conventional $p$-value (probability value) of 0.05, we would conclude that because this simulated $p$-value > 0.05, that we cannot reject the null hypothesis.
+
+```{r obsDiffP}
+# What proportion of simulated values were larger than our observed difference
+prop( ~ DiffMeans >= 0.142, data = randomizing_diffs) # 0.142 was the observed difference value - see obs_diff
+```
+
+## 2: Calculating correlation coefficients
+
+How would I determine if there is a non-zero correlation between two variables or that two variables are positively correlated? I can again start by calculating the observed correlation coefficient for the data.
+
+```{r obs_cor}
+### Calculate observed correlation
+obs_cor <- cor(BacterialPerc ~ SoilDensity, data=soilDF, use="complete.obs") # store observed correlation in obs_cor of BacterialPerc vs. SoilDensity
+obs_cor # print out value
+```
+
+Let's say that I'm interested in determining if the percentage of bacteria is negatively correlated with soil density. Our null hypothesis could be that the correlation coefficient is actually 0. As before though, how do I know that my correlation coefficient of `r round(obs_cor)` is significantly different from 0? We can tackle this question by simulating a ton of correlation coefficient values from our data by shuffling it!
+
+In this case, the shuffling here lets us estimate the variation in the correlation coefficient given our data. So we are curious now if the distribution of simulated values does or does not include 0 (that is, is it clearly $< 0$ or $> 0$?).
+
+```{r cor_shuffle}
+### Calculate correlation coefs for shuffled data
+randomizing_cor <- do(1000) * cor(BacterialPerc ~ SoilDensity, 
+                                 data = resample(soilDF), 
+                                 use="complete.obs") 
+# Shuffle the data 1000 times
+# Calculate the correlation coefficient each time
+# By correlating BacterialPerc to SoilDensity from the
+# data object soilDF
+```
+
+What are the distribution of correlation coefficients that we see when we shuffle our data?
+
+```{r quantiles_cor}
+quantiles_cor <- qdata( ~ cor, p = c(0.025, 0.975), data=randomizing_cor) # calculate the 2.5% and 97.5% quantiles in our simulated correlation coefficient data (note that 97.5-2.5 = 95!)
+quantiles_cor # display the quantiles
+```
+
+The values above give us a 95% confidence interval estimate for our correlation coefficient!
+
+Do we clearly see that our correlation coefficient distribution does or doesn't include 0?
+
+```{r simCorHist}
+gf_histogram(~ cor, fill = ~ (cor > 0),
+             data = randomizing_cor,
+             xlab="Simulated correlation coefficients",
+             ylab="Count")
+```
+
+In this case, our simulated correlation coefficient includes 0 in its 95% simulated confidence interval. We can also see this in the plot. So given these data, we cannot reject the null hypothesis. There is not sufficiently strong data that percent bacteria associates with soil density in any clear way.
+
+## 3: Performing a regression model
+
+The last type of analysis we'll look at is a regression model. Specifically, we'll do an analysis with two predictor variables. We are evaluating how soil density covaries with percent bacteria and the weight of 2-3 resin dips (`ClodNMinus1`). 
+
+We can see how our response variable co-varies with each predictor variable by using scatterplots. Here we can also add a line for each pair of variables.
+
+```{r biplot}
+gf_point(SoilDensity ~ BacterialPerc,    # plot soil density against bacteria
+         data=soilDF,                    # from the soilDF data
+         xlab="Bacteria %",              # change x-axis label
+         ylab="Soil density (g/mL)") %>% # change y-axis label
+  gf_lm()                                # add a regression line for these two variables only
+```
+
+Now let's run a linear regression for multiple predictor variables (multiple regression).
+
+```{r}
+lm_mod <- lm(SoilDensity ~ BacterialPerc + ClodNMinus1, data=soilDF) # perform linear regression of soil density against bacterial percentage and resin weight and store in an object called lm_mod
+lm_mod # print object
+```
+
+We can also shuffle our data to estimate the variation in the coefficient values. Our null is that the coefficient estimates are equal to 0. That is, there is no relationship between soil density and bacterial percentage or resin dip weight. If the simulated coefficient estimates have an interval that doesn't cross 0 (go from negative to positive), then that is evidence against the null hypothesis.
+
+```{r}
+lm_boot <- do(1000) * lm(SoilDensity ~ BacterialPerc + ClodNMinus1, data=resample(soilDF)) # shuffle our data 1000 times and re-run the linear model each time and store the outputs in lm_boot
+confint(lm_boot) # generate a 95% confidence interval from the simulated values for the linear regression coefficients
+```
+
+Based on the values above, as clod resin weight increases by one gram, soil density decreases by as much as 0.11 grams and as little as 0.015 grams. On the other hand, it looks like bacterial percentage does not have a clear directional effect on soil density.
+
+# Code in entirety
+
+The segment below can be directly copied and pasted into the code editor in RStudio Cloud.
+
+```{r full_code, eval=F}
+###=========================================
+### Load packages
+###=========================================
+
+library("ggplot2") # plotting functions
+library("dplyr") # data wrangling functions
+library("readr") # reading in tables, including ones online
+library("mosaic") # shuffle (permute) our data
+
+###=========================================
+### Load and process data
+###=========================================
+
+### Load in dataset
+soilDF <- readr::read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/soilFullData.tsv") # read in spreadsheet from its URL and store in soilDF
+
+### Preparing data
+soilDF$CSS <- as.factor(soilDF$CSS) # convert 0 and 1 for CSS (coastal sage scrub) from numeric to categorical ("factor")
+
+soilDF <- soilDF %>% # take soilDF object and feed it into -->
+  mutate(PlantComm = ifelse(CSS=="1","CSS","CHAP")) # use mutate to create a new column that has two types of plant communities: CSS and CHAP(arral)
+
+### Calculate useful variables
+soilDF <- soilDF %>% # take soilDF object and feed it into --> 
+  mutate(SoilDensity = ( (ClodWeight1dip - (ClodNMinus1/NumAddedDips)) * (1 - (ClodWeightNdips-DriedWt)/ClodWeightNdips) - RockWeightG)/ClodVolumeInmL ) # create SoilDensity variable from columns in the data following Caspi et al. 2019
+
+soilDF <- soilDF %>%
+  mutate(soilC = SoilDensity * 10^6 * Cperc / 10^3) # create SoilDensity variable, which has these units: kg C/m3
+
+### Display data
+View(soilDF) # open a spreadsheet viewer
+
+###=========================================
+### Exploratory data analysis
+###=========================================
+
+### Calculate summary statistics for SoilDensity
+### for each PlantComm(unity)
+tapply(soilDF$SoilDensity, soilDF$PlantComm, summary) 
+  # use PlantComm as the grouping variable
+  # for SoilDensity and then summarize SoilDensity
+  # for each PlantComm(unity)
+
+### Visualize your variable of interest
+  # Histogram
+gf_histogram(~SoilDensity,              # plot distribution of SoilDensity
+             fill=~CSS,                 # change colors based on CSS (or not)
+             data=soilDF,               # the data come from the soilDF object
+             xlab="Soil density (g/mL)",# change the x-axis label
+             ylab="Count")              # change the y-axis label
+
+### Visualize your variable of interest
+  # Boxplot
+gf_boxplot(SoilDensity~CSS,       # plot distribution of SoilDensity for CSS
+       fill= ~CSS,                # change colors based on CSS (or not)
+       data=soilDF,               # the data come from the soilDF object
+       xlab="Woody vegetation",   # change x-axis label
+       ylab="Soil density (g/mL)")# change y-axis label
+
+### Visualization
+  # Scatterplot
+gf_point(SoilDensity~Species,        # plot SoilDensity against plant Species
+         color= ~CSS,                # change colors based on CSS (or not)
+         data= soilDF,               # the data come from the soilDF object
+         xlab="Species",             # change x-axis label
+         ylab="Soil density (g/mL)") # change y-axis label
+
+###=========================================
+### Analysis - Differences in means
+###=========================================
+
+mean( SoilDensity ~ PlantComm, data = soilDF , na.rm=T) # show mean SoilDensity values for the plant communities and remove missing data
+obs_diff <- diff( mean( SoilDensity ~ PlantComm, data = soilDF , na.rm=T)) # calculate the difference between the means and store in a variable called "obs_diff"
+obs_diff # display the value of obs_diff
+
+### Create random differences by shuffling the data
+randomizing_diffs <- do(1000) * diff( mean( SoilDensity ~ shuffle(PlantComm),na.rm=T, data = soilDF) ) # calculate the mean in SoilDensity when we're shuffling the plant community around 1000 times
+  # Clean up our shuffled data
+names(randomizing_diffs)[1] <- "DiffMeans" # change the name of the variable
+
+# View first few rows of data
+head(randomizing_diffs)
+
+gf_histogram(~ DiffMeans, fill = ~ (DiffMeans >= obs_diff),
+             data = randomizing_diffs,
+             xlab="Difference in mean soil density under null",
+             ylab="Count")
+
+###=========================================
+### Analysis - Correlation coefficient
+###=========================================
+
+### Calculate observed correlation
+obs_cor <- cor(BacterialPerc ~ SoilDensity, data=soilDF, use="complete.obs") # store observed correlation in obs_cor of BacterialPerc vs. SoilDensity
+obs_cor # print out value
+
+### Calculate correlation coefs for shuffled data
+randomizing_cor <- do(1000) * cor(BacterialPerc ~ SoilDensity, 
+                                 data = resample(soilDF), 
+                                 use="complete.obs") 
+# Shuffle the data 1000 times
+# Calculate the correlation coefficient each time
+# By correlating BacterialPerc to SoilDensity from the
+# data object soilDF
+
+quantiles_cor <- qdata( ~ cor, p = c(0.025, 0.975), data=randomizing_cor) # calculate the 2.5% and 97.5% quantiles in our simulated correlation coefficient data (note that 97.5-2.5 = 95!)
+quantiles_cor # display the quantiles
+
+gf_histogram(~ cor, fill = ~ (cor > 0),
+             data = randomizing_cor,
+             xlab="Simulated correlation coefficients",
+             ylab="Count")
+
+###=========================================
+### Analysis - Linear regression
+###=========================================
+### Initial visualization
+gf_point(SoilDensity ~ BacterialPerc,    # plot soil density against bacteria
+         data=soilDF,                    # from the soilDF data
+         xlab="Bacteria %",              # change x-axis label
+         ylab="Soil density (g/mL)") %>% # change y-axis label
+  gf_lm()                                # add a regression line for these two variables only
+
+lm_mod <- lm(SoilDensity ~ BacterialPerc + ClodNMinus1, data=soilDF) # perform linear regression of soil density against bacterial percentage and resin weight and store in an object called lm_mod
+lm_mod # print object
+
+lm_boot <- do(1000) * lm(SoilDensity ~ BacterialPerc + ClodNMinus1, data=resample(soilDF)) # shuffle our data 1000 times and re-run the linear model each time and store the outputs in lm_boot
+confint(lm_boot) # generate a 95% confidence interval from the simulated values for the linear regression coefficients
+```
