@@ -119,7 +119,7 @@ library(googlesheets4)
 library(htmlTable)
 
 ## Pull in Google sheet schedule
-schedDF <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/13Yej_tHkqZqi8l3cumzDeSMjgEUFbl2aqHB9i7AJXUI/edit?usp=sharing",sheet = "Schedule",col_types="cccc")
+schedDF <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/13Yej_tHkqZqi8l3cumzDeSMjgEUFbl2aqHB9i7AJXUI/edit?usp=sharing",sheet = "Schedule",col_types="ccccc")
 
 ## Hack-y workaround to do zebra banding color automagically (based on NA values)
 zebra_cols <- rep("none",dim(schedDF)[1])
