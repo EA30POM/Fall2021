@@ -26,6 +26,10 @@ navbar:
       menu:
         - text: "Analyzing data"
           href: soil.html
+    - text: "Environmental communications"
+      menu:
+        - text: "Visualization"
+          href: EnvComm1.html
 output:
   html_document:
     theme: flatly

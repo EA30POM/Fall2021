@@ -2,7 +2,9 @@
 title: "Soil science analyses"
 author: ""
 date: '`r Sys.Date()`'
-output: html_document
+output: 
+  html_document:
+    number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -219,7 +221,7 @@ The values above give us a 95% confidence interval estimate for our correlation 
 Do we clearly see that our correlation coefficient distribution does or doesn't include 0?
 
 ```{r simCorHist}
-gf_histogram(~ cor, fill = ~ (cor > 0),
+gf_histogram(~ cor,
              data = randomizing_cor,
              xlab="Simulated correlation coefficients",
              ylab="Count")

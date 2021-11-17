@@ -1,0 +1,441 @@
+---
+title: "Week 12"
+author: ""
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE)
+```
+
+# Overview
+
+We will be:
+
+1. importing the class data for biodiversity media coverage;
+2. seeing how to subset or summarize these data;
+3. perform different visualizations of the data.
+
+You are welcome to either follow along with the text and copy-paste the code into the console **or** read through and then copy the whole script into a new `R` script in [Rstudio.Cloud Enviro Comms Lab](https://rstudio.cloud/spaces/170230/project/3241288). **Please make sure that you start a new project using that link.** Do **not** continue using the projects from the Air Quality Lab or the Soil Science Lab.
+
+## Loading packages
+
+First, let's make sure we have useful functions to help us in this project.
+
+```{r libraries}
+## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets
+
+## Libraries for text data
+library(vader) # package that permits for sentiment analysis
+library(tidytext) # package for wrangling text data
+library(stringr) # package with helpful functions dealing with string, or character/text data.
+library(tokenizers) # package to split strings into smaller entities (e.g. messages into words, ngrams, or individual letters)
+```
+
+## Importing the class dataset
+
+Next, we're going to import the class dataset.
+
+```{r reading_in_data}
+CSPdf <- read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv") # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called "CSPdf"
+    # CSPdf stands for Conservation Science Partners data frame
+```
+
+We can always pull up a viewer of our data by using these commands:
+
+```
+## Version 1:
+CSPdf %>% # take CSPdf and feed it into the next command
+    head( ) %>% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --> f(x) --> g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )
+```
+
+## Some simple summaries of the data
+
+What topics are in the data?
+
+```{r topic_counts}
+CSPdf %>%  # feed CSPdf into the next command
+  group_by(Topic) %>% # bucket the data based on the Topics of each article
+  summarise(Count = n()) # get the counts across all of the articles for every topic
+
+## How much data do we have?
+dim(CSPdf) # displays number of rows and columns
+nrow(CSPdf) # displays number of row
+```
+
+*Questions*:
+
+* How would I modify this code to get the counts for `Portrayals`?
+* How would I modify this code to get the counts for `Country`?
+* How would I modify this code to get the counts for `Taxon`?
+
+### Topic fields
+
+* Exploitation: Humans are either illegally or legally hunting, fishing, or harvesting the species
+* HWI: Human-wildlife interaction, ranging from sightings to conflict
+* PAs: Protected areas
+* Wildlife info: Information about species ranging from their natural history to scientific findings
+* Threats: Broad threats to biodiversity
+* Pollution: Impacts or concerns about pollution on species
+* Conservation: Conservation actions or ideas for protecting species
+* Health: Species as a disease source or otherwise interacting with human health
+* Zoo: Zoo animal media coverage
+* Habitat Loss
+* Ecotourism
+* Climate Change
+
+# Focusing on a particular taxon
+
+Let's say that my group decides to focus on wolves. How do I filter the data to just look at wolves?
+
+Easy! I can use the `filter` function from the `dplyr` package.
+
+```{r subset_wolf}
+subDF <- CSPdf %>% # take CSPdf and feed it forward into
+  filter(Taxon=="wolf")  # the filter function, selecting only for the rows where Taxon is equal to wolf
+  # and assign the output to subDF, short for subset data frame
+```
+
+*Questions*:
+
+* How would I modify this code to focus just on `deer`?
+* How would I modify this code to focus on articles that look at `Exploitation` but include all of the species?
+* How would I modify this code to focus on articles that came out in the United States and portray species as `Vulnerable`?
+
+# Example analyses
+
+Below, we'll walk through some example visualizations.
+
+## Summaries for variables
+
+Now that we've subset our data, how can we get helpful information about different variables?
+
+```{r}
+summaryDF <- subDF %>% # take the subset data, subDF, and feed it into
+  group_by(Topic) %>% # a grouping operation to bucket the data based on topic
+  summarise(Count=n()) # then get the count of articles by topic
+```
+
+*Questions:*
+
+* How would I modify this code to get the count of articles about wolves by `Country`?
+* How would I modify the code to get the `min`imum or `mean` value for `Sentiment` for articles about wolves?
+
+We can use a square pie chart, aka a waffle chart, to display this information about the topic by topic breakdown for wolf articles.
+
+```{r}
+names(summaryDF) <- c("name","vals") # changing column names for the summaryDF object
+col_ramp <- RColorBrewer::brewer.pal(nrow(summaryDF), "Set3") # selecting a nicer set of colors
+waffle(data.frame(summaryDF),colors=col_ramp) # create a waffle plot for the summaryDF object, with the color ramp we have
+```
+
+*Questions:*
+
+* How would I modify the code above to generate this same type of plot for `Country` counts for wolves instead?
+* Is this type of plot appropriate for a variable like `Sentiment`?
+
+## What is the relationship between portrayals and topics for wolves?
+
+This is a type of analysis that is called a ["cross-tabulation"](https://www.qualtrics.com/experience-management/research/cross-tabulation/), or crosstab for short. Every entry in a crosstab table tells you the **number of observations** that have some specific pairing of variables. For example, how many articles about wolves have the portrayal `Vulnerable` with the topic `Exploitation`?
+
+```{r cross_tab}
+crossDF <- subDF %>% # start from our subset data, subDF
+  group_by(Topic,Portrayal) %>% # bucket the data based on Topic and Portrayal
+  summarise(Count=n()) # get the counts for each combination of Topic and Portrayal
+  # save the output in the object crossDF (short for crosstab data frame)
+```
+
+*Questions*:
+
+* How would I modify this code to create a cross-tab for `Country` and `Topic`?
+* How would I modify this code to create a cross-tab for `Portrayal` and `Country`?
+* Would it make sense to create cross-tabs for `Sentiment` and `Country`?
+
+Now we can visualize our crosstab.
+
+```{r ctab_viz}
+p <- ggplot(crossDF, aes(Topic, Portrayal, Count)) # initiate a plot using crossDF
+p <- p + geom_point(aes(size = Count), colour = "skyblue") # plot points for each combination of topic and portrayal - change the size of the point based on the counts
+p <- p + theme_bw() + labs(x="",y="",size="Count:") # modify the plot appearnace
+p <- p + scale_size_continuous(range=c(1,10)) + geom_text(aes(label = Count)) # change the range of the point sizes and add text information about the crosstabs
+p <- p + theme(axis.text.x = element_text(angle = 45, hjust=1),
+               legend.position = "top") # change the plot visualization
+p # display the plot
+```
+
+*Questions*:
+
+* How would I modify this code for the other cross-tabs above?
+
+## Visualizing the distribution of sentiment
+
+What is the distribution of sentiment toward wolves?
+
+```{r}
+p <- ggplot(data=subDF, aes(x=Sentiment)) # create a plot from the subDF object using the column Sentiment
+p <- p + geom_histogram() # add a histogram to the plot
+p <- p + theme_classic() # change the display of the plot
+p <- p + labs(y="Count") # change the y-axis label
+p # display the plot
+```
+
+How does sentiment vary across topics for wolves?
+
+```{r}
+p <- ggplot(data=subDF, aes(x=Topic,y=Sentiment)) # create a plot using the columns Topic and Sentiment from the subDF data
+p <- p + geom_boxplot() # add a boxplot
+p <- p + geom_hline(yintercept=0, linetype="dashed", col="red") # add a red dahsed line to demarcate where the positive vs. negative articles are located
+p <- p + coord_flip() # switch the x- and y-axis
+p # display plot
+```
+
+## Visualizing the distribution of articles across countries
+
+Below, we are going to do several things:
+
+* pull in a dataset that has spatial attributes for all countries
+
+```{r}
+worldDF <- world # store the dataset for the world in worldDF, world data frame
+```
+
+* get counts by country for wolf articles
+
+```{r}
+speciesCountryCounts <- subDF %>% # feed the subsetDF forward
+  group_by(Country) %>% # bucket based on country
+  summarise(Count=n()) # get counts by country
+```
+
+* add on the counts for each country for the wolf articles
+
+```{r}
+speciesMap <- worldDF %>% # take the worldDF object and feed forward
+  left_join(speciesCountryCounts, by=c("name_long"="Country")) # combine with our count data by country, 
+  # getting the data to match on the columns "name_long" (countries) and "Country"
+  # store outputs in speciesMap
+```
+
+* plot the world's countries with colors given by article count
+
+```{r}
+p <- ggplot(data=speciesMap, aes(fill=Count)) # use the speciesMap object to create a map
+p <- p + geom_sf(aes(fill=Count),color="gray47",size=0.05) # add on the boundaries of countries
+p <- p + labs(x="",y="",fill="Count of wolf articles: ") # change the names of the variables as needed 
+p <- p + theme_minimal() # change the display style
+p <- p + theme(legend.position = "top") # move the legend bar to the top
+p # display the plot
+```
+
+## Visualizing sentiment across different countries
+
+How would we visualize the distribution of sentiment for wolf media coverage across countries?
+
+First, we probably want to make our lives easier but just focusing on the countries that have more wolf coverage.
+
+```{r}
+subDF %>% # take subDF and feed forward into
+  group_by(Country) %>% # a grouping step to bucket by Country
+  summarise(Count=n()) # then get the count of coverage by country
+```
+
+Next, we're going to further subset the data to just the few countries that have more articles on wolves.
+
+```{r}
+subCountryDF <- subDF %>% # take subDF
+  filter(Country=="United States" | 
+         Country=="United Kingdom" |
+         Country=="Canada") # only keep the articles that are coming from the US, Canada, or the UK
+  # This | vertical bar is the same as saying OR
+  # Save the output in subCountryDF
+```
+
+Finally, we can make a plot of sentiment across countries for wolves.
+
+```{r}
+p <- ggplot(data=subCountryDF, aes(x=Country,y=Sentiment)) # use the subCountryDF object to initiate a plot of country and sentiment
+p <- p + geom_boxplot() # add on a boxplot
+p <- p + geom_hline(yintercept=0, linetype="dashed", col="red") # add a red dahsed line to demarcate where the positive vs. negative articles are located
+p <- p + coord_flip() # switch the x and y-axis
+p # display plot
+```
+
+# Code in entirety
+
+The code below can be copied and pasted into RStudio Cloud for running directly.
+
+```{r, eval=F}
+###==============================
+### Loading packages
+###==============================
+
+## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets
+
+## Libraries for text data
+library(vader) # package that permits for sentiment analysis
+library(tidytext) # package for wrangling text data
+library(stringr) # package with helpful functions dealing with string, or character/text data.
+library(tokenizers) # package to split strings into smaller entities (e.g. messages into words, ngrams, or individual letters)
+
+###==============================
+### Reading in the data
+###==============================
+
+CSPdf <- read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv") # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called "CSPdf"
+    # CSPdf stands for Conservation Science Partners data frame
+
+## Inspecting the data, version 1:
+CSPdf %>% # take CSPdf and feed it into the next command
+    head( ) %>% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --> f(x) --> g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )
+
+###==============================
+### Data summaries
+###==============================
+
+CSPdf %>%  # feed CSPdf into the next command
+  group_by(Topic) %>% # bucket the data based on the Topics of each article
+  summarise(Count = n()) # get the counts across all of the articles for every topic
+
+###==============================
+### Subsetting the data
+###==============================
+
+subDF <- CSPdf %>% # take CSPdf and feed it forward into
+  filter(Taxon=="wolf")  # the filter function, selecting only for the rows where Taxon is equal to wolf
+  # and assign the output to subDF, short for subset data frame
+
+###==============================
+### Summarizing the subset
+###==============================
+
+summaryDF <- subDF %>% # take the subset data, subDF, and feed it into
+  group_by(Topic) %>% # a grouping operation to bucket the data based on topic
+  summarise(Count=n()) # then get the count of articles by topic
+
+###==============================
+### Visualizing the distro
+### of categories in the data
+###==============================
+
+names(summaryDF) <- c("name","vals") # changing column names for the summaryDF object
+col_ramp <- RColorBrewer::brewer.pal(nrow(summaryDF), "Set3") # selecting a nicer set of colors
+waffle(data.frame(summaryDF),colors=col_ramp) # create a waffle plot for the summaryDF object, with the color ramp we have
+
+###==============================
+### Crosstabs
+###==============================
+
+crossDF <- subDF %>% # start from our subset data, subDF
+  group_by(Topic,Portrayal) %>% # bucket the data based on Topic and Portrayal
+  summarise(Count=n()) # get the counts for each combination of Topic and Portrayal
+  # save the output in the object crossDF (short for crosstab data frame)
+
+  ## Visualization of crosstabs
+p <- ggplot(crossDF, aes(Topic, Portrayal, Count)) # initiate a plot using crossDF
+p <- p + geom_point(aes(size = Count), colour = "skyblue") # plot points for each combination of topic and portrayal - change the size of the point based on the counts
+p <- p + theme_bw() + labs(x="",y="",size="Count:") # modify the plot appearnace
+p <- p + scale_size_continuous(range=c(1,10)) + geom_text(aes(label = Count)) # change the range of the point sizes and add text information about the crosstabs
+p <- p + theme(axis.text.x = element_text(angle = 45, hjust=1),
+               legend.position = "top") # change the plot visualization
+p # display the plot
+
+###==============================
+### Visualizing a numeric
+### variable like sentiment
+###==============================
+
+p <- ggplot(data=subDF, aes(x=Sentiment)) # create a plot from the subDF object using the column Sentiment
+p <- p + geom_histogram() # add a histogram to the plot
+p <- p + theme_classic() # change the display of the plot
+p <- p + labs(y="Count") # change the y-axis label
+p # display the plot
+
+p <- ggplot(data=subDF, aes(x=Topic,y=Sentiment)) # create a plot using the columns Topic and Sentiment from the subDF data
+p <- p + geom_boxplot() # add a boxplot
+p <- p + geom_hline(yintercept=0, linetype="dashed", col="red") # add a red dahsed line to demarcate where the positive vs. negative articles are located
+p <- p + coord_flip() # switch the x- and y-axis
+p # display plot
+
+###==============================
+### Visualizing the distro
+### of articles across countries
+###==============================
+
+worldDF <- world # store the dataset for the world in worldDF, world data frame
+
+speciesCountryCounts <- subDF %>% # feed the subsetDF forward
+  group_by(Country) %>% # bucket based on country
+  summarise(Count=n()) # get counts by country
+
+speciesMap <- worldDF %>% # take the worldDF object and feed forward
+  left_join(speciesCountryCounts, by=c("name_long"="Country")) # combine with our count data by country, 
+  # getting the data to match on the columns "name_long" (countries) and "Country"
+  # store outputs in speciesMap
+  
+  ## Create plot
+p <- ggplot(data=speciesMap, aes(fill=Count)) # use the speciesMap object to create a map
+p <- p + geom_sf(aes(fill=Count),color="gray47",size=0.05) # add on the boundaries of countries
+p <- p + labs(x="",y="",fill="Count of wolf articles: ") # change the names of the variables as needed 
+p <- p + theme_minimal() # change the display style
+p <- p + theme(legend.position = "top") # move the legend bar to the top
+p # display the plot
+
+###==============================
+### Visualizing the distro
+### of sentiment across countries
+###==============================
+
+subDF %>% # take subDF and feed forward into
+  group_by(Country) %>% # a grouping step to bucket by Country
+  summarise(Count=n()) # then get the count of coverage by country
+
+  ## subset to the countries with the most articles
+subCountryDF <- subDF %>% # take subDF
+  filter(Country=="United States" | 
+         Country=="United Kingdom" |
+         Country=="Canada") # only keep the articles that are coming from the US, Canada, or the UK
+  # This | vertical bar is the same as saying OR
+
+p <- ggplot(data=subCountryDF, aes(x=Country,y=Sentiment)) # use the subCountryDF object to initiate a plot of country and sentiment
+p <- p + geom_boxplot() # add on a boxplot
+p <- p + geom_hline(yintercept=0, linetype="dashed", col="red") # add a red dahsed line to demarcate where the positive vs. negative articles are located
+p <- p + coord_flip() # switch the x and y-axis
+p # display plot
+  # Save the output in subCountryDF
+```
+

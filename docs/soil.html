@@ -9,12 +9,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="" />
 
-<meta name="date" content="2021-10-27" />
+<meta name="date" content="2021-11-16" />
 
 <title>Soil science analyses</title>
 
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -298,6 +298,18 @@ $(document).ready(function () {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Environmental communications
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="EnvComm1.html">Visualization</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -311,13 +323,14 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Soil science analyses</h1>
-<h4 class="date">2021-10-27</h4>
+<h4 class="author"></h4>
+<h4 class="date">2021-11-16</h4>
 
 </div>
 
 
-<div id="overview" class="section level1">
-<h1>Overview</h1>
+<div id="overview" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Overview</h1>
 <p>This page provides a demonstration on using <code>R</code> and shuffling our data to analyze your soil science hypotheses to generate figures and results for your poster presentation. You are welcome to either follow along with the text and copy-paste the code into the console <strong>or</strong> read through and then copy the whole script into a new <code>R</code> script in <a href="https://rstudio.cloud/spaces/170230/project/3124212">Rstudio.cloud</a>. <strong>Please make sure that you start a new project using that link.</strong> Do <strong>not</strong> continue using the projects from the Air Quality Lab.</p>
 <p>This table below shows the hypotheses for each group:</p>
 <table>
@@ -381,10 +394,10 @@ $(document).ready(function () {
 </tbody>
 </table>
 </div>
-<div id="preparing-data" class="section level1">
-<h1>Preparing data</h1>
-<div id="load-packages" class="section level2">
-<h2>1: Load packages</h2>
+<div id="preparing-data" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Preparing data</h1>
+<div id="load-packages" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> 1: Load packages</h2>
 <p>Below, we will start by loading packages that we’ll need.</p>
 <pre class="r"><code>### Load packages
 library(&quot;ggplot2&quot;) # plotting functions
@@ -392,8 +405,8 @@ library(&quot;dplyr&quot;) # data wrangling functions
 library(&quot;readr&quot;) # reading in tables, including ones online
 library(&quot;mosaic&quot;) # shuffle (permute) our data</code></pre>
 </div>
-<div id="read-data" class="section level2">
-<h2>2: Read data</h2>
+<div id="read-data" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> 2: Read data</h2>
 <p>Next, we will pull in our data and start creating some useful variables, such as <code>SoilDensity</code>, the density of the soil (units: g/mL), or <code>soilC</code>, the quantity of carbon in the soil given its density.</p>
 <pre class="r"><code>### Load in dataset
 soilDF &lt;- readr::read_tsv(&quot;https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/soilFullData.tsv&quot;) # read in spreadsheet from its URL and store in soilDF
@@ -415,8 +428,8 @@ soilDF &lt;- soilDF %&gt;%
 # View(soilDF) # open a spreadsheet viewer
   # delete the leading comment/hashtag sign to run the code above</code></pre>
 </div>
-<div id="exploratory-data-analysis" class="section level2">
-<h2>3: Exploratory data analysis</h2>
+<div id="exploratory-data-analysis" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> 3: Exploratory data analysis</h2>
 <p>Below, I provide fully-worked examples of different ways of inspecting your data and performing analyses <strong>assuming that <code>SoilDensity</code> is the variable of interest</strong>. In applying this code to your own data, you will want to think about what variable name should <em>replace</em> <code>SoilDensity</code> in the commands below. For example, you would change <code>tapply(soilDF$SoilDensity, soilDF$PlantComm, summary)</code> to <code>tapply(soilDF$ResponseVariable,soilDF$PlantComm, summary)</code> where <code>ResponseVariable</code> is the variable you’re analyzing.</p>
 <p>Let’s start with exploratory data analysis where you calculate summary statistics and visualize your variable.</p>
 <pre class="r"><code>### Calculate summary statistics for SoilDensity
@@ -461,11 +474,11 @@ gf_point(SoilDensity~Species,        # plot SoilDensity against plant Species
 <p><img src="soil_files/figure-html/scatter-1.png" width="672" /></p>
 </div>
 </div>
-<div id="analysis" class="section level1">
-<h1>Analysis</h1>
+<div id="analysis" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Analysis</h1>
 <p>The code below shows you how to do different types of analyses.</p>
-<div id="calculating-differences-in-means" class="section level2">
-<h2>1: Calculating differences in means</h2>
+<div id="calculating-differences-in-means" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> 1: Calculating differences in means</h2>
 <p>Let’s say I am interested in determining <code>if Coastal Sage Scrub (CSS) plants tend to have higher soil density than Chaparral (CHAP) plants</code>. This sounds like I want to see if there is a clear difference in the mean values of <code>SoilDensity</code> for the CSS plants versus the CHAP plants. We can start by calculating the mean difference we observe.</p>
 <pre class="r"><code>mean( SoilDensity ~ PlantComm, data = soilDF , na.rm=T) # show mean SoilDensity values for the plant communities and remove missing data</code></pre>
 <pre><code>##      CHAP       CSS 
@@ -498,32 +511,32 @@ obs_diff # display the value of obs_diff</code></pre>
 <pre><code>## # A tibble: 28 x 8
 ##    SampleID Species Group CSS   PlantComm SoilDensity soilC orig.id 
 ##    &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   
-##  1 Mallau5  Mallau      5 0     CHAP            1.13  2.19  18.26.8 
-##  2 Mallau2  Mallau      2 0     CHAP            1.17  2.48  6.18.18 
-##  3 Samnig4  Samnig      4 0     CHAP            0.716 2.48  16.12.18
-##  4 Mallau1  Mallau      1 0     CHAP            1.08  6.64  2.2.12  
-##  5 Samnig2  Samnig      2 0     CHAP            1.16  9.47  8.8.10  
-##  6 Mallau7  Mallau      7 0     CHAP            0.453 2.47  26.10.16
-##  7 Mallau1  Mallau      1 0     CHAP            0.852 2.64  2.4.2   
-##  8 Samnig3  Samnig      3 0     CHAP            1.08  0.801 12.24.4 
-##  9 Samnig1  Samnig      1 0     CHAP            0.852 2.51  4.4.26  
-## 10 Samnig2  Samnig      2 0     CHAP            1.16  2.05  8.8.6   
+##  1 Mallau5  Mallau      5 0     CHAP            1.17  9.47  18.18.10
+##  2 Samnig4  Samnig      4 0     CHAP            0.852 1.99  16.4.20 
+##  3 Mallau3  Mallau      3 0     CHAP            0.453 3.36  10.10.28
+##  4 Samnig7  Samnig      7 0     CHAP            1.03  2.48  28.16.18
+##  5 Mallau3  Mallau      3 0     CHAP            0.852 2.48  10.4.18 
+##  6 Samnig1  Samnig      1 0     CHAP            0.875 2.51  4.14.14 
+##  7 Mallau5  Mallau      5 0     CHAP            1.17  2.19  18.18.8 
+##  8 Samnig2  Samnig      2 0     CHAP            0.901 0.801 8.28.4  
+##  9 Mallau5  Mallau      5 0     CHAP            1.14  2.47  18.20.16
+## 10 Samnig1  Samnig      1 0     CHAP            1.17  9.47  4.18.10 
 ## # … with 18 more rows</code></pre>
 <p>We can repeat that procedure again and see how the data shifts when we do another shuffle.</p>
 <pre class="r"><code>resample(soilDF[,c(1:4,19:21)],groups=PlantComm,shuffled=c(&quot;SoilDensity&quot;,&quot;soilC&quot;))</code></pre>
 <pre><code>## # A tibble: 28 x 8
 ##    SampleID Species Group CSS   PlantComm SoilDensity soilC orig.id 
 ##    &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;fct&gt; &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   
-##  1 Mallau1  Mallau      1 0     CHAP            1.03  2.05  2.16.6  
-##  2 Samnig6  Samnig      6 0     CHAP            0.716 2.05  24.12.6 
-##  3 Mallau5  Mallau      5 0     CHAP            0.852 0.801 18.4.4  
-##  4 Samnig5  Samnig      5 0     CHAP            0.716 2.64  20.12.2 
-##  5 Mallau2  Mallau      2 0     CHAP            1.14  1.99  6.20.20 
-##  6 Samnig3  Samnig      3 0     CHAP            1.08  2.51  12.2.14 
-##  7 Mallau2  Mallau      2 0     CHAP            1.08  2.72  6.24.24 
-##  8 Samnig7  Samnig      7 0     CHAP            0.901 2.48  28.28.18
-##  9 Mallau1  Mallau      1 0     CHAP            1.08  2.47  2.2.16  
-## 10 Mallau4  Mallau      4 0     CHAP            0.473 3.36  14.6.28 
+##  1 Mallau3  Mallau      3 0     CHAP            0.453  2.51 10.10.26
+##  2 Mallau3  Mallau      3 0     CHAP            1.03   9.47 10.16.10
+##  3 Mallau7  Mallau      7 0     CHAP            1.13   2.64 26.26.2 
+##  4 Mallau4  Mallau      4 0     CHAP            1.13   2.47 14.26.16
+##  5 Mallau3  Mallau      3 0     CHAP            1.08   2.51 10.24.26
+##  6 Mallau7  Mallau      7 0     CHAP            1.13   2.72 26.26.24
+##  7 Samnig4  Samnig      4 0     CHAP            0.453  9.47 16.10.10
+##  8 Mallau1  Mallau      1 0     CHAP            1.14   2.51 2.20.26 
+##  9 Samnig6  Samnig      6 0     CHAP            1.16   2.51 24.8.14 
+## 10 Mallau2  Mallau      2 0     CHAP            0.473  2.05 6.6.6   
 ## # … with 18 more rows</code></pre>
 <p>Let’s shuffle the data and see what that means for the distribution of mean <code>SoilDensity</code> differences between <code>CSS</code> and <code>CHAP</code>.</p>
 <pre class="r"><code>### Create random differences by shuffling the data
@@ -533,13 +546,13 @@ names(randomizing_diffs)[1] &lt;- &quot;DiffMeans&quot; # change the name of the
 
 # View first few rows of data
 head(randomizing_diffs)</code></pre>
-<pre><code>##      DiffMeans
-## 1  0.036459588
-## 2 -0.078961624
-## 3  0.008728901
-## 4 -0.031539682
-## 5 -0.081536007
-## 6 -0.086841344</code></pre>
+<pre><code>##     DiffMeans
+## 1 -0.10091638
+## 2  0.06418694
+## 3  0.13688483
+## 4 -0.11022677
+## 5 -0.05805162
+## 6 -0.03977072</code></pre>
 <p>Now we can visualize the distribution of simulated differences in mean soil density and our observed difference between CSS and CHAP.</p>
 <pre class="r"><code>gf_histogram(~ DiffMeans, fill = ~ (DiffMeans &gt;= obs_diff),
              data = randomizing_diffs,
@@ -550,10 +563,10 @@ head(randomizing_diffs)</code></pre>
 <pre class="r"><code># What proportion of simulated values were larger than our observed difference
 prop( ~ DiffMeans &gt;= 0.142, data = randomizing_diffs) # 0.142 was the observed difference value - see obs_diff</code></pre>
 <pre><code>## prop_TRUE 
-##     0.078</code></pre>
+##     0.094</code></pre>
 </div>
-<div id="calculating-correlation-coefficients" class="section level2">
-<h2>2: Calculating correlation coefficients</h2>
+<div id="calculating-correlation-coefficients" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> 2: Calculating correlation coefficients</h2>
 <p>How would I determine if there is a non-zero correlation between two variables or that two variables are positively correlated? I can again start by calculating the observed correlation coefficient for the data.</p>
 <pre class="r"><code>### Calculate observed correlation
 obs_cor &lt;- cor(BacterialPerc ~ SoilDensity, data=soilDF, use=&quot;complete.obs&quot;) # store observed correlation in obs_cor of BacterialPerc vs. SoilDensity
@@ -573,18 +586,18 @@ randomizing_cor &lt;- do(1000) * cor(BacterialPerc ~ SoilDensity,
 <pre class="r"><code>quantiles_cor &lt;- qdata( ~ cor, p = c(0.025, 0.975), data=randomizing_cor) # calculate the 2.5% and 97.5% quantiles in our simulated correlation coefficient data (note that 97.5-2.5 = 95!)
 quantiles_cor # display the quantiles</code></pre>
 <pre><code>##       2.5%      97.5% 
-## -0.3709577  0.4270110</code></pre>
+## -0.3616886  0.4404304</code></pre>
 <p>The values above give us a 95% confidence interval estimate for our correlation coefficient!</p>
 <p>Do we clearly see that our correlation coefficient distribution does or doesn’t include 0?</p>
-<pre class="r"><code>gf_histogram(~ cor, fill = ~ (cor &gt; 0),
+<pre class="r"><code>gf_histogram(~ cor,
              data = randomizing_cor,
              xlab=&quot;Simulated correlation coefficients&quot;,
              ylab=&quot;Count&quot;)</code></pre>
 <p><img src="soil_files/figure-html/simCorHist-1.png" width="672" /></p>
 <p>In this case, our simulated correlation coefficient includes 0 in its 95% simulated confidence interval. We can also see this in the plot. So given these data, we cannot reject the null hypothesis. There is not sufficiently strong data that percent bacteria associates with soil density in any clear way.</p>
 </div>
-<div id="performing-a-regression-model" class="section level2">
-<h2>3: Performing a regression model</h2>
+<div id="performing-a-regression-model" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> 3: Performing a regression model</h2>
 <p>The last type of analysis we’ll look at is a regression model. Specifically, we’ll do an analysis with two predictor variables. We are evaluating how soil density covaries with percent bacteria and the weight of 2-3 resin dips (<code>ClodNMinus1</code>).</p>
 <p>We can see how our response variable co-varies with each predictor variable by using scatterplots. Here we can also add a line for each pair of variables.</p>
 <pre class="r"><code>gf_point(SoilDensity ~ BacterialPerc,    # plot soil density against bacteria
@@ -607,17 +620,17 @@ lm_mod # print object</code></pre>
 <pre class="r"><code>lm_boot &lt;- do(1000) * lm(SoilDensity ~ BacterialPerc + ClodNMinus1, data=resample(soilDF)) # shuffle our data 1000 times and re-run the linear model each time and store the outputs in lm_boot
 confint(lm_boot) # generate a 95% confidence interval from the simulated values for the linear regression coefficients</code></pre>
 <pre><code>##            name        lower        upper level     method     estimate
-## 1     Intercept  0.504835299  1.467213918  0.95 percentile  1.024699637
-## 2 BacterialPerc -0.004383335  0.008219272  0.95 percentile  0.001395041
-## 3   ClodNMinus1 -0.112649542 -0.041981578  0.95 percentile -0.072025910
-## 4         sigma  0.150670210  0.255404364  0.95 percentile  0.215825625
-## 5     r.squared  0.121123016  0.681636132  0.95 percentile  0.408701398
-## 6             F  1.722695895 26.763263833  0.95 percentile  8.639911321</code></pre>
+## 1     Intercept  0.485000639  1.454901014  0.95 percentile  1.024699637
+## 2 BacterialPerc -0.003884517  0.008336703  0.95 percentile  0.001395041
+## 3   ClodNMinus1 -0.114519978 -0.041290731  0.95 percentile -0.072025910
+## 4         sigma  0.149840184  0.253620954  0.95 percentile  0.215825625
+## 5     r.squared  0.129104671  0.687909850  0.95 percentile  0.408701398
+## 6             F  1.853045247 27.552531960  0.95 percentile  8.639911321</code></pre>
 <p>Based on the values above, as clod resin weight increases by one gram, soil density decreases by as much as 0.11 grams and as little as 0.015 grams. On the other hand, it looks like bacterial percentage does not have a clear directional effect on soil density.</p>
 </div>
 </div>
-<div id="code-in-entirety" class="section level1">
-<h1>Code in entirety</h1>
+<div id="code-in-entirety" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Code in entirety</h1>
 <p>The segment below can be directly copied and pasted into the code editor in RStudio Cloud.</p>
 <pre class="r"><code>###=========================================
 ### Load packages
