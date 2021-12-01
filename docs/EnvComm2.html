@@ -386,7 +386,7 @@ What are the patterns for the topic of Human Wildlife Interaction globally?
 Map
 </td>
 <td style="text-align: center;">
-NA
+X2
 </td>
 </tr>
 <tr>
@@ -400,7 +400,7 @@ Are there differences in the distribution of humans or animals being portrayed a
 Waffle
 </td>
 <td style="text-align: center;">
-NA
+X2
 </td>
 </tr>
 <tr>
@@ -414,7 +414,7 @@ What is the relationship between the topic of climate change and portrayals of e
 Balloon/Waffle
 </td>
 <td style="text-align: center;">
-NA
+X2
 </td>
 </tr>
 <tr>
@@ -428,7 +428,7 @@ How are tigers portrayed in Asia and outside of Asia?
 Waffle
 </td>
 <td style="text-align: center;">
-NA
+X2
 </td>
 </tr>
 <tr>
@@ -470,7 +470,7 @@ Is there a difference between shark attacks and portrayals of sharks as threats 
 Scatterplot
 </td>
 <td style="text-align: center;">
-NA
+X2
 </td>
 </tr>
 <tr>
@@ -484,7 +484,7 @@ What is the relationship between portrayals and topics for sharks?
 Balloon
 </td>
 <td style="text-align: center;">
-NA
+X2
 </td>
 </tr>
 <tr>
@@ -526,7 +526,7 @@ Are carnivorous animals less likely to be portrayed as vulnerable or victimized 
 Waffle
 </td>
 <td style="text-align: center;">
-NA
+X2
 </td>
 </tr>
 <tr>
@@ -540,12 +540,12 @@ Is ecotourism a more common portrayal in developing countries than in developed 
 Waffle
 </td>
 <td style="border-bottom: 2px solid grey; text-align: center;">
-NA
+X2
 </td>
 </tr>
 </tbody>
 </table>
-<p>It is <strong>not necessary</strong> to perform a statistical analysis of the data to answer your question. However, some groups have questions that are amenable to statistical analysis based on tests we have already learned about in this class. If that is the case for your group, I have included my suggestion there.</p>
+<p>It is <strong>not necessary</strong> to perform a statistical analysis of the data to answer your question. However, for each question, I have included my own recommendation about an appropriate type of analysis. I include an example of each type of analysis below.</p>
 <p>By clicking through the menu for <code>Groups</code>, you will be able to see scaffolded code for your group’s question.</p>
 </div>
 <div id="example-code-for-analyses" class="section level1">
@@ -671,7 +671,7 @@ SimulateChiSq &lt;- do(1000) * chisq( tally( ~ Portrayal + shuffle(Country), dat
 <pre class="r"><code>  ### Calculate the proportion of values larger than our Chi-squared value
 sim_p_val &lt;- length(which(SimulateChiSq$X.squared &gt; obs_chi))/nrow(SimulateChiSq)
 sim_p_val # Is this &lt; 0.05?</code></pre>
-<pre><code>## [1] 0.021</code></pre>
+<pre><code>## [1] 0.022</code></pre>
 </div>
 <div id="difference-in-means---two-samples" class="section level2">
 <h2><span class="header-section-number">2.2</span> Difference in means - two samples</h2>
@@ -698,21 +698,21 @@ names(randomizing_diffs)[1] &lt;- &quot;DiffMeans&quot; # change the name of the
 # View first few rows of data
 head(randomizing_diffs)</code></pre>
 <pre><code>##      DiffMeans
-## 1 -0.038039132
-## 2 -0.070533457
-## 3 -0.013263034
-## 4  0.156207823
-## 5 -0.001018051
-## 6 -0.040797738</code></pre>
+## 1  0.003582072
+## 2 -0.022345891
+## 3 -0.062543771
+## 4 -0.040562963
+## 5 -0.014759724
+## 6  0.073500997</code></pre>
 <pre class="r"><code># View the mean of the simulated differences
 mean(randomizing_diffs$DiffMeans) # is this larger or smaller than our observed difference</code></pre>
-<pre><code>## [1] 0.002496472</code></pre>
+<pre><code>## [1] 0.002125535</code></pre>
 <p>Based on what we saw above, it looks like our <code>obs_diff</code> may be smaller than most of the simulated differences in means. That means that more extreme data would be <em>smaller</em> than our observed difference.</p>
 <p>Fourth, we’ll calculate the probability that the simulated differences in mean sentiment were more extreme than our observed value.</p>
 <pre class="r"><code># What proportion of simulated values were &quot;more extreme&quot; than our value?
 prop( ~ DiffMeans &lt; obs_diff, data = randomizing_diffs)</code></pre>
 <pre><code>## prop_TRUE 
-##     0.367</code></pre>
+##     0.364</code></pre>
 </div>
 <div id="difference-in-means---more-than-two-samples" class="section level2">
 <h2><span class="header-section-number">2.3</span> Difference in means - more than two samples</h2>
@@ -727,12 +727,12 @@ obs_aov # display the value of the test statistic</code></pre>
 <pre class="r"><code>sim_aov &lt;- do(1000) * anova(lm( Sentiment ~ shuffle(Country), data=CSPdf))$`F value`[1]
 head(sim_aov) # display the first few rows of simulated test statistics</code></pre>
 <pre><code>##      result
-## 1 1.0474102
-## 2 1.0788933
-## 3 0.8183321
-## 4 1.4774731
-## 5 1.1971695
-## 6 0.7795948</code></pre>
+## 1 1.4105489
+## 2 0.9129884
+## 3 0.7930602
+## 4 1.0104461
+## 5 1.1319473
+## 6 1.1494879</code></pre>
 <p>Third, we’ll calculate a <span class="math inline">\(p\)</span>-value based on the proportion of simulated test statistics that are larger than our observed test statistic.</p>
 <pre class="r"><code>prop( ~ result &gt; obs_aov, data=sim_aov)</code></pre>
 <pre><code>## prop_TRUE 

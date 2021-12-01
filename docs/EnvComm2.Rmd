@@ -27,7 +27,7 @@ classDF %>%
   htmlTable(rnames=FALSE) # can't figure out for now how to merge cells - whatever
 ```
 
-It is **not necessary** to perform a statistical analysis of the data to answer your question. However, some groups have questions that are amenable to statistical analysis based on tests we have already learned about in this class. If that is the case for your group, I have included my suggestion there.
+It is **not necessary** to perform a statistical analysis of the data to answer your question. However, for each question, I have included my own recommendation about an appropriate type of analysis. I include an example of each type of analysis below.
 
 By clicking through the menu for `Groups`, you will be able to see scaffolded code for your group's question.
 
