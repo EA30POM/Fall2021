@@ -13,7 +13,7 @@
 
 <meta name="date" content="2021-11-30" />
 
-<title>Week 12</title>
+<title>Week 14</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -348,7 +348,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Week 12</h1>
+<h1 class="title toc-ignore">Week 14</h1>
 <h4 class="date">2021-11-30</h4>
 
 </div>
@@ -671,7 +671,7 @@ SimulateChiSq &lt;- do(1000) * chisq( tally( ~ Portrayal + shuffle(Country), dat
 <pre class="r"><code>  ### Calculate the proportion of values larger than our Chi-squared value
 sim_p_val &lt;- length(which(SimulateChiSq$X.squared &gt; obs_chi))/nrow(SimulateChiSq)
 sim_p_val # Is this &lt; 0.05?</code></pre>
-<pre><code>## [1] 0.022</code></pre>
+<pre><code>## [1] 0.025</code></pre>
 </div>
 <div id="difference-in-means---two-samples" class="section level2">
 <h2><span class="header-section-number">2.2</span> Difference in means - two samples</h2>
@@ -698,21 +698,21 @@ names(randomizing_diffs)[1] &lt;- &quot;DiffMeans&quot; # change the name of the
 # View first few rows of data
 head(randomizing_diffs)</code></pre>
 <pre><code>##      DiffMeans
-## 1  0.003582072
-## 2 -0.022345891
-## 3 -0.062543771
-## 4 -0.040562963
-## 5 -0.014759724
-## 6  0.073500997</code></pre>
+## 1 -0.067686811
+## 2 -0.043996547
+## 3  0.084564769
+## 4  0.033222414
+## 5 -0.005977672
+## 6 -0.047298070</code></pre>
 <pre class="r"><code># View the mean of the simulated differences
 mean(randomizing_diffs$DiffMeans) # is this larger or smaller than our observed difference</code></pre>
-<pre><code>## [1] 0.002125535</code></pre>
+<pre><code>## [1] -0.0006127999</code></pre>
 <p>Based on what we saw above, it looks like our <code>obs_diff</code> may be smaller than most of the simulated differences in means. That means that more extreme data would be <em>smaller</em> than our observed difference.</p>
 <p>Fourth, we’ll calculate the probability that the simulated differences in mean sentiment were more extreme than our observed value.</p>
 <pre class="r"><code># What proportion of simulated values were &quot;more extreme&quot; than our value?
 prop( ~ DiffMeans &lt; obs_diff, data = randomizing_diffs)</code></pre>
 <pre><code>## prop_TRUE 
-##     0.364</code></pre>
+##     0.399</code></pre>
 </div>
 <div id="difference-in-means---more-than-two-samples" class="section level2">
 <h2><span class="header-section-number">2.3</span> Difference in means - more than two samples</h2>
@@ -727,12 +727,12 @@ obs_aov # display the value of the test statistic</code></pre>
 <pre class="r"><code>sim_aov &lt;- do(1000) * anova(lm( Sentiment ~ shuffle(Country), data=CSPdf))$`F value`[1]
 head(sim_aov) # display the first few rows of simulated test statistics</code></pre>
 <pre><code>##      result
-## 1 1.4105489
-## 2 0.9129884
-## 3 0.7930602
-## 4 1.0104461
-## 5 1.1319473
-## 6 1.1494879</code></pre>
+## 1 0.5930035
+## 2 0.8801567
+## 3 1.1233541
+## 4 1.1706447
+## 5 0.8775084
+## 6 0.6880138</code></pre>
 <p>Third, we’ll calculate a <span class="math inline">\(p\)</span>-value based on the proportion of simulated test statistics that are larger than our observed test statistic.</p>
 <pre class="r"><code>prop( ~ result &gt; obs_aov, data=sim_aov)</code></pre>
 <pre><code>## prop_TRUE 
