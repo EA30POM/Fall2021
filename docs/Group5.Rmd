@@ -1,0 +1,124 @@
+---
+title: "Group 5"
+author: ""
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE)
+```
+
+# Overview
+
+This document contains code for **Group 5**. It is your task to modify the code in places where I have left `...` as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.
+
+# Getting started
+
+## Loading in packages
+
+```
+## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets
+```
+
+## Importing the class dataset
+
+Next, we're going to import the class dataset.
+
+```
+CSPdf <- read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv") # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called "CSPdf"
+    # CSPdf stands for Conservation Science Partners data frame
+```
+
+We can always pull up a viewer of our data by using these commands:
+
+```
+## Version 1:
+CSPdf %>% # take CSPdf and feed it into the next command
+    head( ) %>% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --> f(x) --> g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )
+```
+
+# Addressing the first question
+
+*How does sentiment vary between sharks and pangolins?*
+
+## Preparing the data
+
+The first thing that is necessary is subsetting the data to shark or pangolin articles.
+
+```
+### 5.1: Subset data to articles on shark or pangolin
+group5sub <- CSPdf %>%
+  filter(Taxon %in% c("shark")) # How would you filter to the articles where the Taxon is "shark" or "pangolin"?
+  
+View(group5sub) # view the subset data
+```
+
+## Visualizing the data
+
+We're ready now to visualize the data, plotting sentiment distributions for sharks vs. pangolins.
+
+```
+### 5.2: Visualize data
+g5 <- ggplot(data=group5sub, aes(x=...,y...)) # create a plot using the appropriate columns 
+      # Hint: You may want to use ElephantRange and Sentiment
+g5 # inspect intermediate output
+g5 <- g5 + geom_boxplot() # add a boxplot
+g5 # inspect intermediate output
+g5 <- g5 + geom_hline(yintercept=0, linetype="dashed", col="red") # add a red dahsed line to demarcate where the positive vs. negative articles are located
+g5 # inspect intermediate output
+g5 <- g5 + labs(x="...",y="...") # change axis labels
+g5 # display final plot
+```
+
+# Addressing the second question
+
+*How do sentiments towards sharks vary between countries?*
+
+## Preparing the data
+
+We first need to filter the data to the articles focused on sharks.
+
+```
+### 5.3: Subset data to articles on shark
+group5sub1 <- CSPdf %>%
+  filter(...) # How would you filter to the articles where the Taxon is "shark"?
+
+View(group5sub1) # inspect output
+```
+
+## Visualizing the data
+
+We will depict the distribution of sentiments toward sharks across countries below.
+
+```
+### 5.4: Visualize data - 
+g5 <- ggplot(data=group5sub1, aes(x=...,y...)) # create a plot using the appropriate columns (Hint: Sentiment and Country may be relevant)
+g5 # inspect intermediate output
+g5 <- g5 + geom_boxplot() # add a boxplot
+g5 # inspect intermediate output
+g5 <- g5 + geom_hline(yintercept=0, linetype="dashed", col="red") # add a red dahsed line to demarcate where the positive vs. negative articles are located
+g5 # inspect intermediate output
+g5 <- g5 + labs(x="...",y="...") # change axis labels
+g5 <- g5 + coord_flip() # flip x and y-axis
+g5 # display final plot
+```

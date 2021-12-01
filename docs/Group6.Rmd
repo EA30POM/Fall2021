@@ -1,0 +1,189 @@
+---
+title: "Group 6"
+author: ""
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE)
+```
+
+# Overview
+
+This document contains code for **Group 6**. It is your task to modify the code in places where I have left `...` as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.
+
+# Getting started
+
+## Loading in packages
+
+```
+## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets
+```
+
+## Importing the class dataset
+
+Next, we're going to import the class dataset.
+
+```
+CSPdf <- read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv") # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called "CSPdf"
+    # CSPdf stands for Conservation Science Partners data frame
+```
+
+We can always pull up a viewer of our data by using these commands:
+
+```
+## Version 1:
+CSPdf %>% # take CSPdf and feed it into the next command
+    head( ) %>% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --> f(x) --> g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )
+```
+
+# Addressing the first question
+
+*Are carnivorous animals less likely to be portrayed as vulnerable or victimized than herbivorous animals?*
+
+## Preparing the data
+
+The first thing we need to do is to recode the data so we know which articles are about:
+
+* Herbivores vs. carnivores - based on the entry in the column `Taxon`
+* Animals that are portrayed as Victims or not, most likely based on `Portrayal`
+
+```
+### 6.1: The first task is to recode the data for portrayal (Vulnerable/Victimized) and Herbivory (yes/No)
+  # 6.1.1: First, see what species are present
+table(CSPdf$Taxon) # print out the unique values of Taxon
+  # 6.1.2: Recoding the data
+group6DF <- CSPdf %>%
+  mutate(Herbivore = case_when(Taxon %in% c("deer","elephant") ~ "Herbivore",
+                               TRUE ~ "Carnivore"),
+         Victimized = case_when(Portrayal %in% c("Vulnerable","Victim") ~ "Victim",
+                                TRUE ~ "Not"))
+  # This is a little complicated but we've created two new columns:
+  # 1) Herbivore - which tracks if each species is an herbivore or not,
+  # 2) Victimized - which tracks if the animal in each article is portrayed
+  # as a victim or not.
+  # For both columns, you'll need to add the other relevant fields for Herbivore or Victim.
+  # TRUE ~ the other category is an easy way to say anything that isn't 
+  # an herbivore or a victim portrayal is the other category (Carnivore or Not Victim)
+
+View(group6DF) # inspect output
+```
+
+## Preparing data for visualization
+
+We will now cross-tabulate the data to get counts of each combination of type of animal (Herbivore or not) and victimization (victim or not).
+
+```
+### 6.2: Preparing data for visualization
+group6cross <- group6DF %>%
+  group_by(..., ...) %>% # Fill in the correct columns (Hint: Herbivore and Victimized may be relevant)
+  summarize(Count=...) # get the counts for each combination of the grouping variables
+`   # How would you correct the ... in the code above? 
+    # Hint: n() may be helpful - it counts the instances for each combination of variables
+    # save the output in the object group6cross (short for crosstab data frame)
+  # 6.2.1: We need to clean up the crosstab to present the counts as percentages
+  # for a better waffle plot output
+group6cross <- group6cross %>%
+  group_by(Herbivore) %>% 
+  mutate(Percentages=round(Count/sum(Count)*100,0))
+
+View(group6cross) # view output
+
+```
+
+## Visualization
+
+We're ready now to visualize the data.
+
+```
+### 6.3: Generating a waffle chart
+waff6 <- ggplot(group6cross, aes(fill=Victimized, values=Percentages)) # initiate plot
+waff6 <- waff6 + geom_waffle() # add on waffle
+waff6 # display output
+waff6 <- waff6 + facet_wrap(~Herbivore) # create sub-plots by Country
+waff6 # display output
+waff6 <- waff6 + theme_void() # change the plot visuals
+waff6 # display output
+waff6 <- waff6 + labs(x="",y="",fill="Portrayal: ") + theme(legend.position="top")
+waff6 # display final plot
+```
+
+# Addressing the second question
+
+*Is ecotourism a more common portrayal in developing countries than in developed ones?*
+
+## Preparing the data
+
+As above, we need to recode the data based on countries that are or are not developing. We also need to recode the topics as either being about ecotourism or not.
+
+```
+### 6.4: Recoding the data based on developing country status and ecoutourism topic
+  # 6.4.1: See what countries are in the data
+table(CSPdf$Country)
+  # 6.4.2: See what topics are in the data
+table(CSPdf$Topic)
+  # 6.4.3: Recode the data
+group6DF2 <- CSPdf %>%
+  mutate(Developing = case_when(Country %in% c("Indonesia","India","Cambodia") ~ "Developing",
+                                TRUE ~ "Developed"),
+         Ecotourism = case_when(Topic=="Ecotourism"~"Ecotourism",
+                                TRUE ~ "Not ecotourism"))
+  ## We're basically doing the same steps here as above.
+  ## You will need to modify the Developing command.
+  ## The Ecotourism column command may be OK.
+```
+
+## Preparing the data for visualization
+
+Next, we want to get the counts of country (developing or not) and topic (ecotourism or not). We'll do that by cross-tabulating these data.
+
+```
+### 6.5: Cross tabulating country and topic
+group6cross2 <- group6DF2 %>%
+  group_by(..., ...) %>% # Hint: Developing and Ecotourism
+  summarize(Count=...) # Hint: n() for counts
+
+  # 6.5.1: Get percentages for the cross-tab so it's cleaner to display
+group6cross2 <- group6cross2 %>%
+  group_by(Developing) %>%
+  mutate(Percentages=round(Count/sum(Count)*100,0))
+
+View(group6cross2) # see output
+```
+
+## Visualizing the data
+
+Now we're ready to visualize the data.
+
+```
+### 6.6: Generating a waffle chart
+waff6 <- ggplot(group6cross2, aes(fill=Ecotourism, values=Percentages)) # initiate plot
+waff6 <- waff6 + geom_waffle() # add on waffle
+waff6 # display output
+waff6 <- waff6 + facet_wrap(~Developing) # create sub-plots by Country
+waff6 # display output
+waff6 <- waff6 + theme_void() # change the plot visuals
+waff6 # display output
+waff6 <- waff6 + labs(x="",y="",fill="Portrayal: ") + theme(legend.position="top")
+waff6 # display final plot
+```

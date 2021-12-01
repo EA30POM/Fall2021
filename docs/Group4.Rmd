@@ -1,0 +1,125 @@
+---
+title: "Group 4"
+author: ""
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE)
+```
+
+# Overview
+
+This document contains code for **Group 4**. It is your task to modify the code in places where I have left `...` as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.
+
+# Getting started
+
+## Loading in packages
+
+```
+## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets
+```
+
+## Importing the class dataset
+
+Next, we're going to import the class dataset.
+
+```
+CSPdf <- read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv") # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called "CSPdf"
+    # CSPdf stands for Conservation Science Partners data frame
+```
+
+We can always pull up a viewer of our data by using these commands:
+
+```
+## Version 1:
+CSPdf %>% # take CSPdf and feed it into the next command
+    head( ) %>% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --> f(x) --> g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )
+```
+
+# Addressing the first question
+
+*Is there a difference between shark attacks and portrayals of sharks as threats globally?*
+
+If there isn't data on shark attacks around the world, it could be possible to evaluate a related version of this question by focusing on articles that do and do not have HWI as a topic, subset to the articles focused on sharks. The assumption here is that HWI is a reflection of shark attacks.
+
+# Addressing the second question
+
+*What is the relationship between portrayals and topics for sharks?*
+
+## Subsetting the data
+
+The first task is to subset the data to articles focused on sharks. I also suspect that it would be beneficial to simplify the set of Portrayals further. I provide some code to recode the data based on the values of Portrayals.
+
+```
+### 4.1: Subset data to sharks
+group4sub <- CSPdf %>%
+  filter(...) # How would you filter to the articles where the Taxon is "shark"?
+
+### 4.2: Recategorize the data based on the Portrayal field
+  # 4.2.1: First get a sense of the different portrayals for sharks
+table(group4sub$Portrayal)
+  # 4.2.2: Recategorize data based on the shark's portrayal
+group4sub1 <- group4sub %>%
+  mutate(SharkPortrayal = case_when(Portrayal %in% c("Dangerous", "Controversial") ~"Aggressor",
+                                    Portrayal %in% c("Vulnerable","Victim") ~ "Vulnerable")) 
+    # create a new column called SharkPortrayal that recategorizes the data 
+    # based on Portrayal, then store the outputs in group4sub1
+    # How would you add on other portrayals?
+
+View(group4sub1) # view your output
+```
+
+## Preparing data for visualization
+
+We first need to cross-tabulate the data for portrayals and topics for the data subset to sharks.
+
+```
+### 4.3: Cross tabulate portrayals and topics
+group4cross <- group4sub %>%
+  group_by(...,...) %>%
+  summarise(Count=...) # get the counts for each combination of TopicCat and Portrayal
+`   # How would you correct the ... in the code above? 
+    # Hint: n() may be helpful - it counts the instances for each combination of variables
+    # save the output in the object group4cross (short for crosstab data frame)
+
+View(group4cross) # view output
+```
+
+## Visualization
+
+We're ready to plot the data.
+
+```
+### 4.4 Visualize data
+g4 <- ggplot(group4cross, aes(..., ..., ...)) # initiate a plot using group4cross - what columns would you want to use?
+g4 # inspect intermediate output
+g4 <- g4 + geom_point(aes(size = Count), colour = "skyblue") # plot points for each combination of topic and portrayal - change the size of the point based on the counts
+g4 # inspect intermediate output
+g4 <- g4 + theme_bw() + labs(x="",y="",size="Count:") # modify the plot appearance
+g4 # inspect intermediate output
+g4 <- g4 + scale_size_continuous(range=c(1,10)) + geom_text(aes(label = Count)) # add text information and change the size of the points
+g4 <- g4 + theme(axis.text.x = element_text(angle = 45, hjust=1),
+                 legend.position = "top") # change the plot visualization
+g4 # display the plot
+```

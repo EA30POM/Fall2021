@@ -1,0 +1,158 @@
+---
+title: "Group 3"
+author: ""
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE)
+```
+
+# Overview
+
+This document contains code for **Group 3**. It is your task to modify the code in places where I have left `...` as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.
+
+# Getting started
+
+## Loading in packages
+
+```
+## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets
+```
+
+## Importing the class dataset
+
+Next, we're going to import the class dataset.
+
+```
+CSPdf <- read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv") # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called "CSPdf"
+    # CSPdf stands for Conservation Science Partners data frame
+```
+
+We can always pull up a viewer of our data by using these commands:
+
+```
+## Version 1:
+CSPdf %>% # take CSPdf and feed it into the next command
+    head( ) %>% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --> f(x) --> g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )
+```
+
+# Addressing the first question
+
+*What are the difference in sentiments towards elephants in countries where they are native vs. non-native? *
+
+## Preparing the data
+
+We first need to subset the data to the articles about elephants. We also need to recode the data based on which countries are in the native range of elephants.
+
+```
+  ### 3.1: Subset data to articles focused on elephants
+group3sub <- CSPdf %>%
+  filter(...) # How would you filter to the articles where the Taxon is "elephant"?
+
+  ### 3.2: Recategorize countries into native vs. non-native range
+    # 3.2.1: See the set of countries in the data
+table(group3sub$Country)
+    # 3.2.2: Recategorize data based on Country
+group3sub1 <- group3sub %>%
+  mutate(ElephantRange = case_when(Country %in% c("India", "Thailand") ~"Native",
+                                   Country %in% c("United States","United Kingdom") ~ "Non-native")) 
+    # Create a new column called ElephantRange that lists
+    # whether or not each article is in the native or non-native range
+    # of elephants. How would we add on the other countries 
+    # to recast them as native or non-native?
+```
+
+## Visualization
+
+We are now ready to plot the data
+
+```
+### 3.3: Visualizing the distribution of sentiments in native vs. non-native range
+
+g3 <- ggplot(data=group3sub1, aes(x=...,y=...)) # create a plot using the appropriate columns (hint: range of elephants and sentiment)
+g3 # inspect intermediate output
+g3 <- g3 + geom_boxplot() # add a boxplot
+g3 # inspect intermediate output
+g3 <- g3 + geom_hline(yintercept=0, linetype="dashed", col="red") # add a red dahsed line to demarcate where the positive vs. negative articles are located
+g3 # inspect intermediate output
+g3 <- g3 + labs(x="...",y="...") # change axis labels to something more informative
+g3 <- g3 + coord_flip() # switch the x- and y-axis
+g3 # display final plot
+```
+
+# Addressing the second question
+
+*If we subset by HWI (Human Wildlife Interaction), what is the distribution of positive vs negative sentiments towards elephants?*
+
+## Preparing the data
+
+It is unclear to me if the group is more keen on 1) ultimately visualizing the distribution of sentiment across countries only for those articles focusing on `HWI` (a map plot) or 2) displaying the distribution of sentiment values for `HWI` and non-`HWI` articles.
+
+In case my first guess is correct, here is scaffolded code for this analysis.
+
+```
+### 3.4: Subset data to articles about HWI
+group3sub1 <- CSPdf %>%
+  filter(...) # How would you filter to the articles where the Topic is "HWI"?
+
+  ## 3.4.1: Summarize the values of sentiment by country
+group3sum <- group3sub1 %>%
+  group_by(Country) %>% # group the data by Country
+  summarise(MedianSent=median(Sentiment)) # calculate the median sentiment in each country
+```
+
+## Joining up the data with geospatial informatino
+
+The next step is to combine these subset data with global GIS data.
+
+```
+### 3.5: Pull in global GIS data
+worldDF <- world # store the dataset for the world in worldDF, world data frame
+
+### 3.6: Join the subset data with the GIS data
+speciesMap <- worldDF %>% # take the worldDF object and feed forward
+  left_join(group3sum, by=c("name_long"="Country")) # combine the group3sum data with worldDF by country, 
+    # getting the data to match on the columns "name_long" (countries) and "Country"
+```
+
+## Visualizing the data
+
+We're ready to plot the data now.
+
+```
+### 3.7: Generating the map
+    # Your task: How do you color in countries based on Sentiment?
+    # Hint: you may want to change the ... in fill=... 
+    # Perhaps using MedianSent makes sense
+g3 <- ggplot(data=speciesMap, aes(fill=...)) # use the speciesMap object to create a map
+g3 # inspect the current output
+g3 <- g3 + geom_sf(aes(fill=...),color="gray47",size=0.05) # add on the boundaries of countries, change the ... for fill
+g3 # inspect the current output
+g3 <- g3 + labs(x="",y="",fill="...: ") # change the names of the variables as needed 
+g3 # inspect the current output
+g3 <- g3 + theme_minimal() # change the display style
+g3 # inspect the current output
+g3 <- g3 + theme(legend.position = "top") # move the legend bar to the top
+g3 # display the final plot
+```

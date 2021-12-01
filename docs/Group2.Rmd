@@ -1,0 +1,156 @@
+---
+title: "Group 2"
+author: ""
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE)
+```
+
+# Overview
+
+This document contains code for **Group 2**. It is your task to modify the code in places where I have left `...` as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.
+
+# Getting started
+
+## Loading in packages
+
+```
+## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets
+```
+
+## Importing the class dataset
+
+Next, we're going to import the class dataset.
+
+```
+CSPdf <- read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv") # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called "CSPdf"
+    # CSPdf stands for Conservation Science Partners data frame
+```
+
+We can always pull up a viewer of our data by using these commands:
+
+```
+## Version 1:
+CSPdf %>% # take CSPdf and feed it into the next command
+    head( ) %>% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --> f(x) --> g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )
+```
+
+# Addressing the first question
+
+*What is the relationship between the topic of climate change and portrayals of (endangered) species?*
+
+## Recoding the data
+
+The first thing we need to do is to recode the data so we know which articles are about:
+
+* `Climate Change` (or some other topic)
+
+If you'd like, you can modify the first commands below to also recategorize the articles based on whether or not the species is an Endangered species. Alternatively, because there are so few articles where the topic is climate change ($n=8$ out of a total $n=971$), you could reformulate the question to be on "How do portrayals vary by endangered vs. non-endangered species"?
+
+```
+### 2.1: Recategorize data
+group2DF <- CSPdf %>%
+  mutate(TopicCat = case_when(Topic=="Climate Change"~"Climate Change",
+                              Topic!="Climate Change"~"Other")) 
+# create a new column called TopicCat that records if the article is about Climate Change or not (Other)
+
+### 2.2: Create a cross-tabulation of TopicCat and Portrayal
+group2cross <- group2DF %>% # start from the group 2 data
+  group_by(TopicCat,Portrayal) %>% # bucket the data based on TopicCat and Portrayal
+  summarise(Count=...) # get the counts for each combination of TopicCat and Portrayal
+`   # How would you correct the ... in the code above? 
+    # Hint: n() may be helpful - it counts the instances for each combination of variables
+    # save the output in the object group2cross (short for crosstab data frame)
+
+### 2.3: Visualizing your output
+  # 2.3.1: Balloon plot
+g2 <- ggplot(group2cross, aes(..., ..., ...)) # initiate a plot using group2cross - what columns would you want to use?
+g2 # inspect intermediate output
+g2 <- g2 + geom_point(aes(size = Count), colour = "skyblue") # plot points for each combination of topic and portrayal - change the size of the point based on the counts
+g2 # inspect intermediate output
+g2 <- g2 + theme_bw() + labs(x="",y="",size="Count:") # modify the plot appearance
+g2 # inspect intermediate output
+g2 <- g2 + scale_size_continuous(range=c(1,10)) + geom_text(aes(label = Count)) # add text information and change the size of the points
+g2 <- g2 + theme(axis.text.x = element_text(angle = 45, hjust=1),
+                 legend.position = "top") # change the plot visualization
+g2 # display the plot
+```
+
+# Addressing the second question
+
+*How are tigers portrayed in Asia and outside of Asia?*
+
+## Recoding and subsetting the data
+
+As above, we need to recode the data to be based on whether or not the `Country` of each article is in Asia or not. We also need to focus on articles about tigers.
+
+```
+### 2.4: Subset the data to filter to tigers
+group2sub <- CSPdf %>%
+  filter(...) # subset to the rows where the Taxon is "tiger"
+  # assign the output to group2sub
+
+### 2.5: Categorize the countries as being in Asia or not
+  # 2.5.1: See what the countries are
+table(group2sub$Country)
+group2sub <- group2sub %>%
+  mutate(InAsia=case_when(Country %in% c("Japan","India")~"Asia",
+                          TRUE~"Not Asia") 
+  # complete the re-labelling for the other countries
+  # TRUE~"Placeholder" just means that any other values of Country are "Not Asia"
+View(group2sub) # see your data
+```
+
+## Preparing data for a waffle plot
+
+The next step is to cross-tabulate the data to prepare the data for visualization.
+
+```
+### 2.6: Cross tabulate portrayals for the countries that are in or outside of Asia
+group2cross2 <- group2sub %>%
+  group_by(...,...) %>% # Categorize the data based on whether or not they are InAsia and the Portrayal of species
+  summarise(Count=...) # get the counts for each combination of InAsia and Portrayal
+`   # How would you correct the ... in the code above? 
+    # Hint: n() may be helpful - it counts the instances for each combination of variables
+    # save the output in the object group2cross2 (short for crosstab data frame number 2)
+View(group2cross2)
+```
+
+## Visualization
+
+We're ready to plot the data now.
+
+```
+### 2.7: Visualize the data
+waff2 <- ggplot(group2cross2, aes(fill=Portrayal, values=Count)) # initiate plot
+waff2 <- waff2 + geom_waffle() # add on waffle charts
+waff2 # display output
+waff2 <- waff2 + facet_wrap(~InAsia) # create sub-plots by InAsia
+waff2 # display output
+waff2 <- waff2 + theme_void() # change the plot visuals
+waff2 # display output
+waff2 <- waff2 + labs(x="",y="",fill="Portrayal: ") + theme(legend.position="top")
+waff2 # display final plot
+```

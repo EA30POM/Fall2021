@@ -12,7 +12,7 @@
 
 <meta name="date" content="2021-11-30" />
 
-<title>Air quality lab introduction</title>
+<title>Group 5</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -348,39 +348,103 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Air quality lab introduction</h1>
+<h1 class="title toc-ignore">Group 5</h1>
 <h4 class="author"></h4>
 <h4 class="date">2021-11-30</h4>
 
 </div>
 
 
-<div id="air-quality-lab-overview" class="section level1">
-<h1>Air Quality Lab Overview</h1>
-<p>In this lab, you will work in groups to examine how air quality varies across Claremont. To that end, you will use these <a href="https://support.thepocketlab.com/knowledge/pocketlab-air-specifications?hsLang=en">PocketLab Air (a.k.a. PL Air) sensor units</a>. Each PL Air unit measures:</p>
-<ul>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-co2-sensor-work">CO2</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-ozone-sensor-work">Ozone</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-particulate-matter-sensor-work">Particulate Matter</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/measuring-air-quality-index">Air Quality Index</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/tips-for-measuring-temperature">Temperature</a></li>
-</ul>
-<p>Ultimately, by working with your groups and incorporating the class’ data, you will develop a lesson plan focused on some aspect of air quality or climate change. This lesson plan will be the lab report for this first class project. Your recommendations will directly inform ongoing community science initiatives at PocketLab such as <a href="https://archive.thepocketlab.com/educators/article/blue-sky-zero">Blue Sky Zero</a> or <a href="https://blog.thepocketlab.com/georgia-tech-is-mapping-heat-islands-in-atlanta-with-pocketlabs">Urban Heat Islands</a>.</p>
-<div id="week-1-of-lab" class="section level2">
-<h2>Week 1 of lab</h2>
-<p>Our objective in the first week of lab is to:</p>
-<ul>
-<li>Set up a <a href="https://app.thepocketlab.com/home">PocketLab Notebook account</a>
-<ul>
-<li>Note that the class code is <code>NFAOMZ</code></li>
-<li>You will log in as a <code>Student</code> using this class code and your FIRST NAME, LAST NAME as it is displayed in the Pomona Portal (if you would like that updated, please let me know and I can do that)</li>
-</ul></li>
-<li>Connect to your group’s PL Air sensor on a computer and record data</li>
-<li>Connect to your group’s PL Air sensor on a phone and record data</li>
-<li>Upload your group’s mobile phone data as a <code>.csv</code> (comma-separated values spreadsheet file) to the <a href="https://drive.google.com/drive/folders/1yuZs0T3uS1ziE0fMSjWEKAntHfvnQHx7?usp=sharing">Week 1 data folder</a>.</li>
-</ul>
-<p>If you encounter any issues, please let Prof. Chang or the lab TA know ASAP.</p>
-<p><strong>Congrats on completing lab for the first week of EA 30!</strong></p>
+<div id="overview" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Overview</h1>
+<p>This document contains code for <strong>Group 5</strong>. It is your task to modify the code in places where I have left <code>...</code> as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.</p>
+</div>
+<div id="getting-started" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Getting started</h1>
+<div id="loading-in-packages" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Loading in packages</h2>
+<pre><code>## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets</code></pre>
+</div>
+<div id="importing-the-class-dataset" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Importing the class dataset</h2>
+<p>Next, we’re going to import the class dataset.</p>
+<pre><code>CSPdf &lt;- read_tsv(&quot;https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv&quot;) # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called &quot;CSPdf&quot;
+    # CSPdf stands for Conservation Science Partners data frame</code></pre>
+<p>We can always pull up a viewer of our data by using these commands:</p>
+<pre><code>## Version 1:
+CSPdf %&gt;% # take CSPdf and feed it into the next command
+    head( ) %&gt;% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --&gt; f(x) --&gt; g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )</code></pre>
+</div>
+</div>
+<div id="addressing-the-first-question" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Addressing the first question</h1>
+<p><em>How does sentiment vary between sharks and pangolins?</em></p>
+<div id="preparing-the-data" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Preparing the data</h2>
+<p>The first thing that is necessary is subsetting the data to shark or pangolin articles.</p>
+<pre><code>### 5.1: Subset data to articles on shark or pangolin
+group5sub &lt;- CSPdf %&gt;%
+  filter(Taxon %in% c(&quot;shark&quot;)) # How would you filter to the articles where the Taxon is &quot;shark&quot; or &quot;pangolin&quot;?
+  
+View(group5sub) # view the subset data</code></pre>
+</div>
+<div id="visualizing-the-data" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Visualizing the data</h2>
+<p>We’re ready now to visualize the data, plotting sentiment distributions for sharks vs. pangolins.</p>
+<pre><code>### 5.2: Visualize data
+g5 &lt;- ggplot(data=group5sub, aes(x=...,y...)) # create a plot using the appropriate columns 
+      # Hint: You may want to use ElephantRange and Sentiment
+g5 # inspect intermediate output
+g5 &lt;- g5 + geom_boxplot() # add a boxplot
+g5 # inspect intermediate output
+g5 &lt;- g5 + geom_hline(yintercept=0, linetype=&quot;dashed&quot;, col=&quot;red&quot;) # add a red dahsed line to demarcate where the positive vs. negative articles are located
+g5 # inspect intermediate output
+g5 &lt;- g5 + labs(x=&quot;...&quot;,y=&quot;...&quot;) # change axis labels
+g5 # display final plot</code></pre>
+</div>
+</div>
+<div id="addressing-the-second-question" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Addressing the second question</h1>
+<p><em>How do sentiments towards sharks vary between countries?</em></p>
+<div id="preparing-the-data-1" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Preparing the data</h2>
+<p>We first need to filter the data to the articles focused on sharks.</p>
+<pre><code>### 5.3: Subset data to articles on shark
+group5sub1 &lt;- CSPdf %&gt;%
+  filter(...) # How would you filter to the articles where the Taxon is &quot;shark&quot;?
+
+View(group5sub1) # inspect output</code></pre>
+</div>
+<div id="visualizing-the-data-1" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Visualizing the data</h2>
+<p>We will depict the distribution of sentiments toward sharks across countries below.</p>
+<pre><code>### 5.4: Visualize data - 
+g5 &lt;- ggplot(data=group5sub1, aes(x=...,y...)) # create a plot using the appropriate columns (Hint: Sentiment and Country may be relevant)
+g5 # inspect intermediate output
+g5 &lt;- g5 + geom_boxplot() # add a boxplot
+g5 # inspect intermediate output
+g5 &lt;- g5 + geom_hline(yintercept=0, linetype=&quot;dashed&quot;, col=&quot;red&quot;) # add a red dahsed line to demarcate where the positive vs. negative articles are located
+g5 # inspect intermediate output
+g5 &lt;- g5 + labs(x=&quot;...&quot;,y=&quot;...&quot;) # change axis labels
+g5 &lt;- g5 + coord_flip() # flip x and y-axis
+g5 # display final plot</code></pre>
 </div>
 </div>
 

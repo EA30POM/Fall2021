@@ -12,7 +12,7 @@
 
 <meta name="date" content="2021-11-30" />
 
-<title>Air quality lab introduction</title>
+<title>Group 2</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -348,39 +348,135 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Air quality lab introduction</h1>
+<h1 class="title toc-ignore">Group 2</h1>
 <h4 class="author"></h4>
 <h4 class="date">2021-11-30</h4>
 
 </div>
 
 
-<div id="air-quality-lab-overview" class="section level1">
-<h1>Air Quality Lab Overview</h1>
-<p>In this lab, you will work in groups to examine how air quality varies across Claremont. To that end, you will use these <a href="https://support.thepocketlab.com/knowledge/pocketlab-air-specifications?hsLang=en">PocketLab Air (a.k.a. PL Air) sensor units</a>. Each PL Air unit measures:</p>
+<div id="overview" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Overview</h1>
+<p>This document contains code for <strong>Group 2</strong>. It is your task to modify the code in places where I have left <code>...</code> as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.</p>
+</div>
+<div id="getting-started" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Getting started</h1>
+<div id="loading-in-packages" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Loading in packages</h2>
+<pre><code>## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets</code></pre>
+</div>
+<div id="importing-the-class-dataset" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Importing the class dataset</h2>
+<p>Next, we’re going to import the class dataset.</p>
+<pre><code>CSPdf &lt;- read_tsv(&quot;https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv&quot;) # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called &quot;CSPdf&quot;
+    # CSPdf stands for Conservation Science Partners data frame</code></pre>
+<p>We can always pull up a viewer of our data by using these commands:</p>
+<pre><code>## Version 1:
+CSPdf %&gt;% # take CSPdf and feed it into the next command
+    head( ) %&gt;% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --&gt; f(x) --&gt; g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )</code></pre>
+</div>
+</div>
+<div id="addressing-the-first-question" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Addressing the first question</h1>
+<p><em>What is the relationship between the topic of climate change and portrayals of (endangered) species?</em></p>
+<div id="recoding-the-data" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Recoding the data</h2>
+<p>The first thing we need to do is to recode the data so we know which articles are about:</p>
 <ul>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-co2-sensor-work">CO2</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-ozone-sensor-work">Ozone</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-particulate-matter-sensor-work">Particulate Matter</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/measuring-air-quality-index">Air Quality Index</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/tips-for-measuring-temperature">Temperature</a></li>
+<li><code>Climate Change</code> (or some other topic)</li>
 </ul>
-<p>Ultimately, by working with your groups and incorporating the class’ data, you will develop a lesson plan focused on some aspect of air quality or climate change. This lesson plan will be the lab report for this first class project. Your recommendations will directly inform ongoing community science initiatives at PocketLab such as <a href="https://archive.thepocketlab.com/educators/article/blue-sky-zero">Blue Sky Zero</a> or <a href="https://blog.thepocketlab.com/georgia-tech-is-mapping-heat-islands-in-atlanta-with-pocketlabs">Urban Heat Islands</a>.</p>
-<div id="week-1-of-lab" class="section level2">
-<h2>Week 1 of lab</h2>
-<p>Our objective in the first week of lab is to:</p>
-<ul>
-<li>Set up a <a href="https://app.thepocketlab.com/home">PocketLab Notebook account</a>
-<ul>
-<li>Note that the class code is <code>NFAOMZ</code></li>
-<li>You will log in as a <code>Student</code> using this class code and your FIRST NAME, LAST NAME as it is displayed in the Pomona Portal (if you would like that updated, please let me know and I can do that)</li>
-</ul></li>
-<li>Connect to your group’s PL Air sensor on a computer and record data</li>
-<li>Connect to your group’s PL Air sensor on a phone and record data</li>
-<li>Upload your group’s mobile phone data as a <code>.csv</code> (comma-separated values spreadsheet file) to the <a href="https://drive.google.com/drive/folders/1yuZs0T3uS1ziE0fMSjWEKAntHfvnQHx7?usp=sharing">Week 1 data folder</a>.</li>
-</ul>
-<p>If you encounter any issues, please let Prof. Chang or the lab TA know ASAP.</p>
-<p><strong>Congrats on completing lab for the first week of EA 30!</strong></p>
+<p>If you’d like, you can modify the first commands below to also recategorize the articles based on whether or not the species is an Endangered species. Alternatively, because there are so few articles where the topic is climate change (<span class="math inline">\(n=8\)</span> out of a total <span class="math inline">\(n=971\)</span>), you could reformulate the question to be on “How do portrayals vary by endangered vs. non-endangered species”?</p>
+<pre><code>### 2.1: Recategorize data
+group2DF &lt;- CSPdf %&gt;%
+  mutate(TopicCat = case_when(Topic==&quot;Climate Change&quot;~&quot;Climate Change&quot;,
+                              Topic!=&quot;Climate Change&quot;~&quot;Other&quot;)) 
+# create a new column called TopicCat that records if the article is about Climate Change or not (Other)
+
+### 2.2: Create a cross-tabulation of TopicCat and Portrayal
+group2cross &lt;- group2DF %&gt;% # start from the group 2 data
+  group_by(TopicCat,Portrayal) %&gt;% # bucket the data based on TopicCat and Portrayal
+  summarise(Count=...) # get the counts for each combination of TopicCat and Portrayal
+`   # How would you correct the ... in the code above? 
+    # Hint: n() may be helpful - it counts the instances for each combination of variables
+    # save the output in the object group2cross (short for crosstab data frame)
+
+### 2.3: Visualizing your output
+  # 2.3.1: Balloon plot
+g2 &lt;- ggplot(group2cross, aes(..., ..., ...)) # initiate a plot using group2cross - what columns would you want to use?
+g2 # inspect intermediate output
+g2 &lt;- g2 + geom_point(aes(size = Count), colour = &quot;skyblue&quot;) # plot points for each combination of topic and portrayal - change the size of the point based on the counts
+g2 # inspect intermediate output
+g2 &lt;- g2 + theme_bw() + labs(x=&quot;&quot;,y=&quot;&quot;,size=&quot;Count:&quot;) # modify the plot appearance
+g2 # inspect intermediate output
+g2 &lt;- g2 + scale_size_continuous(range=c(1,10)) + geom_text(aes(label = Count)) # add text information and change the size of the points
+g2 &lt;- g2 + theme(axis.text.x = element_text(angle = 45, hjust=1),
+                 legend.position = &quot;top&quot;) # change the plot visualization
+g2 # display the plot</code></pre>
+</div>
+</div>
+<div id="addressing-the-second-question" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Addressing the second question</h1>
+<p><em>How are tigers portrayed in Asia and outside of Asia?</em></p>
+<div id="recoding-and-subsetting-the-data" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Recoding and subsetting the data</h2>
+<p>As above, we need to recode the data to be based on whether or not the <code>Country</code> of each article is in Asia or not. We also need to focus on articles about tigers.</p>
+<pre><code>### 2.4: Subset the data to filter to tigers
+group2sub &lt;- CSPdf %&gt;%
+  filter(...) # subset to the rows where the Taxon is &quot;tiger&quot;
+  # assign the output to group2sub
+
+### 2.5: Categorize the countries as being in Asia or not
+  # 2.5.1: See what the countries are
+table(group2sub$Country)
+group2sub &lt;- group2sub %&gt;%
+  mutate(InAsia=case_when(Country %in% c(&quot;Japan&quot;,&quot;India&quot;)~&quot;Asia&quot;,
+                          TRUE~&quot;Not Asia&quot;) 
+  # complete the re-labelling for the other countries
+  # TRUE~&quot;Placeholder&quot; just means that any other values of Country are &quot;Not Asia&quot;
+View(group2sub) # see your data</code></pre>
+</div>
+<div id="preparing-data-for-a-waffle-plot" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Preparing data for a waffle plot</h2>
+<p>The next step is to cross-tabulate the data to prepare the data for visualization.</p>
+<pre><code>### 2.6: Cross tabulate portrayals for the countries that are in or outside of Asia
+group2cross2 &lt;- group2sub %&gt;%
+  group_by(...,...) %&gt;% # Categorize the data based on whether or not they are InAsia and the Portrayal of species
+  summarise(Count=...) # get the counts for each combination of InAsia and Portrayal
+`   # How would you correct the ... in the code above? 
+    # Hint: n() may be helpful - it counts the instances for each combination of variables
+    # save the output in the object group2cross2 (short for crosstab data frame number 2)
+View(group2cross2)</code></pre>
+</div>
+<div id="visualization" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> Visualization</h2>
+<p>We’re ready to plot the data now.</p>
+<pre><code>### 2.7: Visualize the data
+waff2 &lt;- ggplot(group2cross2, aes(fill=Portrayal, values=Count)) # initiate plot
+waff2 &lt;- waff2 + geom_waffle() # add on waffle charts
+waff2 # display output
+waff2 &lt;- waff2 + facet_wrap(~InAsia) # create sub-plots by InAsia
+waff2 # display output
+waff2 &lt;- waff2 + theme_void() # change the plot visuals
+waff2 # display output
+waff2 &lt;- waff2 + labs(x=&quot;&quot;,y=&quot;&quot;,fill=&quot;Portrayal: &quot;) + theme(legend.position=&quot;top&quot;)
+waff2 # display final plot</code></pre>
 </div>
 </div>
 

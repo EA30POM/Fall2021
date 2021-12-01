@@ -12,7 +12,7 @@
 
 <meta name="date" content="2021-11-30" />
 
-<title>Air quality lab introduction</title>
+<title>Group 6</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -348,39 +348,163 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Air quality lab introduction</h1>
+<h1 class="title toc-ignore">Group 6</h1>
 <h4 class="author"></h4>
 <h4 class="date">2021-11-30</h4>
 
 </div>
 
 
-<div id="air-quality-lab-overview" class="section level1">
-<h1>Air Quality Lab Overview</h1>
-<p>In this lab, you will work in groups to examine how air quality varies across Claremont. To that end, you will use these <a href="https://support.thepocketlab.com/knowledge/pocketlab-air-specifications?hsLang=en">PocketLab Air (a.k.a. PL Air) sensor units</a>. Each PL Air unit measures:</p>
+<div id="overview" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Overview</h1>
+<p>This document contains code for <strong>Group 6</strong>. It is your task to modify the code in places where I have left <code>...</code> as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.</p>
+</div>
+<div id="getting-started" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Getting started</h1>
+<div id="loading-in-packages" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Loading in packages</h2>
+<pre><code>## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets</code></pre>
+</div>
+<div id="importing-the-class-dataset" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Importing the class dataset</h2>
+<p>Next, we’re going to import the class dataset.</p>
+<pre><code>CSPdf &lt;- read_tsv(&quot;https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv&quot;) # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called &quot;CSPdf&quot;
+    # CSPdf stands for Conservation Science Partners data frame</code></pre>
+<p>We can always pull up a viewer of our data by using these commands:</p>
+<pre><code>## Version 1:
+CSPdf %&gt;% # take CSPdf and feed it into the next command
+    head( ) %&gt;% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --&gt; f(x) --&gt; g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )</code></pre>
+</div>
+</div>
+<div id="addressing-the-first-question" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Addressing the first question</h1>
+<p><em>Are carnivorous animals less likely to be portrayed as vulnerable or victimized than herbivorous animals?</em></p>
+<div id="preparing-the-data" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Preparing the data</h2>
+<p>The first thing we need to do is to recode the data so we know which articles are about:</p>
 <ul>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-co2-sensor-work">CO2</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-ozone-sensor-work">Ozone</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-particulate-matter-sensor-work">Particulate Matter</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/measuring-air-quality-index">Air Quality Index</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/tips-for-measuring-temperature">Temperature</a></li>
+<li>Herbivores vs. carnivores - based on the entry in the column <code>Taxon</code></li>
+<li>Animals that are portrayed as Victims or not, most likely based on <code>Portrayal</code></li>
 </ul>
-<p>Ultimately, by working with your groups and incorporating the class’ data, you will develop a lesson plan focused on some aspect of air quality or climate change. This lesson plan will be the lab report for this first class project. Your recommendations will directly inform ongoing community science initiatives at PocketLab such as <a href="https://archive.thepocketlab.com/educators/article/blue-sky-zero">Blue Sky Zero</a> or <a href="https://blog.thepocketlab.com/georgia-tech-is-mapping-heat-islands-in-atlanta-with-pocketlabs">Urban Heat Islands</a>.</p>
-<div id="week-1-of-lab" class="section level2">
-<h2>Week 1 of lab</h2>
-<p>Our objective in the first week of lab is to:</p>
-<ul>
-<li>Set up a <a href="https://app.thepocketlab.com/home">PocketLab Notebook account</a>
-<ul>
-<li>Note that the class code is <code>NFAOMZ</code></li>
-<li>You will log in as a <code>Student</code> using this class code and your FIRST NAME, LAST NAME as it is displayed in the Pomona Portal (if you would like that updated, please let me know and I can do that)</li>
-</ul></li>
-<li>Connect to your group’s PL Air sensor on a computer and record data</li>
-<li>Connect to your group’s PL Air sensor on a phone and record data</li>
-<li>Upload your group’s mobile phone data as a <code>.csv</code> (comma-separated values spreadsheet file) to the <a href="https://drive.google.com/drive/folders/1yuZs0T3uS1ziE0fMSjWEKAntHfvnQHx7?usp=sharing">Week 1 data folder</a>.</li>
-</ul>
-<p>If you encounter any issues, please let Prof. Chang or the lab TA know ASAP.</p>
-<p><strong>Congrats on completing lab for the first week of EA 30!</strong></p>
+<pre><code>### 6.1: The first task is to recode the data for portrayal (Vulnerable/Victimized) and Herbivory (yes/No)
+  # 6.1.1: First, see what species are present
+table(CSPdf$Taxon) # print out the unique values of Taxon
+  # 6.1.2: Recoding the data
+group6DF &lt;- CSPdf %&gt;%
+  mutate(Herbivore = case_when(Taxon %in% c(&quot;deer&quot;,&quot;elephant&quot;) ~ &quot;Herbivore&quot;,
+                               TRUE ~ &quot;Carnivore&quot;),
+         Victimized = case_when(Portrayal %in% c(&quot;Vulnerable&quot;,&quot;Victim&quot;) ~ &quot;Victim&quot;,
+                                TRUE ~ &quot;Not&quot;))
+  # This is a little complicated but we&#39;ve created two new columns:
+  # 1) Herbivore - which tracks if each species is an herbivore or not,
+  # 2) Victimized - which tracks if the animal in each article is portrayed
+  # as a victim or not.
+  # For both columns, you&#39;ll need to add the other relevant fields for Herbivore or Victim.
+  # TRUE ~ the other category is an easy way to say anything that isn&#39;t 
+  # an herbivore or a victim portrayal is the other category (Carnivore or Not Victim)
+
+View(group6DF) # inspect output</code></pre>
+</div>
+<div id="preparing-data-for-visualization" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Preparing data for visualization</h2>
+<p>We will now cross-tabulate the data to get counts of each combination of type of animal (Herbivore or not) and victimization (victim or not).</p>
+<pre><code>### 6.2: Preparing data for visualization
+group6cross &lt;- group6DF %&gt;%
+  group_by(..., ...) %&gt;% # Fill in the correct columns (Hint: Herbivore and Victimized may be relevant)
+  summarize(Count=...) # get the counts for each combination of the grouping variables
+`   # How would you correct the ... in the code above? 
+    # Hint: n() may be helpful - it counts the instances for each combination of variables
+    # save the output in the object group6cross (short for crosstab data frame)
+  # 6.2.1: We need to clean up the crosstab to present the counts as percentages
+  # for a better waffle plot output
+group6cross &lt;- group6cross %&gt;%
+  group_by(Herbivore) %&gt;% 
+  mutate(Percentages=round(Count/sum(Count)*100,0))
+
+View(group6cross) # view output
+</code></pre>
+</div>
+<div id="visualization" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> Visualization</h2>
+<p>We’re ready now to visualize the data.</p>
+<pre><code>### 6.3: Generating a waffle chart
+waff6 &lt;- ggplot(group6cross, aes(fill=Victimized, values=Percentages)) # initiate plot
+waff6 &lt;- waff6 + geom_waffle() # add on waffle
+waff6 # display output
+waff6 &lt;- waff6 + facet_wrap(~Herbivore) # create sub-plots by Country
+waff6 # display output
+waff6 &lt;- waff6 + theme_void() # change the plot visuals
+waff6 # display output
+waff6 &lt;- waff6 + labs(x=&quot;&quot;,y=&quot;&quot;,fill=&quot;Portrayal: &quot;) + theme(legend.position=&quot;top&quot;)
+waff6 # display final plot</code></pre>
+</div>
+</div>
+<div id="addressing-the-second-question" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Addressing the second question</h1>
+<p><em>Is ecotourism a more common portrayal in developing countries than in developed ones?</em></p>
+<div id="preparing-the-data-1" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Preparing the data</h2>
+<p>As above, we need to recode the data based on countries that are or are not developing. We also need to recode the topics as either being about ecotourism or not.</p>
+<pre><code>### 6.4: Recoding the data based on developing country status and ecoutourism topic
+  # 6.4.1: See what countries are in the data
+table(CSPdf$Country)
+  # 6.4.2: See what topics are in the data
+table(CSPdf$Topic)
+  # 6.4.3: Recode the data
+group6DF2 &lt;- CSPdf %&gt;%
+  mutate(Developing = case_when(Country %in% c(&quot;Indonesia&quot;,&quot;India&quot;,&quot;Cambodia&quot;) ~ &quot;Developing&quot;,
+                                TRUE ~ &quot;Developed&quot;),
+         Ecotourism = case_when(Topic==&quot;Ecotourism&quot;~&quot;Ecotourism&quot;,
+                                TRUE ~ &quot;Not ecotourism&quot;))
+  ## We&#39;re basically doing the same steps here as above.
+  ## You will need to modify the Developing command.
+  ## The Ecotourism column command may be OK.</code></pre>
+</div>
+<div id="preparing-the-data-for-visualization" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Preparing the data for visualization</h2>
+<p>Next, we want to get the counts of country (developing or not) and topic (ecotourism or not). We’ll do that by cross-tabulating these data.</p>
+<pre><code>### 6.5: Cross tabulating country and topic
+group6cross2 &lt;- group6DF2 %&gt;%
+  group_by(..., ...) %&gt;% # Hint: Developing and Ecotourism
+  summarize(Count=...) # Hint: n() for counts
+
+  # 6.5.1: Get percentages for the cross-tab so it&#39;s cleaner to display
+group6cross2 &lt;- group6cross2 %&gt;%
+  group_by(Developing) %&gt;%
+  mutate(Percentages=round(Count/sum(Count)*100,0))
+
+View(group6cross2) # see output</code></pre>
+</div>
+<div id="visualizing-the-data" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> Visualizing the data</h2>
+<p>Now we’re ready to visualize the data.</p>
+<pre><code>### 6.6: Generating a waffle chart
+waff6 &lt;- ggplot(group6cross2, aes(fill=Ecotourism, values=Percentages)) # initiate plot
+waff6 &lt;- waff6 + geom_waffle() # add on waffle
+waff6 # display output
+waff6 &lt;- waff6 + facet_wrap(~Developing) # create sub-plots by Country
+waff6 # display output
+waff6 &lt;- waff6 + theme_void() # change the plot visuals
+waff6 # display output
+waff6 &lt;- waff6 + labs(x=&quot;&quot;,y=&quot;&quot;,fill=&quot;Portrayal: &quot;) + theme(legend.position=&quot;top&quot;)
+waff6 # display final plot</code></pre>
 </div>
 </div>
 

@@ -12,7 +12,7 @@
 
 <meta name="date" content="2021-11-30" />
 
-<title>Air quality lab introduction</title>
+<title>Group 1</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -348,39 +348,155 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Air quality lab introduction</h1>
+<h1 class="title toc-ignore">Group 1</h1>
 <h4 class="author"></h4>
 <h4 class="date">2021-11-30</h4>
 
 </div>
 
 
-<div id="air-quality-lab-overview" class="section level1">
-<h1>Air Quality Lab Overview</h1>
-<p>In this lab, you will work in groups to examine how air quality varies across Claremont. To that end, you will use these <a href="https://support.thepocketlab.com/knowledge/pocketlab-air-specifications?hsLang=en">PocketLab Air (a.k.a. PL Air) sensor units</a>. Each PL Air unit measures:</p>
-<ul>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-co2-sensor-work">CO2</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-ozone-sensor-work">Ozone</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-particulate-matter-sensor-work">Particulate Matter</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/measuring-air-quality-index">Air Quality Index</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/tips-for-measuring-temperature">Temperature</a></li>
-</ul>
-<p>Ultimately, by working with your groups and incorporating the class’ data, you will develop a lesson plan focused on some aspect of air quality or climate change. This lesson plan will be the lab report for this first class project. Your recommendations will directly inform ongoing community science initiatives at PocketLab such as <a href="https://archive.thepocketlab.com/educators/article/blue-sky-zero">Blue Sky Zero</a> or <a href="https://blog.thepocketlab.com/georgia-tech-is-mapping-heat-islands-in-atlanta-with-pocketlabs">Urban Heat Islands</a>.</p>
-<div id="week-1-of-lab" class="section level2">
-<h2>Week 1 of lab</h2>
-<p>Our objective in the first week of lab is to:</p>
-<ul>
-<li>Set up a <a href="https://app.thepocketlab.com/home">PocketLab Notebook account</a>
-<ul>
-<li>Note that the class code is <code>NFAOMZ</code></li>
-<li>You will log in as a <code>Student</code> using this class code and your FIRST NAME, LAST NAME as it is displayed in the Pomona Portal (if you would like that updated, please let me know and I can do that)</li>
-</ul></li>
-<li>Connect to your group’s PL Air sensor on a computer and record data</li>
-<li>Connect to your group’s PL Air sensor on a phone and record data</li>
-<li>Upload your group’s mobile phone data as a <code>.csv</code> (comma-separated values spreadsheet file) to the <a href="https://drive.google.com/drive/folders/1yuZs0T3uS1ziE0fMSjWEKAntHfvnQHx7?usp=sharing">Week 1 data folder</a>.</li>
-</ul>
-<p>If you encounter any issues, please let Prof. Chang or the lab TA know ASAP.</p>
-<p><strong>Congrats on completing lab for the first week of EA 30!</strong></p>
+<div id="overview" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Overview</h1>
+<p>This document contains code for <strong>Group 1</strong>. It is your task to modify the code in places where I have left <code>...</code> as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.</p>
+</div>
+<div id="getting-started" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Getting started</h1>
+<div id="loading-in-packages" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Loading in packages</h2>
+<pre><code>## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets</code></pre>
+</div>
+<div id="importing-the-class-dataset" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Importing the class dataset</h2>
+<p>Next, we’re going to import the class dataset.</p>
+<pre><code>CSPdf &lt;- read_tsv(&quot;https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv&quot;) # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called &quot;CSPdf&quot;
+    # CSPdf stands for Conservation Science Partners data frame</code></pre>
+<p>We can always pull up a viewer of our data by using these commands:</p>
+<pre><code>## Version 1:
+CSPdf %&gt;% # take CSPdf and feed it into the next command
+    head( ) %&gt;% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --&gt; f(x) --&gt; g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )</code></pre>
+</div>
+</div>
+<div id="addressing-the-first-question" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Addressing the first question</h1>
+<p><em>What are the patterns for the topic of Human Wildlife Interaction globally?</em></p>
+<div id="preparing-the-data-and-performing-calculations" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Preparing the data and performing calculations</h2>
+<pre><code>### Q1: Differences in topic pattern - visualization using the global map
+  ## Q1.1: Generate calculations by country
+group1DF &lt;- CSPdf %&gt;%
+  group_by(...) %&gt;% # group the data by Country (what do you put in ...?)
+  summarize(HWIcount = length(which(Topic==&quot;HWI&quot;)), CountryN = n(), HWIprop = length(which(Topic==&quot;HWI&quot;))/n()) 
+    # create three columns: 1) HWIcount which counts the number of HWI articles in each country,
+    # 2) CountryN, the number of articles in each country,
+    # and 3) HWIprop, which presents the proportion of articles in each country that are about HWI in our sample
+
+  ## Q1.1: Inspecting output
+View(group1DF) # open up a viewer of the data
+
+  ## Q1.1: Creating a subset for the countries that have non-0 HWI articles
+group1sub &lt;- group1DF %&gt;%
+  filter(HWIcount &gt; 0) # only retain the rows that have more than 0 HWI articles</code></pre>
+</div>
+<div id="joining-up-the-data-with-the-world-map" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Joining up the data with the world map</h2>
+<p>The next step is to join up the processed data with global map data.</p>
+<pre><code>  ## Q1.2: Combine the subset data with GIS data for the world&#39;s countries
+worldDF &lt;- world # store the dataset for the world in worldDF, world data frame
+speciesMap &lt;- worldDF %&gt;% # take the worldDF object and feed forward
+  left_join(group1DF, by=c(&quot;name_long&quot;=&quot;Country&quot;)) # combine the group1DF with worldDF by country, 
+    # getting the data to match on the columns &quot;name_long&quot; (countries) and &quot;Country&quot;
+    # How would you modify this code to only use group1sub instead?
+    # When would group1sub be more appropriate to use than group1DF?</code></pre>
+</div>
+<div id="visualization" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> Visualization</h2>
+<p>We’re ready to plot the data now.</p>
+<pre><code>  ## Q1.3: Generating the map
+    # Your task: How do you display either HWIcount or HWIprop?
+    # Hint: you may want to change the ... in fill=... 
+g1 &lt;- ggplot(data=speciesMap, aes(fill=...)) # use the speciesMap object to create a map
+g1 # inspect the current output
+g1 &lt;- g1 + geom_sf(aes(fill=...),color=&quot;gray47&quot;,size=0.05) # add on the boundaries of countries
+g1 # inspect the current output
+g1 &lt;- g1 + labs(x=&quot;&quot;,y=&quot;&quot;,fill=&quot;...: &quot;) # change the names of the variables as needed 
+g1 # inspect the current output
+g1 &lt;- g1 + theme_minimal() # change the display style
+g1 # inspect the current output
+g1 &lt;- g1 + theme(legend.position = &quot;top&quot;) # move the legend bar to the top
+g1 # display the final plot</code></pre>
+</div>
+</div>
+<div id="addressing-the-second-question" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Addressing the second question</h1>
+<p><em>Are there differences in the distribution of humans or animals being portrayed as victims in the topic of HWI?</em></p>
+<div id="subsetting-the-data-to-the-topic-of-hwi" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Subsetting the data to the topic of <code>HWI</code></h2>
+<pre><code>### Q2: Differences across countries with respect to HWI human/animal victimhood?
+  ## Q2.1: Subset data to those where Topic is HWI
+    # Your task is to replace ... in filter(...)
+    # Hint: filter(Topic=&quot;something&quot;)
+group1DF2 &lt;- CSPdf %&gt;% 
+  filter(...) # subset to the rows where the Topic is HWI
+    # and assign the output to group1DF2
+
+  ## Q2.1: View the different portrayals in the subset of data
+table(group1DF2$Portrayal)</code></pre>
+<p>Great! We’ve subset the data. But now, the problem is that we need to able to categorize the articles as portraying species as “victims” or “aggressors”.</p>
+<pre><code>  ## Q2.2: Categorize portrayals into animals as victims or aggressors
+group1sum2 &lt;- group1DF2 %&gt;%
+  mutate(Victimhood = case_when(Portrayal %in% c(&quot;Dangerous&quot;,&quot;Controversial&quot;) ~ &quot;Aggressor&quot;, # create a new column called Victimhood
+                                Portrayal %in% c(&quot;Vulnerable&quot;,&quot;Victim) ~ &quot;Victim&quot;)     # modify the code above to categorize other 
+    # portrayals of wildlife as victim or aggressor.
+    # Hint: use the output of the table(group1DF2$Portrayal) and your own understanding
+    # to relabel these portrayals of species
+
+View(group1sum2) # view data</code></pre>
+</div>
+<div id="preparing-the-data-for-a-waffle-chart" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Preparing the data for a waffle chart</h2>
+<pre><code>  ## Q2.3: Subset the data for creating a waffle chart (square pie chart)
+group1waffle &lt;- group1sum2 %&gt;%
+  group_by(Country) %&gt;% # categorize by Country
+  summarise(Aggressor = round(length(which(Victimhood==&quot;Aggressor&quot;))/n() * 100,0),
+            Victim = 100-Aggressor) 
+    # Create two summary columns: 1) Aggressor, which finds the proportion of
+    # articles that feature the animal as an aggressor and converts to a percentage,
+    # and 2) Victim, the percentage of articles where the animal is a victim
+
+  ## Q2.4: Reformatting the data
+group1waffle &lt;- group1waffle %&gt;%
+  tidyr::pivot_longer(cols=Aggressor:Victim)
+View(group1waffle) # inspect the data object you&#39;ve created</code></pre>
+</div>
+<div id="visualization-1" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> Visualization</h2>
+<p>Hooray! Now we’re on to visualization</p>
+<pre><code>waff1 &lt;- ggplot(group1waffle, aes(fill=name, values=value)) # initiate plot
+waff1 &lt;- waff1 + geom_waffle() # add on waffle
+waff1 # display output
+waff1 &lt;- waff1 + facet_wrap(~Country) # create sub-plots by Country
+waff1 # display output
+waff1 &lt;- waff1 + theme_void() # change the plot visuals
+waff1 # display output
+waff1 &lt;- waff1 + labs(x=&quot;&quot;,y=&quot;&quot;,fill=&quot;Portrayal: &quot;) + theme(legend.position=&quot;top&quot;) # change plot appearance
+waff1 # display final plot</code></pre>
 </div>
 </div>
 

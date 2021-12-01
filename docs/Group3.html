@@ -12,7 +12,7 @@
 
 <meta name="date" content="2021-11-30" />
 
-<title>Air quality lab introduction</title>
+<title>Group 3</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -348,39 +348,133 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Air quality lab introduction</h1>
+<h1 class="title toc-ignore">Group 3</h1>
 <h4 class="author"></h4>
 <h4 class="date">2021-11-30</h4>
 
 </div>
 
 
-<div id="air-quality-lab-overview" class="section level1">
-<h1>Air Quality Lab Overview</h1>
-<p>In this lab, you will work in groups to examine how air quality varies across Claremont. To that end, you will use these <a href="https://support.thepocketlab.com/knowledge/pocketlab-air-specifications?hsLang=en">PocketLab Air (a.k.a. PL Air) sensor units</a>. Each PL Air unit measures:</p>
-<ul>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-co2-sensor-work">CO2</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-ozone-sensor-work">Ozone</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/how-does-the-pocketlab-air-particulate-matter-sensor-work">Particulate Matter</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/measuring-air-quality-index">Air Quality Index</a></li>
-<li><a href="https://support.thepocketlab.com/knowledge/tips-for-measuring-temperature">Temperature</a></li>
-</ul>
-<p>Ultimately, by working with your groups and incorporating the class’ data, you will develop a lesson plan focused on some aspect of air quality or climate change. This lesson plan will be the lab report for this first class project. Your recommendations will directly inform ongoing community science initiatives at PocketLab such as <a href="https://archive.thepocketlab.com/educators/article/blue-sky-zero">Blue Sky Zero</a> or <a href="https://blog.thepocketlab.com/georgia-tech-is-mapping-heat-islands-in-atlanta-with-pocketlabs">Urban Heat Islands</a>.</p>
-<div id="week-1-of-lab" class="section level2">
-<h2>Week 1 of lab</h2>
-<p>Our objective in the first week of lab is to:</p>
-<ul>
-<li>Set up a <a href="https://app.thepocketlab.com/home">PocketLab Notebook account</a>
-<ul>
-<li>Note that the class code is <code>NFAOMZ</code></li>
-<li>You will log in as a <code>Student</code> using this class code and your FIRST NAME, LAST NAME as it is displayed in the Pomona Portal (if you would like that updated, please let me know and I can do that)</li>
-</ul></li>
-<li>Connect to your group’s PL Air sensor on a computer and record data</li>
-<li>Connect to your group’s PL Air sensor on a phone and record data</li>
-<li>Upload your group’s mobile phone data as a <code>.csv</code> (comma-separated values spreadsheet file) to the <a href="https://drive.google.com/drive/folders/1yuZs0T3uS1ziE0fMSjWEKAntHfvnQHx7?usp=sharing">Week 1 data folder</a>.</li>
-</ul>
-<p>If you encounter any issues, please let Prof. Chang or the lab TA know ASAP.</p>
-<p><strong>Congrats on completing lab for the first week of EA 30!</strong></p>
+<div id="overview" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Overview</h1>
+<p>This document contains code for <strong>Group 3</strong>. It is your task to modify the code in places where I have left <code>...</code> as a placeholder for a variable name. Please feel free to consult with myself and Quyen for guidance.</p>
+</div>
+<div id="getting-started" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Getting started</h1>
+<div id="loading-in-packages" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Loading in packages</h2>
+<pre><code>## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+
+## Libraries for plotting
+library(ggplot2) # plotting library
+library(waffle)  # square pie chart (waffle chart) library
+
+## Libraries for spatial data
+library(sf)       # a nicer way to deal with spatial data
+library(spData)   # spatial datasets</code></pre>
+</div>
+<div id="importing-the-class-dataset" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Importing the class dataset</h2>
+<p>Next, we’re going to import the class dataset.</p>
+<pre><code>CSPdf &lt;- read_tsv(&quot;https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv&quot;) # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called &quot;CSPdf&quot;
+    # CSPdf stands for Conservation Science Partners data frame</code></pre>
+<p>We can always pull up a viewer of our data by using these commands:</p>
+<pre><code>## Version 1:
+CSPdf %&gt;% # take CSPdf and feed it into the next command
+    head( ) %&gt;% # look at the first 6 rows
+      View( ) # open the spreadsheet viewer
+      # akin to x --&gt; f(x) --&gt; g(x)
+      
+## Alternatively, version 2:
+View( head( CSPdf ) ) # akin to g( f( x ) )</code></pre>
+</div>
+</div>
+<div id="addressing-the-first-question" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Addressing the first question</h1>
+<p><em>What are the difference in sentiments towards elephants in countries where they are native vs. non-native? </em></p>
+<div id="preparing-the-data" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Preparing the data</h2>
+<p>We first need to subset the data to the articles about elephants. We also need to recode the data based on which countries are in the native range of elephants.</p>
+<pre><code>  ### 3.1: Subset data to articles focused on elephants
+group3sub &lt;- CSPdf %&gt;%
+  filter(...) # How would you filter to the articles where the Taxon is &quot;elephant&quot;?
+
+  ### 3.2: Recategorize countries into native vs. non-native range
+    # 3.2.1: See the set of countries in the data
+table(group3sub$Country)
+    # 3.2.2: Recategorize data based on Country
+group3sub1 &lt;- group3sub %&gt;%
+  mutate(ElephantRange = case_when(Country %in% c(&quot;India&quot;, &quot;Thailand&quot;) ~&quot;Native&quot;,
+                                   Country %in% c(&quot;United States&quot;,&quot;United Kingdom&quot;) ~ &quot;Non-native&quot;)) 
+    # Create a new column called ElephantRange that lists
+    # whether or not each article is in the native or non-native range
+    # of elephants. How would we add on the other countries 
+    # to recast them as native or non-native?</code></pre>
+</div>
+<div id="visualization" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Visualization</h2>
+<p>We are now ready to plot the data</p>
+<pre><code>### 3.3: Visualizing the distribution of sentiments in native vs. non-native range
+
+g3 &lt;- ggplot(data=group3sub1, aes(x=...,y=...)) # create a plot using the appropriate columns (hint: range of elephants and sentiment)
+g3 # inspect intermediate output
+g3 &lt;- g3 + geom_boxplot() # add a boxplot
+g3 # inspect intermediate output
+g3 &lt;- g3 + geom_hline(yintercept=0, linetype=&quot;dashed&quot;, col=&quot;red&quot;) # add a red dahsed line to demarcate where the positive vs. negative articles are located
+g3 # inspect intermediate output
+g3 &lt;- g3 + labs(x=&quot;...&quot;,y=&quot;...&quot;) # change axis labels to something more informative
+g3 &lt;- g3 + coord_flip() # switch the x- and y-axis
+g3 # display final plot</code></pre>
+</div>
+</div>
+<div id="addressing-the-second-question" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Addressing the second question</h1>
+<p><em>If we subset by HWI (Human Wildlife Interaction), what is the distribution of positive vs negative sentiments towards elephants?</em></p>
+<div id="preparing-the-data-1" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Preparing the data</h2>
+<p>It is unclear to me if the group is more keen on 1) ultimately visualizing the distribution of sentiment across countries only for those articles focusing on <code>HWI</code> (a map plot) or 2) displaying the distribution of sentiment values for <code>HWI</code> and non-<code>HWI</code> articles.</p>
+<p>In case my first guess is correct, here is scaffolded code for this analysis.</p>
+<pre><code>### 3.4: Subset data to articles about HWI
+group3sub1 &lt;- CSPdf %&gt;%
+  filter(...) # How would you filter to the articles where the Topic is &quot;HWI&quot;?
+
+  ## 3.4.1: Summarize the values of sentiment by country
+group3sum &lt;- group3sub1 %&gt;%
+  group_by(Country) %&gt;% # group the data by Country
+  summarise(MedianSent=median(Sentiment)) # calculate the median sentiment in each country</code></pre>
+</div>
+<div id="joining-up-the-data-with-geospatial-informatino" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Joining up the data with geospatial informatino</h2>
+<p>The next step is to combine these subset data with global GIS data.</p>
+<pre><code>### 3.5: Pull in global GIS data
+worldDF &lt;- world # store the dataset for the world in worldDF, world data frame
+
+### 3.6: Join the subset data with the GIS data
+speciesMap &lt;- worldDF %&gt;% # take the worldDF object and feed forward
+  left_join(group3sum, by=c(&quot;name_long&quot;=&quot;Country&quot;)) # combine the group3sum data with worldDF by country, 
+    # getting the data to match on the columns &quot;name_long&quot; (countries) and &quot;Country&quot;</code></pre>
+</div>
+<div id="visualizing-the-data" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> Visualizing the data</h2>
+<p>We’re ready to plot the data now.</p>
+<pre><code>### 3.7: Generating the map
+    # Your task: How do you color in countries based on Sentiment?
+    # Hint: you may want to change the ... in fill=... 
+    # Perhaps using MedianSent makes sense
+g3 &lt;- ggplot(data=speciesMap, aes(fill=...)) # use the speciesMap object to create a map
+g3 # inspect the current output
+g3 &lt;- g3 + geom_sf(aes(fill=...),color=&quot;gray47&quot;,size=0.05) # add on the boundaries of countries, change the ... for fill
+g3 # inspect the current output
+g3 &lt;- g3 + labs(x=&quot;&quot;,y=&quot;&quot;,fill=&quot;...: &quot;) # change the names of the variables as needed 
+g3 # inspect the current output
+g3 &lt;- g3 + theme_minimal() # change the display style
+g3 # inspect the current output
+g3 &lt;- g3 + theme(legend.position = &quot;top&quot;) # move the legend bar to the top
+g3 # display the final plot</code></pre>
 </div>
 </div>
 

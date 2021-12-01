@@ -1,0 +1,167 @@
+---
+title: "Week 12"
+author: ""
+date: '`r Sys.Date()`'
+output:
+  html_document:
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message = FALSE)
+```
+
+# Overview
+
+The objective this week is to analyze the class dataset, `CSPdf`, to address your group's questions. The table below describes each group's questions and my recommendations for a visualization.
+
+```{r, echo=F, warning=FALSE, message=FALSE}
+library(dplyr)
+library(googlesheets4)
+library(htmlTable)
+
+## Pull in Google sheet schedule
+classDF <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/146RdFkKWC-67AZ4vEl1FIe5ZClIji6EbYFznYGLtcuU/edit?usp=sharing",sheet = "FinalResponses")
+
+classDF %>% 
+  htmlTable(rnames=FALSE) # can't figure out for now how to merge cells - whatever
+```
+
+It is **not necessary** to perform a statistical analysis of the data to answer your question. However, some groups have questions that are amenable to statistical analysis based on tests we have already learned about in this class. If that is the case for your group, I have included my suggestion there.
+
+By clicking through the menu for `Groups`, you will be able to see scaffolded code for your group's question.
+
+# Example code for analyses
+
+In each group's site, I provide code to subset the class data and perform a visualization to help you answer your question. However, if you would like to be able to make a claim around the *statistical significance* of your observations, you would then need some way of testing the data. That is, you need some way to quantify the *probability* that your data could have arisen by random chance.
+
+First, let's get started by pulling in the class dataset.
+
+```{r startup}
+## Libraries for interacting with data
+library(readr) # reads in spreadsheet data
+library(dplyr) # lets you wrangle data more effectively
+library(tidyr) # lets us interact with data with additional functions
+  # Additional package to pull in
+library(mosaic)# package for permutation based tests
+
+CSPdf <- read_tsv("https://raw.githubusercontent.com/EA30POM/Fall2021/main/data/OTEC_CSP.tsv") # use the function read_tsv from readr to pull in a spreadsheet from this URL.
+    # Then store the output in an object called "CSPdf"
+    # CSPdf stands for Conservation Science Partners data frame
+```
+
+## $\chi^2$ test
+
+The first type of test that I'll cover is a $\chi^2$ test (a.k.a. a Chi-squared test). [This resource](https://www.jmp.com/en_ca/statistics-knowledge-portal/chi-square-test/chi-square-test-of-independence.html) provides a great explanation of $\chi^2$ tests. [This resource](http://www.biostathandbook.com/chiind.html) also provides another explanation.
+
+A $\chi^2$ test is most appropriate when you have *counts* across two *categorical* variables. For instance, let's say that I'm interested in seeing if there's any relationship between `Country` and `Portrayal` of species in the class dataset, `CSPdf`. I would then test the null hypothesis ($H_0$) that `Country` and `Portrayal` are unrelated. I'd expect to see that the proportional counts of portrayals across countries should be quite consistent under the null hypothesis!
+
+As we saw in the [soil science lab](https://ea30pom.github.io/Fall2021/soil.html), one way that we can deal with wonky data is to shuffle (or re-sample) our data assuming that the null hypothesis is true. In this case, that would mean that we should be able to shuffle around `Country` with no regard for `Portrayal`. 
+
+Then we can compare our observed $\chi^2$ value against simulated values from shuffling our data, and see if our value is really large. If it is much larger than most of the simulated values, then that's an indication that the data are inconsistent with the null hypothesis. Thus, we would reject the null.
+
+First, let's tally up the counts of `Portrayal` and `Country`
+```{r chisq_example}
+  ### Use tally to count up every combo of Portrayal and Country
+  ### in the object CSPdf
+Results_table <- tally(~ Portrayal + Country, data= CSPdf )
+Results_table # See the observed counts
+```
+
+Second, let's calculate $\chi^2$ for our actual data.
+
+```{r}
+  ### Calculate the Chi-squared value for our data
+obs_chi <- chisq(Results_table)
+obs_chi # see the observed Chi-squared value
+```
+
+Third, let's shuffle the data 1000 times and calculate a $\chi^2$ value for every time the data the shuffled.
+```{r}
+  ### Shuffle/sample the data 1000 times
+  ### And calculate the Chi-squared value each time
+SimulateChiSq <- do(1000) * chisq( tally( ~ Portrayal + shuffle(Country), data= CSPdf))
+```
+
+Finally, let's see what proportion ($p$-value) of the simulated $\chi^2$ values are bigger than our observed value.
+
+```{r}
+  ### Calculate the proportion of values larger than our Chi-squared value
+sim_p_val <- length(which(SimulateChiSq$X.squared > obs_chi))/nrow(SimulateChiSq)
+sim_p_val # Is this < 0.05?
+```
+
+## Difference in means - two samples
+
+We've seen this type of analysis before (see the [soil science lab](https://ea30pom.github.io/Fall2021/soil.html), section 3.1) so I won't go into as much detail.
+
+Let's take an example from the class dataset. Let's say that I want to know if `Sentiment` varies across wolves vs. animals that aren't wolves. That means that we're comparing `Sentiment` across just two types of animals (`Taxon=="wolf"` or not).
+
+We can test the null hypothesis ($H_0$) that there is no difference in the mean sentiment for wolves vs. other animals. But as is the case for some of the groups, that's going to mean that we'll have to re-code the data. We need to say, based on `Taxon` if the article is about `wolf` or `not wolf`.
+
+```{r}
+recode_CSP <- CSPdf %>%
+  mutate(WolfOrNot = case_when(Taxon=="wolf"~"Wolf",
+                               TRUE ~ "Not Wolf"))
+  # create a new column called WolfOrNot
+  # That codes the data based on the value in Taxon
+
+# View(recode_CSP)
+```
+
+Second, we'll calculate the observed difference in mean sentiment between `Wolf` and `Not Wolf` articles.
+
+```{r}
+obs_diff <- diff(mean( Sentiment ~ WolfOrNot, data=recode_CSP)) # calculate the difference between the means and store in a variable called "obs_diff"
+obs_diff # display the value of obs_diff
+```
+
+Third, we'll now shuffle the data 1000 times and calculate the difference in mean sentiment across Wolf or Not Wolf each time.
+
+```{r}
+# Shuffle the data and calculate the simulated differences in mean Sentiment
+randomizing_diffs <- do(1000) * diff( mean( Sentiment ~ shuffle(WolfOrNot), data = recode_CSP) ) # calculate the mean in SoilDensity when we're shuffling the plant community around 1000 times
+# Clean up our shuffled data
+names(randomizing_diffs)[1] <- "DiffMeans" # change the name of the variable
+# View first few rows of data
+head(randomizing_diffs)
+# View the mean of the simulated differences
+mean(randomizing_diffs$DiffMeans) # is this larger or smaller than our observed difference
+```
+
+Based on what we saw above, it looks like our `obs_diff` may be smaller than most of the simulated differences in means. That means that more extreme data would be *smaller* than our observed difference.
+
+Fourth, we'll calculate the probability that the simulated differences in mean sentiment were more extreme than our observed value.
+
+```{r}
+# What proportion of simulated values were "more extreme" than our value?
+prop( ~ DiffMeans < obs_diff, data = randomizing_diffs)
+```
+
+## Difference in means - more than two samples
+
+When we want to test whether or not three or more groups have the same mean value for some variable, we tend to use a one-way ANOVA test. While I briefly described ANOVA tests back in [Week 3](https://ea30pom.github.io/Fall2021/AQexp2.html), we didn't get to cover that type of analysis in any depth. If you'd like some explanation about this type of test, please refer to this resource by [JMP](https://www.jmp.com/en_ca/statistics-knowledge-portal/one-way-anova.html#404f1893-ae56-43ed-b84c-f6c99f313eca) or [the Handbook of Biological Statistics](http://www.biostathandbook.com/onewayanova.html).
+
+Let's say I'm interested in comparing mean `Sentiment` across all of the countries in our sample. I can perform an ANOVA test on the data. Great. But how do I know if 1) there are differences in mean sentiment across countries, and 2) these differences are meaningful?
+
+I can shuffle the data! If I assume the null hypothesis ($H_0$) that mean sentiment is *the same* across all of the countries, then that means that I can shuffle `Country` independent of `Sentiment`.
+
+Let's start by calculating a test statistic using an ANOVA test on our dataset.
+
+```{r}
+obs_aov <- anova( lm( Sentiment ~ Country, data= CSPdf))$`F value`[1] # calculate a test statistic from our data
+obs_aov # display the value of the test statistic
+```
+
+Second, we'll shuffle the data 1000 times, assuming that `Country` doesn't matter for `Sentiment`.
+
+```{r}
+sim_aov <- do(1000) * anova(lm( Sentiment ~ shuffle(Country), data=CSPdf))$`F value`[1]
+head(sim_aov) # display the first few rows of simulated test statistics
+```
+
+Third, we'll calculate a $p$-value based on the proportion of simulated test statistics that are larger than our observed test statistic.
+
+```{r}
+prop( ~ result > obs_aov, data=sim_aov)
+```
